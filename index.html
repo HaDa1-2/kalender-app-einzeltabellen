@@ -1,0 +1,1980 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kalender-F Rev 037</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+:root{--bg:#0d1320;--panel:#111a2b;--panel2:#18233a;--line:#31405e;--text:#e9eef8;--muted:#9eabc1;--accent:#39bdf8;--violet:#7c5cff;--warn:#ffb020;--radius:22px;--shadow:0 18px 60px rgba(0,0,0,.35);--days:4;--calpanes:2}*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0d1320,#10182a 55%,#09101d);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;color:inherit}.app{min-height:100vh;padding:28px;display:flex;gap:20px;flex-direction:column}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}h1{font-size:42px;line-height:1;margin:0 0 8px}.sub{font-size:17px;color:var(--muted)}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.btn{background:var(--panel2);border:1px solid var(--line);padding:12px 15px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.12)}.btn.primary{background:linear-gradient(135deg,var(--accent),var(--violet));border:0;color:#fff;font-weight:800}.btn.small{padding:8px 10px;border-radius:10px;font-size:13px}.btn.danger{background:#2b1520;color:#ff9aa0;border-color:#65313a}.layout{display:grid;grid-template-columns:minmax(280px,350px) 1fr;gap:20px;align-items:start}.sidebar,.board,.longterm{background:rgba(17,26,43,.88);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.sidebar{padding:18px;position:sticky;top:18px}.section-title{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#9aa8bd;font-weight:900;margin:16px 0 10px}.field{display:flex;gap:8px;align-items:center;margin:8px 0}.field label{font-size:14px;color:var(--muted);min-width:118px}.field input,.field select{width:100%;background:#070d1a;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:10px}.hint{font-size:12px;color:#7f8ca3;line-height:1.35}.calendar-pane{border:1px solid var(--line);background:#0b1221;border-radius:16px;padding:12px;margin:10px 0}.pane-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.pane-name{font-weight:900}.ics-item{background:#060b16;border:1px solid #23324d;border-radius:12px;padding:9px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin:8px 0}.ics-item b{font-size:13px}.ics-item span{font-size:11px;color:var(--muted);word-break:break-all}.status{font-size:11px;color:#aeb7c7;margin-top:8px}.board{padding:18px;min-width:0}.timeline-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.timeline{display:grid;gap:14px;grid-template-columns:repeat(var(--days),minmax(280px,1fr));overflow-x:auto;padding-bottom:8px}.day{min-height:690px;background:#0b1221;border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}.day.today{border-color:var(--accent);box-shadow:0 0 0 1px rgba(57,189,248,.55),0 0 44px rgba(57,189,248,.10)}.day-head{background:var(--panel2);padding:18px 18px 14px}.day-num{font-size:34px;font-weight:1000;letter-spacing:.04em}.day-meta{color:var(--muted);font-size:14px}.badge{display:inline-flex;margin-top:9px;border-radius:999px;background:#263866;color:#c9d8ff;padding:5px 10px;font-size:12px;font-weight:800}.day-body{padding:16px;display:flex;flex-direction:column;gap:14px;flex:1}.partition{border-top:1px solid rgba(49,64,94,.75);padding-top:13px}.part-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.part-title{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#a7b3c6;font-weight:1000}.split{display:grid;grid-template-columns:repeat(var(--calpanes),1fr);gap:10px}.lane{min-width:0;background:#070d1a;border:1px dashed #293955;border-radius:15px;padding:10px}.lane-title{font-size:12px;color:#9eabc1;font-weight:900;margin-bottom:8px}.card{background:#050a16;border:1px solid #263655;border-radius:14px;padding:11px;margin:8px 0}.card.event{border-left:3px solid var(--accent)}.card.task{border-left:3px solid var(--violet)}.card.overdue{border-left:3px solid var(--warn);background:#1a1003}.card.done{opacity:.56;text-decoration:line-through}.card b{display:block;font-size:15px}.card small{display:block;color:var(--muted);margin-top:5px}.empty{color:#718097;font-size:14px;padding:7px 0}.task-row{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:start}.task-row input{margin-top:4px}.kebab{background:transparent;color:#718097;font-size:18px}.longterm{padding:18px}.long-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}.long-card{background:#070d1a;border:1px solid #293955;border-radius:16px;padding:12px}.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.62);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}.modal{width:min(920px,100%);max-height:90vh;overflow:auto;background:#111a2b;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:20px}.modal h2{margin:0 0 14px}.modal-grid{display:grid;gap:10px}.modal-grid input,.modal-grid textarea,.modal-grid select{width:100%;background:#070d1a;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:11px}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}.toast{position:fixed;right:22px;bottom:22px;background:#06101c;border:1px solid var(--line);padding:12px 14px;border-radius:14px;color:#dce6f6;box-shadow:var(--shadow);display:none;z-index:20;max-width:520px}.pill{display:inline-flex;border:1px solid #273853;background:#06101c;border-radius:999px;padding:6px 9px;color:#aeb7c7;font-size:12px;margin:3px 3px 0 0}.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.month-head{font-size:12px;color:#9eabc1;text-align:center;font-weight:900;text-transform:uppercase}.month-cell{min-height:96px;background:#070d1a;border:1px solid #293955;border-radius:14px;padding:8px}.month-cell.out{opacity:.35}.month-cell.today{border-color:var(--accent);box-shadow:0 0 0 1px rgba(57,189,248,.35)}.month-day{font-size:13px;color:#aeb7c7;font-weight:900;margin-bottom:6px}.month-event{background:rgba(124,92,255,.9);color:#fff;border-radius:9px;padding:4px 6px;font-size:11px;margin:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.month-task{background:rgba(255,176,32,.18);border:1px solid rgba(255,176,32,.45);color:#ffd99a;border-radius:9px;padding:4px 6px;font-size:11px;margin:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}.month-title{font-size:20px;font-weight:1000}.diag{background:#07101d;border:1px solid #243653;border-radius:14px;padding:10px;margin-top:8px;color:#9fb0c8;font-size:12px}@media(max-width:1000px){.layout{grid-template-columns:1fr}.sidebar{position:relative;top:0}.timeline{grid-template-columns:repeat(var(--days),minmax(310px,86vw))}h1{font-size:32px}.top{flex-direction:column}.toolbar{justify-content:flex-start}.app{padding:16px}.month-grid{grid-template-columns:repeat(7,minmax(70px,1fr));overflow-x:auto}}
+
+/* Rev 007: Begrenzungen und saubere Anzeige */
+.ics-item{grid-template-columns:minmax(0,1fr) auto!important;overflow:hidden}
+.ics-item b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.lane,.card{overflow:hidden;max-width:100%}
+.card b,.card small{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.month-cell{height:112px!important;overflow:hidden!important;display:flex;flex-direction:column}
+.month-event,.month-task{max-height:34px;overflow:hidden;text-overflow:ellipsis}
+
+/* Rev 008: Einstellungen/Legende ausgelagert + Event-Zeitspalte */
+.settings-grid{display:grid;gap:10px}
+.legend-grid{display:grid;grid-template-columns:1fr;gap:8px}
+.legend-row{display:flex;align-items:center;gap:10px;background:#070d1a;border:1px solid #293955;border-radius:12px;padding:10px}
+.legend-swatch{width:18px;height:18px;border-radius:6px;flex:0 0 18px;border:1px solid rgba(255,255,255,.25)}
+.swatch-event{background:rgba(124,92,255,.9)}
+.swatch-task{background:rgba(255,176,32,.28)}
+.swatch-overdue{background:rgba(255,70,70,.24)}
+.swatch-long{background:#070d1a}
+.event-row{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;align-items:center;min-width:0}
+.event-timebox{font-size:10px;line-height:1.15;color:#9eabc1;text-align:left;padding-top:0;white-space:normal;align-self:center}
+.event-timebox span{display:block}
+.event-title{min-width:0}
+.month-overdue{background:rgba(255,80,80,.18);border:1px solid rgba(255,90,90,.45);color:#ffc8c8;border-radius:9px;padding:4px 6px;font-size:11px;margin:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.month-done{background:rgba(72,211,139,.16);border:1px solid rgba(72,211,139,.38);color:#b9f5d4;border-radius:9px;padding:4px 6px;font-size:11px;margin:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:line-through}
+.ics-click{cursor:pointer;min-width:0}
+.ics-click:hover b{text-decoration:underline}
+.month-statusbar{height:12px;border-radius:999px;margin:5px 0;font-size:0;line-height:0}
+.month-statusbar.task{background:rgba(255,176,32,.55);border:1px solid rgba(255,176,32,.75)}
+.month-statusbar.overdue{background:rgba(255,80,80,.48);border:1px solid rgba(255,90,90,.75)}
+
+
+
+/* Rev 010: Themes, editierbare Farben und saubereres Wording */
+:root{--eventColor:#7c5cff;--taskColor:#ffb020;--overdueColor:#ff5050;--longColor:#48d38b}
+.card.event{border-left-color:var(--eventColor)!important}
+.card.task{border-left-color:var(--taskColor)!important}
+.card.overdue{border-left-color:var(--overdueColor)!important}
+.month-event{background:var(--eventColor)!important}
+.month-statusbar.task{background:var(--taskColor)!important;border-color:var(--taskColor)!important}
+.month-statusbar.overdue{background:var(--overdueColor)!important;border-color:var(--overdueColor)!important}
+.long-card{border-left:3px solid var(--longColor)}
+.pane-actions{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.color-palette{display:grid;grid-template-columns:repeat(6,32px);gap:8px;margin-top:8px}
+.color-choice{width:32px;height:32px;border-radius:10px;border:2px solid rgba(255,255,255,.25);box-shadow:0 2px 10px rgba(0,0,0,.18)}
+.color-choice.active{outline:3px solid var(--text);outline-offset:2px}
+.color-config{display:grid;grid-template-columns:1fr;gap:14px}.color-config label{font-weight:900}.color-preview{width:18px;height:18px;border-radius:6px;display:inline-block;vertical-align:middle;margin-right:8px;border:1px solid rgba(255,255,255,.28)}
+body.light{background:linear-gradient(145deg,#f3f6fb,#e8eef8 58%,#f7f9fc);color:#152033}
+body.light .sidebar,body.light .board,body.light .longterm,body.light .modal{background:rgba(255,255,255,.92);border-color:#cbd6e7;color:#152033}
+body.light .calendar-pane,body.light .day,body.light .lane,body.light .field input,body.light .field select,body.light .modal-grid input,body.light .modal-grid textarea,body.light .modal-grid select,body.light .long-card,body.light .month-cell,body.light .diag,body.light .legend-row,body.light .ics-item{background:#f8fbff;border-color:#cbd6e7;color:#152033}
+body.light .day-head,body.light .btn{background:#e9eff8;border-color:#cbd6e7;color:#152033}
+body.light .btn.primary{background:linear-gradient(135deg,#2aa9e9,#725cff);color:#fff}
+body.light .card{background:#ffffff;border-color:#d5deec;color:#152033}
+body.light .empty,body.light .hint,body.light .sub,body.light .field label,body.light .section-title,body.light .part-title,body.light .lane-title,body.light .day-meta,body.light .card small{color:#5d6d83}
+body.light .toast{background:#fff;border-color:#cbd6e7;color:#152033}
+body.light .pill{background:#f8fbff;border-color:#cbd6e7;color:#42536b}
+
+
+/* Rev 011 neu: konservative Erweiterungen auf Basis Rev 010 */
+.day.today{background:rgba(255,255,255,.055)!important}
+body.light .day.today{background:#dfe7f2!important}
+.legend-row{justify-content:space-between}
+.legend-main{display:flex;align-items:center;gap:10px;min-width:0}
+.legend-edit{width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.25);display:inline-flex;align-items:center;justify-content:center;font-size:16px;flex:0 0 34px;box-shadow:0 3px 12px rgba(0,0,0,.18)}
+.legend-palette-wrap{display:none;margin:8px 0 12px 44px}
+.legend-palette-wrap.open{display:block}
+.card.event{cursor:pointer}
+.card.event:hover b{text-decoration:underline}
+.own-event-btn{margin-left:auto}
+.event-detail-grid{display:grid;grid-template-columns:150px 1fr;gap:8px 12px}
+.event-detail-grid b{color:var(--muted)}
+body.light .event-detail-grid b{color:#5d6d83}
+
+
+/* Rev 012: dynamische Kalenderverwaltung + Langfristige-Task-Erledigungen */
+.calendar-pane.hidden-cal{opacity:.55}
+.calendar-pane.hidden-cal .status::after{content:" · ausgeblendet";color:var(--warn)}
+.pane-name-row{display:flex;align-items:center;gap:8px;min-width:0}
+.visibility-pill{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:3px 7px;color:var(--muted);white-space:nowrap}
+.add-calendar-box{margin-top:10px;border:1px dashed var(--line);border-radius:16px;padding:12px;background:#070d1a;display:flex;align-items:center;justify-content:space-between;gap:8px}
+body.light .add-calendar-box{background:#f8fbff;border-color:#cbd6e7}
+.completed-long{border-left:3px solid var(--longColor)!important;background:rgba(72,211,139,.10)!important}
+body.light .completed-long{background:#eefaf4!important}
+
+
+/* Rev 013: kompakte Kalender-Kachelbedienung */
+.calendar-pane .pane-head{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  gap:10px!important;
+}
+.cal-title-line{
+  display:flex;
+  align-items:center;
+  gap:0;
+  min-width:0;
+}
+.cal-title-click{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  min-width:0;
+  max-width:100%;
+  cursor:pointer;
+  border-radius:10px;
+  padding:4px 6px;
+}
+.cal-title-click:hover{
+  background:rgba(255,255,255,.06);
+}
+body.light .cal-title-click:hover{
+  background:rgba(15,23,42,.06);
+}
+.cal-title-click .pane-name{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:220px;
+}
+.cal-edit-icon{
+  font-size:14px;
+  opacity:.88;
+  flex:0 0 auto;
+  margin-left:1px;
+}
+.pane-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+}
+.icon-btn{
+  width:36px;
+  height:36px;
+  padding:0!important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:17px!important;
+  line-height:1;
+}
+.visibility-btn{
+  font-size:18px!important;
+}
+.visibility-btn.hidden-state{
+  opacity:.65;
+}
+.trash-btn{
+  background:#2b1520!important;
+  color:#ff9aa0!important;
+  border-color:#65313a!important;
+}
+.ics-item{
+  grid-template-columns:minmax(0,1fr) 40px!important;
+}
+.ics-item .trash-btn{
+  width:32px;
+  height:32px;
+  font-size:15px!important;
+}
+
+
+/* Rev 014: ICS-spezifische Farben + null Kalender möglich + Dark-Mode Lesbarkeit */
+.cal-title-click{
+  color:var(--text)!important;
+  background:transparent;
+  border:0;
+}
+.cal-title-click .pane-name{
+  color:var(--text)!important;
+  font-weight:900!important;
+}
+body.light .cal-title-click,
+body.light .cal-title-click .pane-name{
+  color:#152033!important;
+}
+.ics-actions{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  justify-content:flex-end;
+}
+.ics-item{
+  grid-template-columns:minmax(0,1fr) auto!important;
+}
+.ics-color-dot{
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  display:inline-block;
+  border:1px solid rgba(255,255,255,.35);
+  margin-right:6px;
+  vertical-align:-2px;
+}
+.ics-settings-btn{
+  width:32px;
+  height:32px;
+  padding:0!important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.card.event[data-ics-color]{
+  border-left-width:4px!important;
+}
+.no-calendar-note{
+  border:1px dashed var(--line);
+  border-radius:16px;
+  padding:12px;
+  background:#070d1a;
+  color:var(--muted);
+}
+body.light .no-calendar-note{
+  background:#f8fbff;
+  border-color:#cbd6e7;
+}
+
+
+/* Rev 016: einzelne ICS-Sichtbarkeit + neue Icons + Navigation ±1 Tag */
+.eye-icon{
+  position:relative;
+  width:22px;
+  height:18px;
+  display:inline-block;
+}
+.eye-icon::before{
+  content:"";
+  position:absolute;
+  left:2px;
+  top:4px;
+  width:18px;
+  height:12px;
+  border:2px solid currentColor;
+  border-radius:18px 18px 12px 12px;
+}
+.eye-icon::after{
+  content:"";
+  position:absolute;
+  left:8px;
+  top:8px;
+  width:6px;
+  height:6px;
+  background:currentColor;
+  border-radius:999px;
+}
+.eye-icon.off{
+  opacity:.65;
+}
+.eye-icon.off .slash,
+.eye-icon.off::marker{
+  display:none;
+}
+.eye-icon.off::after{
+  background:currentColor;
+}
+.eye-icon.off span{
+  position:absolute;
+  left:1px;
+  top:8px;
+  width:22px;
+  height:2px;
+  background:currentColor;
+  transform:rotate(-32deg);
+  border-radius:999px;
+}
+.ics-item.hidden-ics{
+  opacity:.52;
+}
+.ics-item.hidden-ics .ics-click span::after{
+  content:" · ausgeblendet";
+  color:var(--warn);
+}
+.ics-trash-btn{
+  background:var(--panel2)!important;
+  color:#ff9aa0!important;
+  border-color:var(--line)!important;
+}
+body.light .ics-trash-btn{
+  background:#e9eff8!important;
+  color:#b4232e!important;
+  border-color:#cbd6e7!important;
+}
+
+
+/* Rev 017: Kalender hinzufügen als Auswahl, eigene Kalender, bessere Icons */
+.pane-actions .btn[data-add-source]{
+  min-width:36px;
+  height:36px;
+  padding:0!important;
+  font-size:22px!important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.option-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.option-card{
+  background:#070d1a;border:1px solid var(--line);border-radius:16px;padding:16px;text-align:left;
+}
+.option-card b{display:block;margin-bottom:6px}
+body.light .option-card{background:#f8fbff;border-color:#cbd6e7;color:#152033}
+.toolbar-clean{font-weight:800}
+.sidebar .btn#settingsBtn,.sidebar .btn#legendBtn{
+  font-weight:800;
+}
+.ics-actions .btn{
+  width:38px!important;
+  height:38px!important;
+  font-size:20px!important;
+  border-color:#51617d!important;
+  color:#e9eef8!important;
+}
+body.light .ics-actions .btn{
+  border-color:#aebbd0!important;
+  color:#152033!important;
+}
+.ics-actions .ics-trash-btn{
+  color:#ffb4b4!important;
+  background:#18233a!important;
+}
+body.light .ics-actions .ics-trash-btn{
+  color:#9f1239!important;
+  background:#f8fbff!important;
+}
+.ics-click span{font-size:11px;color:var(--muted)}
+.own-calendar-note{
+  font-size:11px;color:var(--muted);margin-top:6px;
+}
+.event-delete-btn{
+  margin-top:10px;
+}
+
+
+/* Rev 018: Icon-System vereinheitlicht, ausgeblendet-Text entfernt, Link in Einstellungen */
+.ics-item.hidden-ics .ics-click span::after,
+.calendar-pane.hidden-cal .status::after{
+  content:none!important;
+}
+.ui-icon-btn{
+  width:40px!important;
+  height:40px!important;
+  min-width:40px!important;
+  padding:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:12px!important;
+  background:var(--panel2)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+  font-size:19px!important;
+  line-height:1!important;
+  box-shadow:0 4px 12px rgba(0,0,0,.14)!important;
+}
+.ui-icon-btn svg{
+  width:21px;
+  height:21px;
+  display:block;
+  stroke:currentColor;
+}
+.ui-icon-btn:hover{
+  filter:brightness(1.12);
+}
+.ui-icon-btn.trash-unified{
+  color:#ff8f9a!important;
+}
+body.light .ui-icon-btn{
+  background:#e9eff8!important;
+  border-color:#cbd6e7!important;
+  color:#152033!important;
+}
+body.light .ui-icon-btn.trash-unified{
+  color:#b4232e!important;
+}
+.ics-actions{
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+}
+.pane-actions{
+  align-items:center!important;
+}
+.ics-click{
+  cursor:default!important;
+}
+.ics-click:hover b{
+  text-decoration:none!important;
+}
+.ics-item span{
+  word-break:normal!important;
+}
+
+
+/* Rev 019: Plus-Button sauber zentriert und größer */
+.pane-actions .add-source-plus{
+  width:40px!important;
+  height:40px!important;
+  min-width:40px!important;
+  padding:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  font-size:28px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  border-radius:12px!important;
+}
+.pane-actions .add-source-plus span{
+  display:block;
+  transform:translateY(-1px);
+  line-height:1;
+}
+
+
+/* Rev 020 Cloud: Login & Online-Speicherung */
+.cloud-card{background:rgba(17,26,43,.94);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:20px}
+.cloud-row{display:grid;grid-template-columns:1fr 1fr auto auto;gap:8px;align-items:center}
+.cloud-row input{width:100%;background:#070d1a;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:11px}
+.cloud-status{color:var(--muted);font-size:12px;margin-top:8px}
+.cloud-status.ok{color:#8df0b3}.cloud-status.warn{color:#ffcf7a}.cloud-status.bad{color:#ff9aa0}
+body.light .cloud-card{background:rgba(255,255,255,.92);border-color:#cbd6e7}
+body.light .cloud-row input{background:#f8fbff;border-color:#cbd6e7;color:#152033}
+@media(max-width:900px){.cloud-row{grid-template-columns:1fr}}
+
+
+/* Rev 021: Cloud als Modal + Langfristige Tasks direkt unter Tagesplaner */
+.main-longterm{margin-top:18px;box-shadow:none;width:100%}
+.cloud-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cloud-modal-grid input{width:100%;background:#070d1a;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:11px}
+.cloud-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.cloud-user-box{background:#07101d;border:1px solid #243653;border-radius:14px;padding:10px;color:#9fb0c8;font-size:12px}
+body.light .cloud-modal-grid input,body.light .cloud-user-box{background:#f8fbff;border-color:#cbd6e7;color:#152033}
+@media(max-width:900px){.cloud-modal-grid{grid-template-columns:1fr}}
+
+
+/* Rev 024: Cloud manuelle Speicher-/Ladebuttons entfernt + Langzeit-Task-Meta zweizeilig */
+.long-card .long-title{display:block;font-size:15px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.long-card .long-meta{display:block;color:var(--muted);font-size:12px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.long-card .long-note{display:block;color:#7f8ca3;font-size:12px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.light .long-card .long-meta{color:#5d6d83}
+body.light .long-card .long-note{color:#6b7b90}
+
+/* Rev 025: kompakter Tageskopf, Wiederholungen, Kalenderwochen */
+.day-head{padding:16px 18px 14px!important}
+.day-num{font-size:24px!important;line-height:1.15!important;font-weight:1000;letter-spacing:.01em!important}
+.day-meta{display:none!important}
+.month-day{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.kw-label{font-size:10px;color:var(--muted);font-weight:800}
+.recurrence-pill{display:inline-flex;margin-top:6px;border:1px solid var(--line);border-radius:999px;padding:3px 7px;color:var(--muted);font-size:11px}
+body.light .kw-label{color:#5d6d83}
+
+
+/* Rev 026: ICS-Cache wird nicht mehr cloud-persistent gespeichert + Proxy-URL nur lesbar */
+.readonly-input{opacity:.62;cursor:not-allowed;background:#0a1020!important;color:var(--muted)!important}
+body.light .readonly-input{background:#edf2f8!important;color:#64748b!important}
+.dev-note{font-size:12px;color:#7f8ca3;line-height:1.35;margin-top:-4px}
+
+
+
+/* Rev 027: linke Konfigurationsleiste einklappbar - kompakter seitlicher Tab direkt an der bestehenden Tafel */
+.layout{
+  grid-template-columns:minmax(280px,350px) 1fr!important;
+  gap:20px!important;
+  align-items:start;
+}
+.sidebar{
+  position:sticky!important;
+  top:18px;
+  overflow:visible!important;
+}
+.sidebar-toggle{
+  position:absolute;
+  top:50%;
+  right:-18px;
+  transform:translateY(-50%);
+  width:20px;
+  height:48px;
+  padding:0!important;
+  border-radius:0 10px 10px 0!important;
+  background:rgba(17,26,43,.96)!important;
+  color:var(--text)!important;
+  border:1px solid var(--line)!important;
+  border-left:0!important;
+  box-shadow:5px 8px 18px rgba(0,0,0,.14)!important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:17px;
+  font-weight:900;
+  line-height:1;
+  z-index:4;
+}
+.sidebar-toggle:hover{filter:brightness(1.06)}
+body.sidebar-collapsed .layout{
+  grid-template-columns:0 1fr!important;
+  gap:28px!important;
+}
+body.sidebar-collapsed .sidebar{
+  width:0!important;
+  min-width:0!important;
+  min-height:clamp(420px,58vh,720px)!important;
+  padding:0!important;
+  border:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+body.sidebar-collapsed .sidebar > :not(.sidebar-toggle){
+  display:none!important;
+}
+body.sidebar-collapsed .sidebar-toggle{
+  top:50%!important;
+  right:-18px!important;
+  transform:translateY(-50%)!important;
+  border-left:1px solid var(--line)!important;
+  border-radius:10px!important;
+  background:rgba(17,26,43,.96)!important;
+}
+body.sidebar-collapsed .board{
+  grid-column:2;
+  width:100%;
+}
+body.light .sidebar-toggle{
+  background:rgba(255,255,255,.96)!important;
+  border-color:#cbd6e7!important;
+  color:#152033!important;
+}
+body.light.sidebar-collapsed .sidebar-toggle{
+  background:rgba(255,255,255,.96)!important;
+}
+@media(max-width:1000px){
+  .layout{grid-template-columns:1fr!important;gap:20px!important}
+  .sidebar{border-radius:var(--radius)!important;border-right:1px solid var(--line)!important}
+  .sidebar-toggle{right:12px;top:18px;transform:none;width:32px;height:34px;border-radius:10px!important;border-left:1px solid var(--line)!important}
+  body.sidebar-collapsed .layout{grid-template-columns:1fr!important}
+  body.sidebar-collapsed .sidebar{height:54px!important;min-height:54px!important;border:1px solid var(--line)!important;border-radius:var(--radius)!important;background:rgba(17,26,43,.88)!important}
+  body.sidebar-collapsed .sidebar-toggle{top:18px!important;right:12px!important;transform:none!important}
+  body.light.sidebar-collapsed .sidebar{background:rgba(255,255,255,.92)!important;border-color:#cbd6e7!important}
+}
+
+
+
+/* Rev 028: Task-Spalten, Erledigt-Partition, kompakte Karten, Detailtexte */
+.task-card-compact{padding:7px 9px!important;margin:6px 0!important;border-radius:12px!important}
+.task-card-compact b{font-size:13px!important;line-height:1.2!important}
+.task-card-compact small{font-size:11px!important;margin-top:3px!important;line-height:1.25!important}
+.task-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px}
+.task-column-lane{background:#070d1a;border:1px dashed #293955;border-radius:14px;padding:8px;min-width:0}
+body.light .task-column-lane{background:#f8fbff;border-color:#cbd6e7}
+.task-column-title{font-size:11px;font-weight:900;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.task-column-dot{width:10px;height:10px;border-radius:999px;border:1px solid rgba(255,255,255,.25);flex:0 0 10px}
+.completed-task-card{opacity:.76;text-decoration:none!important}
+.completed-task-card .completed-title{text-decoration:line-through;display:block;font-weight:900}
+.completed-task-card .completed-meta{text-decoration:none!important;color:var(--muted);display:block;font-size:11px;margin-top:3px}
+.completed-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.own-event-btn.plus-only{width:28px!important;height:28px!important;padding:0!important;border-radius:9px!important;font-size:20px!important;line-height:1!important;display:inline-flex;align-items:center;justify-content:center}
+.card.event.cancelled{opacity:.55;text-decoration:line-through}
+.event-detail-grid{grid-template-columns:145px minmax(0,1fr)!important;max-width:100%}
+.event-detail-grid div{min-width:0;overflow-wrap:anywhere;word-break:break-word;white-space:normal}
+.detail-long{max-height:9.5em;overflow:hidden;white-space:pre-wrap;border:1px solid var(--line);border-radius:12px;padding:9px;background:#070d1a}
+body.light .detail-long{background:#f8fbff;border-color:#cbd6e7}
+.detail-long.expanded{max-height:360px;overflow:auto}
+.more-btn{margin-top:6px;padding:6px 9px!important;font-size:12px!important}
+.long-card{position:relative;min-height:74px;padding-right:34px!important}
+.long-card .kebab{position:absolute;right:10px;top:8px}
+.long-card .long-title{white-space:normal!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.25}
+.long-card .long-note{white-space:normal!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.day-title-weekday{display:block;font-size:20px;line-height:1.1}
+.day-title-date{display:block;font-size:18px;line-height:1.15;color:var(--muted);margin-top:2px}
+.taskcol-item{background:#060b16;border:1px solid #23324d;border-radius:12px;padding:8px;margin:7px 0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center}
+body.light .taskcol-item{background:#f8fbff;border-color:#cbd6e7}
+.taskcol-item.hidden-col{opacity:.52}
+.taskcol-actions{display:flex;gap:6px}
+.month-cell{cursor:pointer}
+.month-cell:hover{filter:brightness(1.08)}
+.password-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-top:-4px}
+.date-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+
+
+/* Rev 029: UI-Politur, Sortierbuttons, Taskbearbeitung */
+.modal{background:#111a2b!important;opacity:1!important}
+body.light .modal{background:#ffffff!important}
+.modal-backdrop{background:rgba(0,0,0,.76)!important}
+.taskcol-item{padding:8px 9px!important;align-items:center!important}
+.taskcol-main{min-width:0;display:flex;align-items:center;gap:7px}
+.taskcol-main b{font-size:11px!important;line-height:1.2!important;white-space:normal!important;overflow-wrap:anywhere;word-break:normal;display:block;text-align:left}
+.taskcol-actions{align-items:center!important;flex-wrap:wrap;justify-content:flex-end}
+.order-btn{width:28px!important;height:28px!important;min-width:28px!important;border-radius:9px!important;font-size:15px!important;padding:0!important}
+.pane-actions .order-btn{width:32px!important;height:32px!important;min-width:32px!important}
+.task-column-title{font-size:11px!important;line-height:1.2!important;align-items:center!important;padding:0 2px 6px 2px;min-width:0}
+.task-column-title span:last-child{overflow-wrap:anywhere;word-break:normal}
+.task-card-compact{padding:8px 10px!important;margin:6px 0!important}
+.task-card-compact .task-row{grid-template-columns:auto minmax(0,1fr) auto!important;column-gap:8px!important}
+.task-card-compact b,.task-card-compact small{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.long-card{overflow:hidden!important;padding-right:38px!important}
+.long-card .long-title{max-width:100%;overflow:hidden!important;overflow-wrap:anywhere!important;word-break:break-word!important}
+.long-card .task-row{grid-template-columns:auto minmax(0,1fr)!important}
+.day-num{font-size:21px!important;line-height:1.18!important;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis}
+.day-title-weekday,.day-title-date{display:inline!important;font-size:inherit!important;color:inherit!important;margin:0!important;line-height:inherit!important}
+.day-title-weekday::after{content:', '}
+.password-row{display:grid;grid-template-columns:1fr 42px;gap:8px;align-items:center}
+.password-eye{width:42px!important;height:42px!important;min-width:42px!important}
+.password-eye svg{width:22px;height:22px}
+.date-row{grid-template-columns:1fr!important}
+.event-detail-grid div,.event-detail-grid textarea{overflow-wrap:anywhere;word-break:break-word}
+.edit-grid{display:grid;gap:10px}
+.edit-grid label{font-size:12px;color:var(--muted);font-weight:800}
+.edit-grid input,.edit-grid textarea,.edit-grid select{width:100%;background:#070d1a;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:10px}
+body.light .edit-grid input,body.light .edit-grid textarea,body.light .edit-grid select{background:#f8fbff;border-color:#cbd6e7;color:#152033}
+
+
+/* Rev 030: kompakte Pfeilstapel statt Drag-and-drop, bessere Spaltenkopf-Typografie, Autofokus */
+.order-stack{
+  width:32px!important;
+  min-width:32px!important;
+  height:40px!important;
+  display:grid!important;
+  grid-template-rows:1fr 1fr;
+  border:1px solid var(--line)!important;
+  border-radius:10px!important;
+  overflow:hidden!important;
+  background:var(--panel2)!important;
+  box-shadow:0 4px 12px rgba(0,0,0,.14)!important;
+}
+.order-stack .order-btn{
+  width:100%!important;
+  height:20px!important;
+  min-width:0!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  padding:0!important;
+  font-size:12px!important;
+  line-height:1!important;
+}
+.order-stack .order-btn:first-child{border-bottom:1px solid var(--line)!important}
+.order-stack .order-btn:disabled{opacity:.28;cursor:not-allowed}
+.pane-actions,.taskcol-actions{align-items:center!important}
+.taskcol-actions{display:flex!important;flex-wrap:nowrap!important;gap:6px!important;justify-content:flex-end!important}
+.taskcol-item{grid-template-columns:minmax(0,1fr) auto!important}
+.taskcol-main{gap:0!important;align-items:center!important;min-width:0!important}
+.taskcol-main .ics-color-dot{width:14px!important;height:14px!important;margin-right:6px!important;flex:0 0 14px!important;align-self:center!important}
+.taskcol-main b{font-size:13px!important;line-height:1.18!important;text-align:left!important;hyphens:auto!important;overflow-wrap:break-word!important;word-break:normal!important}
+.task-column-title{font-size:13px!important;line-height:1.18!important;display:flex!important;align-items:center!important;gap:0!important;hyphens:auto!important;overflow-wrap:break-word!important;word-break:normal!important}
+.task-column-title .task-column-dot{width:14px!important;height:14px!important;margin-right:6px!important;flex:0 0 14px!important;align-self:center!important}
+.task-column-title span:last-child{hyphens:auto!important;overflow-wrap:break-word!important;word-break:normal!important}
+body.light .order-stack{background:#e9eff8!important;border-color:#cbd6e7!important}
+
+
+/* Rev 032: konservativer Rückbau auf Rev 030 + sichere Optimierungen */
+:root{--daycols:var(--days)}
+textarea{resize:none!important;overflow:auto!important}
+.day.today{border:2px solid var(--accent)!important;box-shadow:0 0 0 0 rgba(0,0,0,0),0 0 34px rgba(57,189,248,.10)!important}
+.month-day{font-size:15px!important;gap:7px!important}.kw-label{font-size:13px!important;font-weight:1000!important}
+.month-cell{padding:9px!important}.month-event,.month-task,.month-overdue,.month-done{padding:4px 7px!important;margin:3px 0!important}
+.timeline{grid-template-columns:repeat(var(--daycols),minmax(280px,1fr))!important;align-items:start}
+.task-columns{grid-template-columns:1fr!important}
+.completed-grid{grid-template-columns:1fr!important}.completed-task-card{padding:6px 8px!important;margin:5px 0!important}.completed-task-card .completed-title{font-size:12px!important}.completed-task-card .completed-meta{font-size:10px!important}
+.card,.lane,.long-card,.task-column-lane,.month-cell{padding-left:12px!important;padding-right:12px!important}
+.card b,.card small,.long-card .long-title,.long-card .long-note{padding-right:8px}
+.timeline-help{display:none;position:absolute;z-index:5;max-width:360px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:9px 11px;color:var(--muted);box-shadow:var(--shadow);font-size:12px;line-height:1.35}.timeline-title-wrap{position:relative;display:inline-block}.timeline-title-wrap:hover .timeline-help{display:block;left:0;top:24px}
+.sidebar,.layout{transition:all .22s ease}.sidebar-toggle{height:58px!important;width:24px!important;right:-22px!important;border-radius:0 14px 14px 0!important}.sidebar-toggle:before{content:"";position:absolute;left:-1px;top:8px;bottom:8px;border-left:1px solid var(--line)}
+.search-wrap{position:relative;min-width:260px;flex:1 1 320px;max-width:430px}.search-input{width:100%;background:#070d1a;border:1px solid var(--line);border-radius:14px;color:var(--text);padding:12px 14px}.search-results{display:none;position:absolute;top:48px;left:0;right:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);z-index:30;max-height:320px;overflow:auto}.search-results.open{display:block}.search-hit{padding:10px 12px;border-bottom:1px solid rgba(49,64,94,.55);cursor:pointer}.search-hit:hover{background:rgba(124,92,255,.12)}.search-hit b{display:block;font-size:13px}.search-hit small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+body.light .search-input{background:#f8fbff;border-color:#cbd6e7;color:#152033}body.light .search-results{background:#fff;border-color:#cbd6e7}
+body.sharp-corners *{border-radius:0!important}
+body.login-required .modal-backdrop{display:flex!important;background:rgba(0,0,0,.38)!important;backdrop-filter:blur(1.5px)}body.sharp-corners *{border-radius:0!important}
+body.login-required #cancelModal{display:none!important}
+@media(max-width:1000px){.field input,.field select,.modal-grid input,.modal-grid textarea,.modal-grid select,.edit-grid input,.edit-grid textarea,.edit-grid select{width:100%!important;min-width:0!important}.field{display:grid!important;grid-template-columns:1fr!important;align-items:start}.field label{min-width:0!important}.timeline{grid-template-columns:repeat(var(--daycols),minmax(300px,86vw))!important}.search-wrap{max-width:none;width:100%}}
+
+
+/* Rev 033: konservative Layout- und Modus-Erweiterung */
+.split{display:grid!important;grid-template-columns:1fr!important;gap:10px!important}
+.lane-title span{white-space:normal!important;overflow-wrap:anywhere!important;line-height:1.2}
+.event-title b{white-space:normal!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.2}
+.long-group{border:1px dashed var(--line);border-radius:16px;padding:12px;margin:12px 0;background:rgba(7,13,26,.55)}
+.long-group-title{font-size:13px;font-weight:1000;color:var(--muted);margin:0 0 10px;display:flex;align-items:center;gap:7px}
+.long-group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;align-items:start}
+body.light .long-group{background:#f8fbff;border-color:#cbd6e7}
+.config-block{margin:12px 0}.config-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;background:transparent!important;border:0!important;box-shadow:none!important;padding:8px 0!important;color:#9aa8bd!important;font-size:13px!important;letter-spacing:.12em;text-transform:uppercase;font-weight:1000}.config-toggle span:first-child{min-width:0;text-align:left}.config-content{display:block}.config-block.collapsed .config-content{display:none}.config-chevron{font-size:13px;opacity:.85}
+.layout{position:relative!important;display:block!important;padding-left:370px!important;transition:padding-left .28s ease!important}.sidebar{position:absolute!important;left:0!important;top:0!important;width:350px!important;max-width:350px!important;min-height:calc(100vh - 56px)!important;transform:translateX(0)!important;transition:transform .28s ease!important;will-change:transform;z-index:6}.board{width:100%!important}.sidebar-toggle{position:absolute!important;top:50%!important;right:-24px!important;transform:translateY(-50%)!important;width:26px!important;height:76px!important;border-radius:0 16px 16px 0!important;border-left:0!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:18px!important;background:inherit!important}.sidebar-toggle::before{content:"";position:absolute;left:0;top:10px;bottom:10px;border-left:1px solid var(--line)}body.sidebar-collapsed .layout{padding-left:0!important}body.sidebar-collapsed .sidebar{transform:translateX(calc(-100% - 1px))!important;padding:18px!important;border:1px solid var(--line)!important;box-shadow:var(--shadow)!important;background:rgba(17,26,43,.88)!important}body.sidebar-collapsed .sidebar > :not(.sidebar-toggle){display:block!important}body.sidebar-collapsed .sidebar-toggle{right:-24px!important;top:50%!important;transform:translateY(-50%)!important;border-radius:0 16px 16px 0!important}.sidebar-toggle-tab{display:inline-block;font-weight:1000}
+body.light.sidebar-collapsed .sidebar{background:rgba(255,255,255,.92)!important;border-color:#cbd6e7!important}
+@media(max-width:1000px){.layout{display:grid!important;padding-left:0!important}.sidebar{position:relative!important;width:100%!important;max-width:none!important;min-height:auto!important;transform:none!important}.sidebar-toggle{right:12px!important;top:18px!important;transform:none!important;width:34px!important;height:34px!important;border-radius:10px!important;border-left:1px solid var(--line)!important}body.sidebar-collapsed .sidebar{transform:none!important;height:54px!important;overflow:hidden!important;padding:0!important}body.sidebar-collapsed .sidebar > :not(.sidebar-toggle){display:none!important}}
+
+
+
+/* Rev 034: konservativer Layout-Fix */
+.mode-row{display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:8px;width:100%;align-items:center}
+.mode-field{align-items:flex-start!important}.mode-field label{padding-top:10px}
+/* Seitenleiste: zurück auf robuste Rev30-Mechanik, kein Zerquetschen/kein vertikales Springen */
+.sidebar{transition:none!important;overflow:visible!important}
+.layout{transition:none!important}
+.sidebar-toggle{position:absolute!important;top:50%!important;right:-18px!important;transform:translateY(-50%)!important;width:20px!important;height:48px!important;border-radius:0 10px 10px 0!important;border:1px solid var(--line)!important;border-left:0!important;background:rgba(17,26,43,.96)!important;box-shadow:5px 8px 18px rgba(0,0,0,.14)!important;font-size:17px!important;display:flex!important;align-items:center!important;justify-content:center!important}
+body.sidebar-collapsed .layout{grid-template-columns:0 1fr!important;gap:28px!important}
+body.sidebar-collapsed .sidebar{width:0!important;min-width:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important;overflow:visible!important}
+body.sidebar-collapsed .sidebar > :not(.sidebar-toggle){display:none!important}
+body.sidebar-collapsed .sidebar-toggle{right:-18px!important;top:50%!important;transform:translateY(-50%)!important;border-left:1px solid var(--line)!important;border-radius:10px!important}
+body.light .sidebar-toggle,body.light.sidebar-collapsed .sidebar-toggle{background:rgba(255,255,255,.96)!important;border-color:#cbd6e7!important;color:#152033!important}
+/* Kalender-Lanes: Kalendernamen immer gleiche Höhe/Abstand */
+.split{display:flex!important;flex-direction:column!important;gap:10px!important}.lane{padding:10px!important}.lane-title{min-height:30px!important;margin:0 0 8px 0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:space-between!important}
+/* Langfristige Tasks: Gruppen untereinander, Tasks innerhalb der Gruppe von links nach rechts mit Umbruch */
+.long-grid{display:block!important}.long-group{margin:0 0 16px 0!important}.long-group-title{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:1000;color:var(--muted);margin:0 0 8px 0}.long-group-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))!important;gap:10px!important;align-items:start!important}.long-card{position:relative!important;min-width:0!important;overflow:hidden!important;padding:12px!important;padding-right:12px!important}.long-card .task-row{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto!important;gap:9px!important;align-items:start!important}.long-card .kebab{position:static!important;right:auto!important;top:auto!important;justify-self:end!important}.long-card .long-title,.long-card .long-note,.long-card .long-meta{max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;word-break:normal!important;overflow-wrap:anywhere!important}.long-card .long-title{display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important}.long-card .long-note{display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important}
+.mode-config-list{display:grid;gap:8px}.mode-config-group{border:1px solid var(--line);border-radius:14px;padding:10px;background:#070d1a}.mode-config-group b{display:block;margin-bottom:8px}.mode-check{display:flex;align-items:center;gap:8px;margin:7px 0;color:var(--text)}body.light .mode-config-group{background:#f8fbff;border-color:#cbd6e7}
+@media(max-width:1000px){.sidebar-toggle{right:12px!important;top:18px!important;transform:none!important;width:32px!important;height:34px!important;border-radius:10px!important;border-left:1px solid var(--line)!important}body.sidebar-collapsed .sidebar{height:54px!important;min-height:54px!important;border:1px solid var(--line)!important;border-radius:var(--radius)!important;background:rgba(17,26,43,.88)!important}body.sidebar-collapsed .sidebar-toggle{top:18px!important;right:12px!important;transform:none!important}}
+
+
+
+/* Rev 035: Legende entschlackt, Modus-Konfigurator ausgerichtet, Tages-Kalender kompakter */
+.legend-row.static-legend{justify-content:flex-start!important}
+.legend-row.static-legend .legend-main{width:100%!important}
+.legend-static-dot{width:18px;height:18px;border-radius:6px;display:inline-block;flex:0 0 18px;border:1px solid rgba(255,255,255,.25)}
+.mode-row{grid-template-columns:1fr 42px!important;align-items:center!important}
+.mode-row #modeConfigBtn svg{width:21px;height:21px;display:block;stroke:currentColor}
+.mode-config-list{display:grid!important;gap:12px!important}
+.mode-config-section{border:1px solid var(--line);border-radius:14px;padding:12px;background:#070d1a}
+body.light .mode-config-section{background:#f8fbff;border-color:#cbd6e7}
+.mode-config-section-title{font-weight:1000;margin-bottom:10px;color:var(--text)}
+.mode-config-subtitle{font-weight:900;margin:12px 0 6px 0;color:var(--text)}
+.mode-check{display:grid!important;grid-template-columns:minmax(0,1fr) 28px!important;align-items:center!important;gap:14px!important;margin:6px 0!important;color:var(--text)!important;min-height:30px!important;width:100%!important}
+.mode-check span{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:normal!important;overflow-wrap:anywhere!important;font-weight:700}
+.mode-check.child span{padding-left:18px;color:var(--muted);font-weight:700}
+.mode-check input[type="checkbox"]{width:18px!important;height:18px!important;justify-self:end!important;margin:0!important;accent-color:var(--accent)}
+.mode-config-grid{display:grid!important;grid-template-columns:1fr!important;gap:6px!important}
+.lane{padding:7px 9px!important}
+.lane-title{margin-bottom:4px!important;line-height:1.15!important}
+.card.event{margin:5px 0!important;padding-top:7px!important;padding-bottom:7px!important}
+.event-row{gap:6px!important}
+.day-body{gap:11px!important}
+.partition{padding-top:10px!important}
+.long-card{padding:10px 10px!important;overflow:hidden!important}
+.long-card .task-row{grid-template-columns:auto minmax(0,1fr) 28px!important;align-items:start!important;gap:8px!important}
+.long-card .kebab{position:static!important;width:28px!important;min-width:28px!important;height:28px!important;line-height:24px!important;text-align:center!important;justify-self:end!important;padding:0!important}
+.long-card .long-title,.long-card .long-note,.long-card .long-meta{max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;overflow-wrap:anywhere!important;word-break:normal!important}
+
+
+
+/* Rev 036: Ansichtsmodus-Select begrenzt, Legende ohne Punkte, Modus-Konfigurator kompakter/schwarz */
+#viewModeSelect{min-width:0!important;width:100%!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;padding-right:34px!important;}
+.legend-row.static-legend .legend-main{gap:0!important;}
+.legend-static-dot{display:none!important;}
+.mode-config-list{gap:7px!important;}
+.mode-config-section{padding:9px 10px!important;color:#111827!important;}
+.mode-config-section *{color:#111827!important;}
+.mode-config-section-title{margin-bottom:6px!important;color:#111827!important;}
+.mode-config-subtitle{margin:7px 0 3px 0!important;color:#111827!important;font-weight:1000!important;}
+.mode-check{min-height:22px!important;margin:2px 0!important;gap:10px!important;color:#111827!important;grid-template-columns:minmax(0,1fr) 22px!important;}
+.mode-check span{font-weight:700!important;color:#111827!important;line-height:1.15!important;}
+.mode-check.child span{padding-left:0!important;color:#111827!important;font-weight:650!important;}
+.mode-check input[type="checkbox"]{width:16px!important;height:16px!important;justify-self:end!important;}
+.mode-config-grid{gap:2px!important;}
+#modalContent .edit-grid:has(.mode-config-list){gap:7px!important;color:#111827!important;}
+#modalContent .edit-grid:has(.mode-config-list) label{color:#111827!important;}
+#modalContent .edit-grid:has(.mode-config-list) input{color:#111827!important;background:#fff!important;border-color:#b8c7dc!important;}
+#modalContent .edit-grid:has(.mode-config-list) .hint{color:#111827!important;}
+body.light #modalContent .mode-config-section{background:#f8fbff!important;border-color:#b8c7dc!important;}
+
+
+/* Rev 037: Gruppencollapse, globale Einklappung, Long-Gruppen-Sortierung, Moduslogik */
+.sidebar-collapse-all-row{margin:8px 0 12px 0;display:flex;justify-content:stretch}
+.sidebar-collapse-all-row .btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:900}
+.calendar-pane .calendar-source-wrap{display:block}
+.calendar-pane.cal-collapsed .calendar-source-wrap{display:none!important}
+.calendar-pane.cal-collapsed .status{display:none!important}
+.cal-collapse-icon{font-size:15px;font-weight:1000;line-height:1}
+.mode-check.disabled-child{opacity:.42;pointer-events:none}
+.mode-check.disabled-child span{color:#6b7280!important}
+.mode-check.disabled-child input{cursor:not-allowed}
+.ics-item.parent-disabled{opacity:.42;filter:grayscale(.8);pointer-events:none}
+body.light .mode-check.disabled-child span{color:#6b7280!important}
+
+</style></head><body><div class="app"><div class="top"><div><h1>Kalenderübersicht</h1><div class="sub">Termine · Tagestasks · überzogene Tagestasks · langfristige Tasks</div></div><div class="toolbar"><button class="btn" id="prevBtn">← Tage zurück</button><button class="btn" id="todayBtn">Heute</button><button class="btn" id="nextBtn">Tage vor →</button><button class="btn primary" id="monthBtn">Monat aufklappen</button><div class="search-wrap"><input class="search-input" id="globalSearch" placeholder="🔍 Suchen"><div class="search-results" id="searchResults"></div></div></div></div><div class="layout"><aside class="sidebar"><button class="sidebar-toggle" id="sidebarToggleBtn" title="Seitenleiste einklappen">‹</button><div class="config-block" data-config-block="view"><button class="config-toggle" type="button"><span>Ansicht konfigurieren</span><span class="config-chevron">▾</span></button><div class="config-content"><div class="field"><label>Tage sichtbar</label><select id="daysSelect"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option></select></div><div class="field"><label>Zeilen</label><select id="rowsSelect"><option value="1">1</option><option value="2">2</option></select></div><div class="field"><label>Startmodus</label><select id="startModeSelect"><option value="rolling">Fortlaufend</option><option value="week">Aktuelle Woche</option><option value="workweek">Arbeitswoche</option></select></div><div class="field mode-field"><label>Ansichtsmodus</label><div class="mode-row"><select id="viewModeSelect"></select><button class="btn small ui-icon-btn" id="modeConfigBtn" title="Modus konfigurieren" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 1 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.08A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.08A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.08A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.4 9c.2.36.5.67.9.86.32.15.68.22 1.1.22H21a2 2 0 1 1 0 4h-.08a1.7 1.7 0 0 0-1.52.92Z"/></svg></button></div></div></div></div><div class="config-block" data-config-block="cal"><button class="config-toggle" type="button"><span>Kalender-Partition</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="calendarConfig"></div></div></div><div class="config-block" data-config-block="task"><button class="config-toggle" type="button"><span>Tagestask-Spalten</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="taskColumnConfig"></div></div></div><div class="config-block" data-config-block="long"><button class="config-toggle" type="button"><span>Langfristige Task-Gruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="longColumnConfig"></div></div></div><div class="config-block" data-config-block="opt"><button class="config-toggle" type="button"><span>Optionen</span><span class="config-chevron">▾</span></button><div class="config-content"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="settingsBtn" title="Allgemeine Einstellungen">Einstellungen</button><button class="btn" id="legendBtn" title="Legende und Farben anzeigen">Legende</button><button class="btn" id="cloudBtn" title="Login und Benutzerkonto">Login</button></div><div class="diag" id="diagBox">Diagnose: noch keine Synchronisierung durchgeführt.</div></div></div></aside><main class="board"><div class="timeline-controls"><div class="timeline-title-wrap"><b>Tagesplaner</b><div class="timeline-help">Aktueller Tag plus Folge- oder Vergangenheitsdaten. Erledigte Aufgaben bleiben nachvollziehbar sichtbar.</div></div><div id="rangeLabel" class="hint"></div></div><div id="timeline" class="timeline"></div><section class="longterm main-longterm"><div class="timeline-controls"><div><b>Langfristige Tasks</b><div class="hint">Ohne Datum. Wird bewusst getrennt von Tagestasks geführt.</div></div><button class="btn small" id="addLongBtn2">+ Hinzufügen</button></div><div id="longTermList" class="long-grid"></div></section></main></div></div><div class="modal-backdrop" id="modalBackdrop"><div class="modal"><h2 id="modalTitle"></h2><div id="modalContent" class="modal-grid"></div><div class="modal-actions"><button class="btn" id="cancelModal">Abbrechen</button><button class="btn primary" id="saveModal">Speichern</button></div></div></div><div class="toast" id="toast"></div>
+<script>
+const SUPABASE_URL='https://ihvhghzbhrujtkgkyhdi.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlodmhnaHpiaHJ1anRrZ2t5aGRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNzUxOTksImV4cCI6MjA5MzY1MTE5OX0.b3mGh0vSnpCK6T1CkGH1PGXMNIkqd44bJjdyYgI-PB8';
+const DEFAULT_PROXY_URL='https://ihvhghzbhrujtkgkyhdi.supabase.co/functions/v1/ics-proxy?url='; // Rev038: eigener ICS-Proxy im neuen Supabase-Projekt.
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+// Revision 038 relational persistence scaffold
+const DB_TABLES={
+  appState:'app_state',
+  calendarGroups:'calendar_groups',
+  calendarSources:'calendar_sources',
+  taskGroups:'task_groups',
+  tasks:'tasks',
+  longTaskGroups:'long_task_groups',
+  longTasks:'long_tasks',
+  ownEvents:'own_events'
+};
+
+let currentUser=null;
+let cloudReady=false;
+let cloudSaveTimer=null;
+let suppressCloudSave=false;
+const storeKey='kalender_rev_024_login_gate';
+const blankInitialState={
+  days:4,
+  dayRows:1,
+  startMode:'rolling',
+  panes:1,
+  offset:0,
+  syncInterval:15,
+  fetchMode:'proxy',
+  proxyUrl:'',
+  taskColumns:[{id:'default',name:'Allgemein',color:'#ffb020',visible:true}],
+  calendars:[{
+    name:'Mein Kalender',
+    links:[],
+    events:[],
+    ownEvents:[],
+    status:'Bitte anmelden, um Kalenderdaten zu laden.',
+    visible:true
+  }],
+  tasks:[],
+  longterm:[],
+  longColumns:[{id:'long_default',name:'Allgemein',color:'#48d38b',visible:true}],
+  viewModes:[],
+  activeViewMode:'',
+  theme:'light',
+  cornerStyle:'rounded'
+};
+function getBlankState(){return structuredClone(blankInitialState);}
+let state=getBlankState();
+const defaultColors={event:'#7c5cff',task:'#ffb020',overdue:'#ff5050',long:'#48d38b'};
+const palette=['#7c5cff','#39bdf8','#22c55e','#ffb020','#ff5050','#ec4899','#14b8a6','#f97316','#a855f7','#64748b','#111827','#ffffff'];
+function makeId(prefix='id'){return prefix+'_'+Math.random().toString(36).slice(2)+'_'+Date.now().toString(36);}
+function ensureSettings(){
+  state.theme=state.theme||'light';
+  state.dayRows=Number(state.dayRows||1);
+  state.startMode=state.startMode||'rolling';
+  state.cornerStyle=state.cornerStyle||'rounded';
+  state.colors=Object.assign({},defaultColors,state.colors||{});
+  state.taskColumns=state.taskColumns&&state.taskColumns.length?state.taskColumns:[{id:'default',name:'Allgemein',color:state.colors.task||defaultColors.task,visible:true}];
+  state.taskColumns.forEach(c=>{c.id=c.id||makeId('tc');c.name=c.name||'Allgemein';c.color=c.color||state.colors.task||defaultColors.task;if(c.visible===undefined)c.visible=true;});
+  const defaultCol=state.taskColumns[0]?.id||'default';
+  state.tasks=state.tasks||[];
+  state.tasks.forEach(t=>{t.columnId=t.columnId||defaultCol;});
+  state.calendars=state.calendars||[];
+  state.calendars.forEach(c=>{
+    c.ownEvents=c.ownEvents||[];
+    c.events=c.events||[];
+    c.links=c.links||[];
+    c.links.forEach(l=>{l.id=l.id||makeId('ics');l.type=l.type||'ics';l.color=l.color||state.colors?.event||defaultColors.event;if(l.visible===undefined)l.visible=true;});
+    (c.events||[]).forEach(e=>{if(!e.icsId){const match=c.links.find(l=>l.name===e.icsName||l.name===e.source);if(match){e.icsId=match.id;e.icsColor=match.color;e.icsName=match.name;}}});
+    if(c.visible===undefined)c.visible=true;
+  });
+  state.panes=Math.max(1,state.calendars.filter(c=>c.visible!==false).length);
+}
+ensureSettings();
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+function resetVisibleStateAfterLogout(){
+  clearTimeout(cloudSaveTimer);
+  localStorage.removeItem(storeKey);
+  suppressCloudSave=true;
+  state=getBlankState();
+  ensureSettings();
+  render();
+  suppressCloudSave=false;
+  const diag=document.querySelector('#diagBox');
+  if(diag)diag.textContent='Nicht angemeldet. Kalenderdaten sind ausgeblendet.';
+}
+function requireLogin(){
+  if(currentUser)return true;
+  toast('Bitte zuerst in der Cloud anmelden.');
+  openCloudModal();
+  return false;
+}
+function persist(){
+  if(currentUser){
+    localStorage.setItem(storeKey,JSON.stringify(stripRuntimeICSCache(state)));
+  }else{
+    localStorage.removeItem(storeKey);
+  }
+  if(cloudReady && currentUser && !suppressCloudSave) scheduleCloudSave();
+}
+function setCloudStatus(msg,type='warn'){
+  const el=document.querySelector('#cloudStatus');
+  if(!el)return;
+  el.textContent=msg;
+  el.className='cloud-status '+type;
+}
+function updateCloudUserLabel(){
+  const el=document.querySelector('#cloudUserLabel');
+  if(el)el.textContent=currentUser?('Angemeldet: '+currentUser.email):'Nicht angemeldet';
+  const box=document.querySelector('#cloudModalStatusBox');
+  if(box)box.textContent=currentUser?('Angemeldet: '+currentUser.email):'Nicht angemeldet';
+}
+function stripRuntimeICSCache(sourceState){
+  const cloudState=structuredClone(sourceState||state);
+  (cloudState.calendars||[]).forEach(cal=>{cal.events=[];});
+  return cloudState;
+}
+function clearRuntimeICSCache(){
+  (state.calendars||[]).forEach(cal=>{cal.events=[];});
+}
+function hasICSLinks(){
+  return (state.calendars||[]).some(cal=>(cal.links||[]).some(l=>l.type!=='own'&&l.url));
+}
+function scheduleInitialICSSync(delay=700){
+  if(!currentUser||!hasICSLinks())return;
+  setTimeout(()=>{if(currentUser&&hasICSLinks())syncAllICS();},delay);
+}
+function scheduleCloudSave(){
+  clearTimeout(cloudSaveTimer);
+  cloudSaveTimer=setTimeout(saveStateToCloud,900);
+}
+async function saveStateToCloud(){
+  if(!currentUser)return setCloudStatus('Nicht angemeldet. Online-Speicherung nicht möglich.','bad');
+  const cloudState=stripRuntimeICSCache(state);
+  const payload={user_id:currentUser.id,state:cloudState,updated_at:new Date().toISOString()};
+  const {error}=await supabaseClient.from('app_state').upsert(payload,{onConflict:'user_id'});
+  if(error){setCloudStatus('Online-Speichern fehlgeschlagen: '+error.message,'bad');return;}
+  setCloudStatus('Online gespeichert: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}),'ok');
+}
+async function loadStateFromCloud(){
+  if(!currentUser)return setCloudStatus('Nicht angemeldet. Online-Laden nicht möglich.','bad');
+  const {data,error}=await supabaseClient.from('app_state').select('state,updated_at').eq('user_id',currentUser.id).maybeSingle();
+  if(error){setCloudStatus('Online-Laden fehlgeschlagen: '+error.message,'bad');return;}
+  if(!data || !data.state){
+    suppressCloudSave=true;
+    state=getBlankState();
+    ensureSettings();
+    render();
+    suppressCloudSave=false;
+    setCloudStatus('Noch kein Online-Stand vorhanden. Leerer Startzustand geladen.','warn');
+    return;
+  }
+  suppressCloudSave=true;
+  state=data.state;
+  ensureSettings();
+  clearRuntimeICSCache();
+  render();
+  setupAutoSync();
+  suppressCloudSave=false;
+  localStorage.setItem(storeKey,JSON.stringify(stripRuntimeICSCache(state)));
+  setCloudStatus('Online-Daten geladen. Stand: '+new Date(data.updated_at).toLocaleString('de-DE'),'ok');
+  scheduleInitialICSSync(900);
+}
+async function initCloud(){
+  const {data}=await supabaseClient.auth.getUser();
+  currentUser=data?.user||null;
+  cloudReady=!!currentUser;
+  updateCloudUserLabel();
+  if(currentUser){
+    setCloudStatus('Cloud verbunden. Lade Online-Daten...','ok');
+    await loadStateFromCloud();
+  }else{
+    resetVisibleStateAfterLogout();
+    setCloudStatus('Nicht angemeldet. Kalenderdaten sind ausgeblendet.','warn');setTimeout(openCloudModal,150);
+  }
+}
+async function cloudLogin(){
+  const email=document.querySelector('#cloudEmail')?.value.trim();
+  const password=document.querySelector('#cloudPassword')?.value;
+  if(!email||!password)return setCloudStatus('E-Mail und Passwort eintragen.','bad');
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error)return setCloudStatus('Login fehlgeschlagen: '+error.message,'bad');
+  currentUser=data.user;cloudReady=true;document.body.classList.remove('login-required');updateCloudUserLabel();setCloudStatus('Login erfolgreich. Lade Online-Daten...','ok');await loadStateFromCloud();closeModal();
+}
+async function cloudSignup(){
+  const email=document.querySelector('#cloudEmail')?.value.trim();
+  const password=document.querySelector('#cloudPassword')?.value;
+  if(!email||!password)return setCloudStatus('E-Mail und Passwort eintragen.','bad');
+  const {data,error}=await supabaseClient.auth.signUp({email,password});
+  if(error)return setCloudStatus('Registrierung fehlgeschlagen: '+error.message,'bad');
+  currentUser=data.user||null;
+  if(currentUser){cloudReady=true;document.body.classList.remove('login-required');updateCloudUserLabel();await saveStateToCloud();setCloudStatus('Registriert und Online-Stand angelegt.','ok');closeModal();}
+  else setCloudStatus('Registrierung erstellt. Prüfe ggf. deine E-Mail zur Bestätigung.','warn');
+}
+async function cloudLogout(){
+  await supabaseClient.auth.signOut();
+  currentUser=null;
+  cloudReady=false;
+  updateCloudUserLabel();
+  resetVisibleStateAfterLogout();
+  setCloudStatus('Abgemeldet. Kalenderdaten wurden aus dieser Ansicht entfernt.','warn');document.body.classList.add('login-required');openCloudModal();
+}
+function escapeHtml(s){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+function shortText(s,max=30){s=String(s??'').trim();return s.length>max?s.slice(0,Math.max(0,max-1)).trimEnd()+'…':s;}
+function fmtDate(d){const x=new Date(d);const y=x.getFullYear();const m=String(x.getMonth()+1).padStart(2,'0');const day=String(x.getDate()).padStart(2,'0');return `${y}-${m}-${day}`} function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x} function sameDay(a,b){return fmtDate(a)===fmtDate(b)} function deDate(d){return d.toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'})} function dayNum(d){return d.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'})}
+function dayHeaderLabel(d){return d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'numeric',year:'numeric'});}
+function getISOWeek(d){const x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=x.getUTCDay()||7;x.setUTCDate(x.getUTCDate()+4-day);const yearStart=new Date(Date.UTC(x.getUTCFullYear(),0,1));return Math.ceil((((x-yearStart)/86400000)+1)/7);}
+function recurrenceLabel(r){return ({none:'Keine Wiederholung',weekly:'Wöchentlich',monthly:'Monatlich',yearly:'Jährlich'})[r||'none']||'Keine Wiederholung';}
+function parseRRule(rrule){const out={};String(rrule||'').split(';').forEach(part=>{const [k,v]=part.split('=');if(k)out[k.toUpperCase()]=v;});return out;}
+function parseUntil(v){if(!v)return null;const p=parseICalDate(v.replace(/Z$/,'Z'));return p?new Date(p.iso):null;}
+function recurrenceMatches(e,date){
+  const start=new Date(e.start);if(isNaN(start))return false;
+  const sd=new Date(start);sd.setHours(0,0,0,0);const td=new Date(date);td.setHours(0,0,0,0);if(td<sd)return false;
+  if(e.rrule){
+    const r=parseRRule(e.rrule);const freq=(r.FREQ||'').toUpperCase();const interval=Math.max(1,Number(r.INTERVAL||1));const until=parseUntil(r.UNTIL);if(until&&td>until)return false;
+    const diffDays=Math.round((td-sd)/86400000);
+    if(r.COUNT){
+      const count=Number(r.COUNT);let approx=0;
+      if(freq==='DAILY')approx=Math.floor(diffDays/interval)+1;
+      if(freq==='WEEKLY')approx=Math.floor(diffDays/(7*interval))+1;
+      if(freq==='MONTHLY')approx=(td.getFullYear()-sd.getFullYear())*12+(td.getMonth()-sd.getMonth())+1;
+      if(freq==='YEARLY')approx=td.getFullYear()-sd.getFullYear()+1;
+      if(approx>count)return false;
+    }
+    if(freq==='DAILY')return diffDays%interval===0;
+    if(freq==='WEEKLY'){
+      if(diffDays%(7*interval)!==0 && !r.BYDAY)return false;
+      if(r.BYDAY){const map=['SU','MO','TU','WE','TH','FR','SA'];if(!r.BYDAY.split(',').includes(map[td.getDay()]))return false;return Math.floor(diffDays/7)%interval===0;}
+      return true;
+    }
+    if(freq==='MONTHLY'){const months=(td.getFullYear()-sd.getFullYear())*12+(td.getMonth()-sd.getMonth());return months%interval===0&&td.getDate()===sd.getDate();}
+    if(freq==='YEARLY'){const years=td.getFullYear()-sd.getFullYear();return years%interval===0&&td.getDate()===sd.getDate()&&td.getMonth()===sd.getMonth();}
+    return fmtDate(sd)===fmtDate(td);
+  }
+  const r=e.recurrence||'none';
+  if(r==='none'){if(e.end){const ed=new Date(e.end);ed.setHours(0,0,0,0);if(e.allDay)return td>=sd&&td<ed;return td>=sd&&td<=ed;}return fmtDate(sd)===fmtDate(td);}const diffDays=Math.round((td-sd)/86400000);
+  if(r==='weekly')return diffDays%7===0;if(r==='monthly')return td.getDate()===sd.getDate();if(r==='yearly')return td.getDate()===sd.getDate()&&td.getMonth()===sd.getMonth();return false;
+}
+function eventOccurrenceForDate(e,date){if(!recurrenceMatches(e,date))return null;if((!e.rrule)&&((e.recurrence||'none')==='none')&&e.end){const out=Object.assign({},e,{_occurrenceDate:fmtDate(date)});return out;}const startBase=new Date(e.start);const endBase=e.end?new Date(e.end):null;const target=new Date(date);const start=new Date(target.getFullYear(),target.getMonth(),target.getDate(),startBase.getHours(),startBase.getMinutes(),startBase.getSeconds());let end=null;if(endBase&&!isNaN(endBase)){const duration=endBase-startBase;end=new Date(start.getTime()+duration);}return Object.assign({},e,{start:start.toISOString(),end:end?end.toISOString():null,_occurrenceDate:fmtDate(date)});} 
+function toast(msg){const t=$('#toast');t.textContent=msg;t.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.style.display='none',4200)}
+function visibleCalendars(){return state.calendars.map((c,i)=>({cal:c,idx:i})).filter(x=>x.cal.visible!==false);}
+function applyAppearance(){ensureSettings();document.body.classList.toggle('light',state.theme==='light');document.body.classList.toggle('sharp-corners',state.cornerStyle==='sharp');document.documentElement.style.setProperty('--eventColor',state.colors.event);document.documentElement.style.setProperty('--taskColor',state.colors.task);document.documentElement.style.setProperty('--overdueColor',state.colors.overdue);document.documentElement.style.setProperty('--longColor',state.colors.long);}
+function render(){ensureSettings();applyAppearance();state.panes=state.calendars.filter(c=>c.visible!==false).length||1;document.documentElement.style.setProperty('--days',state.days);document.documentElement.style.setProperty('--daycols',Math.ceil(state.days/(state.dayRows||1)));document.documentElement.style.setProperty('--calpanes',state.panes);if($('#daysSelect'))$('#daysSelect').value=state.days;if($('#rowsSelect'))$('#rowsSelect').value=String(state.dayRows||1);if($('#startModeSelect'))$('#startModeSelect').value=state.startMode||'rolling';if($('#syncInterval'))$('#syncInterval').value=String(state.syncInterval??15);if($('#proxyUrl'))$('#proxyUrl').value=currentUser?(state.proxyUrl||DEFAULT_PROXY_URL):'';renderViewModeSelect();renderCalendarConfig();renderTaskColumnConfig();renderLongColumnConfig();renderTimeline();renderLong();persist();}
+function iconEye(isVisible){
+  return isVisible
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6 9.5-6c2.2 0 4 .8 5.4 1.8"/><path d="M21.5 12s-3.5 6-9.5 6c-2.2 0-4-.8-5.4-1.8"/><circle cx="12" cy="12" r="2.8"/><path d="M4 4l16 16"/></svg>`;
+}
+function iconSettings(){
+  return `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 1 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.08A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.08A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.08A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.4 9c.2.36.5.67.9.86.32.15.68.22 1.1.22H21a2 2 0 1 1 0 4h-.08a1.7 1.7 0 0 0-1.52.92Z"/></svg>`;
+}
+function iconTrash(){
+  return `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M6 7l1 14h10l1-14"/><path d="M9 7V4h6v3"/></svg>`;
+}
+
+function moveCalendar(from,to){
+  if(!requireLogin())return;
+  if(to<0||to>=state.calendars.length||from===to)return;
+  const [moved]=state.calendars.splice(from,1);
+  state.calendars.splice(to,0,moved);
+  render();
+}
+function moveTaskColumn(from,to){
+  if(!requireLogin())return;
+  if(to<0||to>=state.taskColumns.length||from===to)return;
+  const [moved]=state.taskColumns.splice(from,1);
+  state.taskColumns.splice(to,0,moved);
+  render();
+}
+function renderCalendarConfig(){const root=$('#calendarConfig');root.innerHTML='';state.calendars.forEach((cal,i)=>{const visible=cal.visible!==false;const div=document.createElement('div');div.className='calendar-pane'+(!visible?' hidden-cal':'');div.dataset.calIndex=i;div.innerHTML=`<div class="pane-head"><div class="cal-title-line"><button class="cal-title-click" data-edit-cal="${i}" title="Kalendername ändern"><span class="pane-name">${escapeHtml(cal.name)}</span><span class="cal-edit-icon">✎</span></button></div><div class="pane-actions"><span class="order-stack"><button class="btn small ui-icon-btn order-btn" data-move-cal="${i}:-1" title="Nach oben" ${i===0?'disabled':''}>▲</button><button class="btn small ui-icon-btn order-btn" data-move-cal="${i}:1" title="Nach unten" ${i===state.calendars.length-1?'disabled':''}>▼</button></span><button class="btn small ui-icon-btn visibility-btn ${visible?'':'hidden-state'}" data-toggle-cal="${i}" title="${visible?'Kalender ausblenden':'Kalender einblenden'}">${iconEye(visible)}</button><button class="btn small add-source-plus" data-add-source="${i}" title="Kalenderquelle hinzufügen"><span>+</span></button><button class="btn small ui-icon-btn trash-unified" data-delete-cal="${i}" title="Kalender löschen">${iconTrash()}</button></div></div>${cal.links.length?cal.links.map((l,idx)=>{const lv=l.visible!==false;const isOwn=l.type==='own';return `<div class="ics-item ${lv?'':'hidden-ics'}"><div class="ics-click" title="${isOwn?'Eigener Kalender':'ICS-Kalender'}"><b title="${escapeHtml(l.name)}"><span class="ics-color-dot" style="background:${escapeHtml(l.color||state.colors.event)}"></span>${escapeHtml(shortText(l.name,34))}</b><span>${isOwn?'Eigener Kalender':'ICS-Kalender aktiv'}</span></div><div class="ics-actions"><button class="btn small ui-icon-btn visibility-btn" data-toggle-ics="${i}:${idx}" title="${lv?'Ausblenden':'Einblenden'}">${iconEye(lv)}</button><button class="btn small ui-icon-btn" data-ics-settings="${i}:${idx}" title="${isOwn?'Eigenen Kalender einstellen':'ICS-Kalender einstellen'}">${iconSettings()}</button><button class="btn small ui-icon-btn trash-unified" data-del-ics="${i}:${idx}" title="Kalenderquelle entfernen">${iconTrash()}</button></div></div>`}).join(''):'<div class="empty">Noch keine Kalenderquelle.</div>'}<div class="status">${escapeHtml(cal.status||'')}</div>`;root.appendChild(div);});
+if(!state.calendars.length){const note=document.createElement('div');note.className='no-calendar-note';note.innerHTML='Noch kein Kalender angelegt. Lege unten einen Kalender an und füge danach einen oder mehrere ICS- oder eigene Kalender hinzu.';root.appendChild(note);}
+const add=document.createElement('div');add.className='add-calendar-box';add.innerHTML=`<div><b>Kalender hinzufügen</b><div class="hint">Neuen Kalenderbereich erstellen und anschließend Kalenderquellen hinterlegen.</div></div><button class="btn primary small" id="addCalendarBtn">+ Kalender</button>`;root.appendChild(add);
+$$('[data-toggle-cal]').forEach(b=>b.onclick=()=>{if(!requireLogin())return;const i=Number(b.dataset.toggleCal);state.calendars[i].visible=state.calendars[i].visible===false;render();});
+$$('[data-move-cal]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();const [i,d]=b.dataset.moveCal.split(':').map(Number);moveCalendar(i,i+d);});
+$$('[data-toggle-ics]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();if(!requireLogin())return;const [i,idx]=b.dataset.toggleIcs.split(':').map(Number);const l=state.calendars[i].links[idx];l.visible=l.visible===false;render();});
+$$('[data-edit-cal]').forEach(b=>b.onclick=()=>{if(requireLogin())openCalendarNameModal(Number(b.dataset.editCal));});
+$$('[data-add-source]').forEach(b=>b.onclick=()=>{if(requireLogin())openSourceChoiceModal(Number(b.dataset.addSource));});
+$$('[data-ics-settings]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();const [i,idx]=b.dataset.icsSettings.split(':').map(Number);const link=state.calendars[i].links[idx];if(link?.type==='own')openOwnSourceModal(i,idx);else openICSSettingsModal(i,idx);});
+$$('[data-del-ics]').forEach(b=>b.onclick=()=>{const [i,idx]=b.dataset.delIcs.split(':').map(Number);const target=state.calendars[i].links[idx];if(target?.type==='own'){const count=(state.calendars[i].ownEvents||[]).filter(e=>e.sourceId===target.id).length;const ok=confirm(`Sind Sie sicher, dass Sie diesen eigenen Kalender löschen möchten?\n\nAlle darin erstellten Termine werden unwiderruflich gelöscht.\nBetroffene Termine: ${count}`);if(!ok)return;}else{const ok=confirm('Diese Kalenderquelle wirklich entfernen?');if(!ok)return;}const removed=state.calendars[i].links.splice(idx,1)[0];if(removed?.id){state.calendars[i].events=(state.calendars[i].events||[]).filter(e=>e.icsId!==removed.id);state.calendars[i].ownEvents=(state.calendars[i].ownEvents||[]).filter(e=>e.sourceId!==removed.id);}else{state.calendars[i].events=[];}state.calendars[i].status='Kalenderquelle entfernt.';render();});
+$$('[data-delete-cal]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.deleteCal);if(confirm('Kalender inklusive aller Quellen und eigenen Terminen löschen?')){state.calendars.splice(i,1);render();}});
+const addBtn=$('#addCalendarBtn');if(addBtn)addBtn.onclick=()=>{if(requireLogin())openAddCalendarModal();};
+}
+
+function renderTaskColumnConfig(){
+  const root=$('#taskColumnConfig');
+  if(!root)return;
+  ensureSettings();
+  root.innerHTML=state.taskColumns.map((col,idx)=>`<div class="taskcol-item ${col.visible===false?'hidden-col':''}" data-taskcol-index="${idx}"><div class="taskcol-main"><span class="ics-color-dot" style="background:${escapeHtml(col.color)}"></span><b lang="de" title="${escapeHtml(col.name)}">${escapeHtml(col.name)}</b></div><div class="taskcol-actions"><span class="order-stack"><button class="btn small ui-icon-btn order-btn" data-move-taskcol="${idx}:-1" title="Nach oben" ${idx===0?'disabled':''}>▲</button><button class="btn small ui-icon-btn order-btn" data-move-taskcol="${idx}:1" title="Nach unten" ${idx===state.taskColumns.length-1?'disabled':''}>▼</button></span><button class="btn small ui-icon-btn visibility-btn" data-toggle-taskcol="${idx}" title="${col.visible===false?'Einblenden':'Ausblenden'}">${iconEye(col.visible!==false)}</button><button class="btn small ui-icon-btn" data-edit-taskcol="${idx}" title="Spalte bearbeiten">${iconSettings()}</button><button class="btn small ui-icon-btn trash-unified" data-delete-taskcol="${idx}" title="Spalte löschen">${iconTrash()}</button></div></div>`).join('')+`<div class="add-calendar-box"><div><b>Task-Spalte hinzufügen</b><div class="hint">Unterteilung für Tagestasks, z. B. Geschäftlich, Arbeit, Mannschaft.</div></div><button class="btn primary small" id="addTaskColumnBtn">+ Spalte</button></div>`;
+  $$('[data-toggle-taskcol]').forEach(b=>b.onclick=()=>{if(!requireLogin())return;const c=state.taskColumns[Number(b.dataset.toggleTaskcol)];c.visible=c.visible===false;render();});
+  $$('[data-move-taskcol]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();const [i,d]=b.dataset.moveTaskcol.split(':').map(Number);moveTaskColumn(i,i+d);});
+  $$('[data-edit-taskcol]').forEach(b=>b.onclick=()=>{if(requireLogin())openTaskColumnModal(Number(b.dataset.editTaskcol));});
+  $$('[data-delete-taskcol]').forEach(b=>b.onclick=()=>{if(!requireLogin())return;const idx=Number(b.dataset.deleteTaskcol);if(state.taskColumns.length<=1)return toast('Mindestens eine Task-Spalte bleibt erhalten.');const col=state.taskColumns[idx];if(!confirm('Task-Spalte löschen? Bestehende Tasks werden in die erste verfügbare Spalte verschoben.'))return;const fallback=state.taskColumns.find((_,i)=>i!==idx)?.id||'default';state.tasks.forEach(t=>{if(t.columnId===col.id)t.columnId=fallback;});state.taskColumns.splice(idx,1);render();});
+  const add=$('#addTaskColumnBtn');if(add)add.onclick=()=>{if(requireLogin())openTaskColumnModal(null);};
+}
+function openTaskColumnModal(idx){
+  const isNew=idx===null||idx===undefined;
+  const col=isNew?{name:'',color:state.colors.task||defaultColors.task,visible:true}:state.taskColumns[idx];
+  const current=col.color||state.colors.task;
+  openModal(isNew?'Task-Spalte hinzufügen':'Task-Spalte bearbeiten',`<input id="mTaskColName" value="${escapeHtml(col.name||'')}" placeholder="Name, z. B. Geschäftlich"><div class="hint">Diese Spalten unterteilen die Tagestasks innerhalb eines Tages.</div><div class="color-palette" data-taskcol-color-picker>${palette.map(c=>`<button type="button" class="color-choice ${c.toLowerCase()===String(current).toLowerCase()?'active':''}" data-color="${c}" style="background:${c}" title="${c}"></button>`).join('')}</div>`,()=>{const name=$('#mTaskColName').value.trim()||'Neue Spalte'; if(isNew)state.taskColumns.push({id:makeId('tc'),name,color:col.color||current,visible:true}); else col.name=name;});
+  $$('[data-taskcol-color-picker] .color-choice').forEach(btn=>btn.onclick=()=>{col.color=btn.dataset.color; if(!isNew){const name=$('#mTaskColName')?.value.trim(); if(name)col.name=name; persist();render();closeModal();}});
+}
+
+function renderTimeline(){const root=$('#timeline');root.innerHTML='';let start=addDays(new Date(new Date().setHours(0,0,0,0)),state.offset);if((state.startMode||'rolling')==='week'){const base=new Date();base.setHours(0,0,0,0);start=addDays(base,-((base.getDay()+6)%7)+state.offset);}if((state.startMode||'rolling')==='workweek'){const base=new Date();base.setHours(0,0,0,0);start=addDays(base,-((base.getDay()+6)%7)+state.offset);state.days=Math.min(state.days,5);}const end=addDays(start,state.days-1);$('#rangeLabel').textContent=`${deDate(start)} bis ${deDate(end)}`;for(let i=0;i<state.days;i++)root.appendChild(dayCard(addDays(start,i)));}
+function dayCard(date){
+const today=new Date();today.setHours(0,0,0,0);const iso=fmtDate(date);
+const openTasks=state.tasks.filter(t=>t.date===iso&&!t.done);
+const overdue=sameDay(date,today)?state.tasks.filter(t=>t.date<fmtDate(today)&&!t.done):[];
+const completedTasks=state.tasks.filter(t=>t.done&&t.completedDate===iso);
+const completedLong=state.longterm.filter(t=>t.done&&t.completedDate===iso);
+const showCompleted=completedTasks.length||completedLong.length;
+const day=document.createElement('div');day.className='day'+(sameDay(date,today)?' today':'');
+day.innerHTML=`<div class="day-head"><div class="day-num"><span class="day-title-weekday">${escapeHtml(date.toLocaleDateString('de-DE',{weekday:'long'}))}</span><span class="day-title-date">${escapeHtml(date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}))}</span></div>${sameDay(date,today)?'<span class="badge">Aktueller Tag</span>':''}</div><div class="day-body"><div class="partition"><div class="part-head"><div class="part-title">1. Terminkalender</div></div><div class="split">${calendarLanes(date)}</div></div><div class="partition"><div class="part-head"><div class="part-title">2. Tagestasks</div><button class="btn small" data-task-date="${iso}">+ Hinzufügen</button></div>${taskColumnsList(openTasks)}</div>${sameDay(date,today)?`<div class="partition"><div class="part-head"><div class="part-title">3. Überzogene Tagestasks</div></div>${taskList(overdue,true)}</div>`:''}${showCompleted?`<div class="partition"><div class="part-head"><div class="part-title">${sameDay(date,today)?'4':'3'}. An diesem Tag erledigte Tasks</div></div>${completedDoneList(completedTasks,completedLong)}</div>`:''}</div>`;
+day.querySelector('[data-task-date]').onclick=()=>openTaskModal(iso);
+day.querySelectorAll('[data-toggle-task]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=(ev)=>{ev.stopPropagation();const t=state.tasks.find(x=>x.id===c.dataset.toggleTask);if(!requireLogin()){c.checked=!c.checked;return;}if(t){t.done=c.checked;t.completedDate=c.checked?fmtDate(new Date()):null;render();}}});
+day.querySelectorAll('[data-delete-task]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();if(!requireLogin())return;state.tasks=state.tasks.filter(x=>x.id!==b.dataset.deleteTask);render();});
+day.querySelectorAll('[data-task-ref]').forEach(card=>card.onclick=()=>openTaskDetailModal(card.dataset.taskRef));
+day.querySelectorAll('[data-add-own-event]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();const [ci,iso]=b.dataset.addOwnEvent.split(':');openOwnEventModal(Number(ci),iso);});
+day.querySelectorAll('[data-event-ref]').forEach(card=>card.onclick=()=>openEventDetailModal(card.dataset.eventRef));
+return day;}
+function eventVisualHeight(e){
+  if(e.allDay)return 46;
+  const st=new Date(e.start), en=e.end?new Date(e.end):null;
+  if(!en||isNaN(st)||isNaN(en))return 46;
+  const mins=Math.max(15,(en-st)/60000);
+  return Math.max(34,Math.min(96,30+mins*0.32));
+}
+function calendarLanes(date){const iso=fmtDate(date);const visible=visibleCalendars();return visible.map(({cal,idx:ci})=>{const visibleOwnIds=(cal.links||[]).filter(l=>l.type==='own'&&l.visible!==false).map(l=>l.id);const icsEvents=(cal.events||[]).map((e,ei)=>{const occ=eventOccurrenceForDate(e,date);return occ?Object.assign(occ,{_type:'ics',_cal:ci,_idx:ei}):null;}).filter(e=>{if(!e)return false;const l=(cal.links||[]).find(x=>x.id===e.icsId);return (!l||l.visible!==false);});const ownEvents=(cal.ownEvents||[]).map((e,ei)=>{const occ=eventOccurrenceForDate(e,date);return occ?Object.assign(occ,{_type:'own',_cal:ci,_idx:ei}):null;}).filter(e=>e&&visibleOwnIds.includes(e.sourceId));const events=[...icsEvents,...ownEvents].sort((a,b)=>new Date(a.start)-new Date(b.start));const ownSources=(cal.links||[]).filter(l=>l.type==='own'&&l.visible!==false);return `<div class="lane"><div class="lane-title" style="display:flex;align-items:center;gap:8px"><span>${escapeHtml(cal.name)}</span>${ownSources.length?`<button class="btn small own-event-btn plus-only" data-add-own-event="${ci}:${iso}" title="Eigenen Termin hinzufügen">+</button>`:''}</div>${events.length?events.map(e=>{const tp=eventTimeParts(e);const ref=e._type==='own'?`${e._type}:${e._cal}:${e._idx}:${iso}`:`${e._type}:${e._cal}:${e._idx}:${iso}`;const recur=(e.recurrence&&e.recurrence!=='none')?` · ${recurrenceLabel(e.recurrence)}`:(e.rrule?` · Wiederholung`:'');const cancelled=(String(e.status||'').toUpperCase()==='CANCELLED');const label=cancelled?' · Abgesagt':'';const h=eventVisualHeight(e);return `<div class="card event ${cancelled?'cancelled':''}" data-event-ref="${ref}" data-ics-color="1" style="border-left-color:${escapeHtml(e.icsColor||state.colors.event)}!important;min-height:${h}px;padding-top:${h<42?'7':'11'}px;padding-bottom:${h<42?'7':'11'}px" title="${escapeHtml(e.summary)}"><div class="event-row"><div class="event-timebox"><span>${escapeHtml(tp.start)}</span><span>${escapeHtml(tp.end)}</span></div><div class="event-title"><b>${escapeHtml(shortText(e.summary+(cancelled?' (abgesagt)':''),30))}</b><small>${escapeHtml(shortText((e.icsName||e.source||cal.name)+recur+label,34))}</small></div></div></div>`}).join(''):'<div class="empty">Keine Einträge.</div>'}</div>`;}).join('');}
+function eventTimeParts(e){if(e.allDay)return {start:'Ganz-',end:'tägig'};const s=new Date(e.start);const end=e.end?new Date(e.end):null;const f=d=>d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});if(isNaN(s))return {start:'',end:''};return {start:f(s),end:(end&&!isNaN(end))?f(end):''};}
+function eventTime(e){if(e.allDay)return 'Ganztägig';const s=new Date(e.start);const end=e.end?new Date(e.end):null;const f=d=>d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});return isNaN(s)?'':(end&&!isNaN(end)?`${f(s)}–${f(end)}`:f(s));}
+
+function taskCardHtml(t,overdue=false,completedView=false){
+  const col=(state.taskColumns||[]).find(c=>c.id===t.columnId)||state.taskColumns?.[0]||{name:'Allgemein',color:state.colors.task};
+  const meta=completedView?`Erledigt am ${t.completedDate||''}`:(t.note||'Soll: '+t.date);
+  if(completedView){
+    return `<div class="card task task-card-compact completed-task-card" data-task-ref="task:${t.id}" style="border-left-color:${escapeHtml(col.color||state.colors.task)}!important"><div class="task-row"><input type="checkbox" checked data-toggle-task="${t.id}"><div><span class="completed-title" title="${escapeHtml(t.title)}">${escapeHtml(shortText(t.title,34))}</span><span class="completed-meta">${escapeHtml(meta)}</span></div><button class="kebab" data-delete-task="${t.id}">×</button></div></div>`;
+  }
+  return `<div class="card task task-card-compact ${overdue?'overdue':''}" data-task-ref="task:${t.id}" style="border-left-color:${escapeHtml(overdue?state.colors.overdue:(col.color||state.colors.task))}!important"><div class="task-row"><input type="checkbox" ${t.done?'checked':''} data-toggle-task="${t.id}"><div><b title="${escapeHtml(t.title)}">${escapeHtml(shortText(t.title,32))}</b><small title="${escapeHtml(meta)}">${escapeHtml(shortText(meta,38))}</small></div><button class="kebab" data-delete-task="${t.id}">×</button></div></div>`;
+}
+function taskColumnsList(list){
+  ensureSettings();
+  const visibleCols=(state.taskColumns||[]).filter(c=>c.visible!==false);
+  if(!visibleCols.length)return '<div class="empty">Keine sichtbaren Task-Spalten.</div>';
+  return `<div class="task-columns">${visibleCols.map(col=>{const tasks=list.filter(t=>(t.columnId||state.taskColumns[0].id)===col.id);return `<div class="task-column-lane"><div class="task-column-title"><span class="task-column-dot" style="background:${escapeHtml(col.color)}"></span><span lang="de">${escapeHtml(col.name)}</span></div>${tasks.length?tasks.map(t=>taskCardHtml(t,false,false)).join(''):'<div class="empty">Keine Einträge.</div>'}</div>`}).join('')}</div>`;
+}
+function completedDoneList(tasks,longs){
+  const a=(tasks||[]).map(t=>taskCardHtml(t,false,true)).join('');
+  const b=(longs||[]).map(t=>`<div class="card completed-long completed-task-card" data-task-ref="long:${t.id}"><div><span class="completed-title">${escapeHtml(shortText(t.title,34))}</span><span class="completed-meta">Langfristiger Task erledigt am ${escapeHtml(t.completedDate)}</span></div></div>`).join('');
+  return `<div class="completed-grid">${a}${b}</div>`;
+}
+function openTaskDetailModal(ref){
+  if(!requireLogin())return;
+  const [type,id]=ref.split(':');
+  const isLong=type==='long';
+  const t=isLong?state.longterm.find(x=>x.id===id):state.tasks.find(x=>x.id===id);
+  if(!t)return;
+  $('#modalTitle').textContent=isLong?'Langfristigen Task bearbeiten':'Tagestask bearbeiten';
+  $('#modalContent').innerHTML=`<div class="edit-grid"><label>Titel</label><input id="editTaskTitle" value="${escapeHtml(t.title||'')}">${isLong?`<label>Erstellt am</label><input value="${escapeHtml(t.createdDate||'—')}" disabled>`:`<label>Task-Spalte</label><select id="editTaskColumn">${state.taskColumns.map(c=>`<option value="${escapeHtml(c.id)}" ${(t.columnId||state.taskColumns[0].id)===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}</select><label>Soll-Datum</label><input id="editTaskDate" type="date" value="${escapeHtml(t.date||fmtDate(new Date()))}">`}<label>Status</label><select id="editTaskDone"><option value="false" ${!t.done?'selected':''}>Offen</option><option value="true" ${t.done?'selected':''}>Erledigt</option></select><label>Erledigt am</label><input id="editTaskCompleted" type="date" value="${escapeHtml(t.completedDate||'')}"><label>Notiz</label><textarea id="editTaskNote" rows="7">${escapeHtml(t.note||'')}</textarea></div>`;
+  $('#modalBackdrop').style.display='flex';
+  $('#saveModal').style.display='';
+  $('#saveModal').onclick=()=>{
+    const title=$('#editTaskTitle').value.trim();
+    if(title)t.title=title;
+    t.done=$('#editTaskDone').value==='true';
+    t.completedDate=$('#editTaskCompleted').value||null;
+    if(t.done&&!t.completedDate)t.completedDate=fmtDate(new Date());
+    if(!t.done)t.completedDate=null;
+    t.note=$('#editTaskNote').value.trim();
+    if(!isLong){t.date=$('#editTaskDate').value||t.date;t.columnId=$('#editTaskColumn').value;}
+    closeModal();render();
+  };
+  $('#modalContent').onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA'){e.preventDefault();$('#saveModal').click();}else if(e.key==='Enter'&&e.ctrlKey){e.preventDefault();$('#saveModal').click();}};
+}
+function taskList(list,overdue=false){if(!list.length)return'<div class="empty">Keine Einträge.</div>';return list.map(t=>taskCardHtml(t,overdue,false)).join('');}
+function completedLongList(list){if(!list.length)return '';return `<div style="margin-top:10px">${list.map(t=>`<div class="card completed-long done"><div><b>${escapeHtml(shortText(t.title,30))}</b><small>Langfristiger Task erledigt am ${escapeHtml(t.completedDate)}</small></div></div>`).join('')}</div>`;}
+function renderLong(){const root=$('#longTermList');root.innerHTML=state.longterm.length?state.longterm.map(t=>{const meta=t.completedDate?`Erledigt am ${t.completedDate}`:`Erstellt am ${t.createdDate||'unbekannt'}`;const note=t.note?`<span class="long-note" title="${escapeHtml(t.note)}">${escapeHtml(shortText(t.note,80))}</span>`:'';return `<div class="long-card ${t.done?'completed-task-card':''}" data-task-ref="long:${t.id}"><div class="task-row"><input type="checkbox" ${t.done?'checked':''} data-toggle-long="${t.id}"><div><span class="long-title" title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</span><span class="long-meta">${escapeHtml(meta)}</span>${note}</div><button class="kebab" data-delete-long="${t.id}">×</button></div></div>`}).join(''):'<div class="empty">Keine langfristigen Aufgaben.</div>';$$('[data-toggle-long]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=(ev)=>{ev.stopPropagation();const t=state.longterm.find(x=>x.id===c.dataset.toggleLong);if(!requireLogin()){c.checked=!c.checked;return;}if(t){t.done=c.checked;t.completedDate=c.checked?fmtDate(new Date()):null;render();}}});$$('[data-delete-long]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();if(!requireLogin())return;state.longterm=state.longterm.filter(x=>x.id!==b.dataset.deleteLong);render();});$$('#longTermList [data-task-ref]').forEach(card=>card.onclick=()=>openTaskDetailModal(card.dataset.taskRef));}
+function closeModal(){if(document.body.classList.contains('login-required')&&!currentUser)return;$('#modalBackdrop').style.display='none';$('#saveModal').style.display='';$('#modalContent').onkeydown=null;} function openModal(title,html,onSave){$('#saveModal').style.display='';$('#modalTitle').textContent=title;$('#modalContent').innerHTML=html;$('#modalBackdrop').style.display='flex';setTimeout(()=>{const focusEl=$('#modalContent input:not([disabled]):not([readonly]), #modalContent textarea:not([disabled]):not([readonly]), #modalContent select:not([disabled])');if(focusEl){focusEl.focus();if(focusEl.select&&focusEl.tagName==='INPUT')focusEl.select();}},0);const doSave=()=>{onSave();closeModal();render();};$('#saveModal').onclick=doSave;$('#modalContent').onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA'){e.preventDefault();doSave();}else if(e.key==='Enter'&&e.ctrlKey){e.preventDefault();doSave();}};} $('#cancelModal').onclick=closeModal;$('#modalBackdrop').onclick=e=>{if(e.target.id==='modalBackdrop')closeModal()};
+function openAddCalendarModal(){if(!requireLogin())return;openModal('Kalender hinzufügen',`<input id="mNewCalName" placeholder="Kalendername, z. B. Geschäftskalender"><div class="hint">Der Kalender wird direkt sichtbar angelegt. Danach kannst du mehrere ICS-Links hinzufügen oder ihn ausblenden.</div>`,()=>{const name=$('#mNewCalName').value.trim()||`Kalender ${state.calendars.length+1}`;state.calendars.push({name,links:[],events:[],ownEvents:[],status:'Noch kein ICS-Link hinterlegt.',visible:true});});}
+function openSourceChoiceModal(pane){
+  if(!requireLogin())return;
+  $('#modalTitle').textContent='Kalenderquelle hinzufügen';
+  $('#modalContent').innerHTML=`<div class="option-btns"><button class="option-card" id="chooseICS"><b>ICS-Kalender</b><span class="hint">Externen Kalender per ICS-Link einbinden.</span></button><button class="option-card" id="chooseOwn"><b>Eigener Kalender</b><span class="hint">Termine direkt in dieser Oberfläche erstellen und löschen.</span></button></div>`;
+  $('#modalBackdrop').style.display='flex';
+  $('#saveModal').style.display='none';
+  $('#chooseICS').onclick=()=>{closeModal();openICSModal(pane);};
+  $('#chooseOwn').onclick=()=>{closeModal();openCreateOwnSourceModal(pane);};
+}
+function openCreateOwnSourceModal(pane){
+  if(!requireLogin())return;
+  openModal(`Eigenen Kalender hinzufügen · ${state.calendars[pane].name}`,`<input id="mOwnName" placeholder="Name, z. B. Eigene Termine"><div class="hint">Eigene Kalender enthalten Termine, die du hier manuell einträgst. Nur diese eigenen Termine sind löschbar.</div>`,()=>{
+    const name=$('#mOwnName').value.trim()||'Eigener Kalender';
+    state.calendars[pane].links.push({id:makeId('own'),type:'own',name,color:state.colors?.event||defaultColors.event,visible:true});
+  });
+}
+function openOwnSourceModal(pane,idx){
+  if(!requireLogin())return;
+  const link=state.calendars[pane]?.links?.[idx];
+  if(!link)return;
+  const current=link.color||state.colors.event;
+  openModal(`Eigener Kalender · ${escapeHtml(link.name)}`,`<input id="mOwnSourceName" value="${escapeHtml(link.name)}" placeholder="Name des eigenen Kalenders"><div class="hint">Hier kannst du den eigenen Kalender umbenennen und farblich markieren.</div><div class="color-palette" data-own-color-picker>${palette.map(c=>`<button type="button" class="color-choice ${c.toLowerCase()===String(current).toLowerCase()?'active':''}" data-color="${c}" style="background:${c}" title="${c}"></button>`).join('')}</div>`,()=>{
+    const newName=$('#mOwnSourceName').value.trim();
+    if(newName)link.name=newName;
+    (state.calendars[pane].ownEvents||[]).forEach(e=>{if(e.sourceId===link.id){e.source=link.name;e.icsName=link.name;e.icsColor=link.color||state.colors.event;}});
+  });
+  $$('[data-own-color-picker] .color-choice').forEach(btn=>btn.onclick=()=>{
+    link.color=btn.dataset.color;
+    const newName=$('#mOwnSourceName')?.value.trim();
+    if(newName)link.name=newName;
+    (state.calendars[pane].ownEvents||[]).forEach(e=>{if(e.sourceId===link.id){e.source=link.name;e.icsName=link.name;e.icsColor=link.color;}});
+    persist();render();closeModal();
+  });
+}
+function openCalendarNameModal(pane){if(!requireLogin())return;const cal=state.calendars[pane];openModal('Kalendername ändern',`<input id="mCalName" value="${escapeHtml(cal.name)}" placeholder="z. B. Geschäftskalender"><div class="hint">Ändert nur den sichtbaren Namen in der Oberfläche. ICS-Links bleiben unverändert.</div>`,()=>{const v=$('#mCalName').value.trim();if(v)cal.name=v;});}
+function openTaskModal(date=fmtDate(new Date())){if(!requireLogin())return;ensureSettings();openModal('Tagestask hinzufügen',`<input id="mTitle" placeholder="Aufgabe"><select id="mTaskColumn">${state.taskColumns.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join('')}</select><input id="mDate" type="date" value="${date}"><textarea id="mNote" rows="3" placeholder="Notiz / Kontext"></textarea>`,()=>{const title=$('#mTitle').value.trim();if(!title)return toast('Aufgabe ohne Titel wurde nicht gespeichert.');state.tasks.push({id:crypto.randomUUID(),title,date:$('#mDate').value,done:false,note:$('#mNote').value.trim(),columnId:$('#mTaskColumn').value});});}
+function openLongModal(){if(!requireLogin())return;openModal('Langfristigen Task hinzufügen',`<input id="mTitle" placeholder="Langfristiger Task"><textarea id="mNote" rows="3" placeholder="Notiz"></textarea>`,()=>{const title=$('#mTitle').value.trim();if(!title)return toast('Aufgabe ohne Titel wurde nicht gespeichert.');state.longterm.push({id:crypto.randomUUID(),title,done:false,note:$('#mNote').value.trim(),createdDate:fmtDate(new Date()),completedDate:null});});}
+function openICSModal(pane){if(!requireLogin())return;openModal(`ICS-Link hinzufügen · ${state.calendars[pane].name}`,`<input id="mName" placeholder="Name, z. B. Privat Kalender"><input id="mUrl" placeholder="webcal://... oder https://.../calendar.ics"><div class="hint">webcal:// wird automatisch in https:// umgewandelt. Der Link wird gespeichert, aber in der Oberfläche nicht ausgeschrieben.</div>`,async()=>{const name=$('#mName').value.trim()||'ICS Kalender';const url=normalizeICSUrl($('#mUrl').value.trim());if(!url)return toast('Kein ICS-Link gespeichert.');state.calendars[pane].links.push({id:makeId('ics'),type:'ics',name,url,color:state.colors?.event||defaultColors.event,visible:true});await loadICS(pane);});}
+function openICSLinkModal(pane,idx){const link=state.calendars[pane]?.links?.[idx];if(!link)return;$('#modalTitle').textContent=`ICS-Link · ${link.name}`;$('#modalContent').innerHTML=`<div class="hint">Der Link bleibt in der normalen Übersicht verborgen. Hier kannst du ihn kontrollieren oder kopieren.</div><textarea rows="5" readonly onclick="this.select()">${escapeHtml(link.url)}</textarea>`;$('#modalBackdrop').style.display='flex';$('#saveModal').style.display='none';}
+async function loadICS(pane){if(!requireLogin())return;const cal=state.calendars[pane];cal.events=[];cal.status='Lade ICS...';renderCalendarConfig();persist();let errors=[];for(const link of (cal.links||[])){if(link.type==='own'||!link.url)continue;try{const sourceUrl=normalizeICSUrl(link.url);const res=await fetch(buildICSFetchUrl(sourceUrl),{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);const text=await res.text();if(!/BEGIN:VCALENDAR|BEGIN:VEVENT/i.test(text))throw new Error('Antwort ist keine ICS-Datei. Link/Freigabe/Proxy prüfen.');const parsed=parseICS(text,link.name).map(e=>Object.assign(e,{icsId:link.id,icsColor:link.color||state.colors.event,icsName:link.name}));cal.events.push(...parsed);if(!parsed.length)errors.push(`${link.name}: ICS geladen, aber keine Termine gefunden.`);}catch(e){errors.push(`${link.name}: ${e.message}`);}}cal.events=dedupeEvents(cal.events);const stamp=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});cal.status=errors.length?`${cal.events.length} Termine geladen. Fehler: ${errors.join(' | ')}. Zuletzt: ${stamp}`:`${cal.events.length} Termine geladen. Zuletzt: ${stamp}`;$('#diagBox').textContent=cal.status;persist();}
+function dedupeEvents(events){const map=new Map();(events||[]).forEach(e=>{const norm=v=>String(v||'').trim().toLowerCase();const key=[e.icsId||'',norm(e.summary),e.start||'',e.end||''].join('|');const old=map.get(key);if(!old||(!old.rrule&&e.rrule))map.set(key,e);});return Array.from(map.values());}
+function normalizeICSUrl(url){return (url||'').trim().replace(/^webcal:\/\//i,'https://');} function buildICSFetchUrl(url){let base=(state.proxyUrl||DEFAULT_PROXY_URL).trim();if(!base)return url;if(!/[?&]url=$/.test(base)){base=base.replace(/\/+$/,'')+'/?url=';}return base+encodeURIComponent(url);}
+async function syncAllICS(){if(!requireLogin())return;const total=state.calendars.reduce((s,c)=>s+(c.links?.length||0),0);if(!total){toast('Keine ICS-Links hinterlegt.');return;}toast('Synchronisierung gestartet...');for(let i=0;i<state.calendars.length;i++)await loadICS(i);render();toast('ICS-Synchronisierung abgeschlossen.');}
+
+
+function openOwnEventModal(pane,date=fmtDate(new Date())){
+  if(!requireLogin())return;
+  const cal=state.calendars[pane];
+  const ownSources=(cal.links||[]).filter(l=>l.type==='own'&&l.visible!==false);
+  if(!ownSources.length)return toast('Kein eigener Kalender sichtbar. Füge zuerst einen eigenen Kalender hinzu.');
+  openModal(`Termin hinzufügen · ${escapeHtml(cal.name)}`,`<input id="mEventTitle" placeholder="Titel des Termins"><select id="mEventSource">${ownSources.map(l=>`<option value="${escapeHtml(l.id)}">${escapeHtml(l.name)}</option>`).join('')}</select><input id="mEventLocation" placeholder="Ort"><div class="field"><label>Datum</label><div class="date-row"><input id="mEventDate" type="date" value="${date}"></div></div><div class="field"><label>Wiederholung</label><select id="mEventRecurrence"><option value="none">Keine Wiederholung</option><option value="weekly">Wöchentlich</option><option value="monthly">Monatlich</option><option value="yearly">Jährlich</option></select></div><div class="field"><label>Ganztägig</label><select id="mEventAllDay"><option value="false">Nein</option><option value="true">Ja</option></select></div><div class="field"><label>Startzeit</label><input id="mEventStart" type="time" value="09:00"></div><div class="field"><label>Endzeit</label><input id="mEventEnd" type="time" value="10:00"></div><input id="mEventTravel" placeholder="Wegzeit, z. B. 20 Min."><textarea id="mEventDescription" rows="4" placeholder="Details / Notizen"></textarea>`,()=>{
+    const title=$('#mEventTitle').value.trim();
+    if(!title)return toast('Termin ohne Titel wurde nicht gespeichert.');
+    const sourceId=$('#mEventSource').value;
+    const src=(cal.links||[]).find(l=>l.id===sourceId);
+    const d=$('#mEventDate').value||date;
+    const allDay=$('#mEventAllDay').value==='true';
+    const recurrence=$('#mEventRecurrence').value||'none';
+    const st=$('#mEventStart').value||'00:00';
+    const en=$('#mEventEnd').value||st;
+    const start=allDay?new Date(d+'T00:00:00'):new Date(d+'T'+st+':00');
+    const end=allDay?new Date(d+'T23:59:00'):new Date(d+'T'+en+':00');
+    cal.ownEvents=cal.ownEvents||[];
+    cal.ownEvents.push({id:makeId('evt'),sourceId,summary:title,location:$('#mEventLocation').value.trim(),start:start.toISOString(),end:end.toISOString(),allDay,recurrence,source:src?.name||cal.name,icsName:src?.name||cal.name,icsColor:src?.color||state.colors.event,travelTime:$('#mEventTravel').value.trim(),description:$('#mEventDescription').value.trim(),manual:true});
+  });
+}
+function openEventDetailModal(ref){
+  if(!requireLogin())return;
+  const [type,calIdx,evtIdx,occIso]=ref.split(':');
+  const cal=state.calendars[Number(calIdx)];
+  let e=type==='own'?(cal.ownEvents||[])[Number(evtIdx)]:(cal.events||[])[Number(evtIdx)];
+  if(occIso){e=eventOccurrenceForDate(e,new Date(occIso+'T00:00:00'))||e;}
+  if(!e)return;
+  const tp=eventTimeParts(e);
+  const repeat=type==='own'?recurrenceLabel(e.recurrence):(e.rrule?('ICS-Wiederholung: '+e.rrule):'—');
+  const cancelled=String(e.status||'').toUpperCase()==='CANCELLED';
+  const rows=[['Titel',e.summary||''],['Kalender',cal.name||e.source||''],['Quelle',e.manual?'Eigener Termin':(e.source||'ICS')],['Status',cancelled?'Abgesagt':'Aktiv'],['Datum',deDate(new Date(e.start))],['Zeit',e.allDay?'Ganztägig':`${tp.start}${tp.end?' – '+tp.end:''}`],['Ort',e.location||''],['Wiederholung',repeat],['Wegzeit',e.travelTime||''],['Link',e.url||'']];
+  const desc=e.description||'';
+  $('#modalTitle').textContent='Termindetails';
+  $('#modalContent').innerHTML=`<div class="event-detail-grid">${rows.map(([k,v])=>`<b>${escapeHtml(k)}</b><div>${escapeHtml(v||'—')}</div>`).join('')}<b>Details</b><div>${desc?`<div id="detailLongText" class="detail-long">${escapeHtml(desc)}</div><button class="btn small more-btn" id="toggleDetailLong" type="button">Mehr anzeigen</button>`:'—'}</div></div>${type==='own'?'<button class="btn event-delete-btn" id="deleteOwnEvent">Eigenen Termin / Serie löschen</button>':'<div class="hint">ICS-Termine sind nur lesbar und können hier nicht gelöscht werden.</div>'}`;
+  $('#modalBackdrop').style.display='flex';
+  $('#saveModal').style.display='none';
+  const more=$('#toggleDetailLong');if(more)more.onclick=()=>{const box=$('#detailLongText');box.classList.toggle('expanded');more.textContent=box.classList.contains('expanded')?'Weniger anzeigen':'Mehr anzeigen';};
+  const del=$('#deleteOwnEvent');
+  if(del)del.onclick=()=>{if(confirm('Eigenen Termin / Serie löschen?')){cal.ownEvents.splice(Number(evtIdx),1);closeModal();render();}};
+}
+
+
+function openICSSettingsModal(pane,idx){
+  const link=state.calendars[pane]?.links?.[idx];
+  if(!link)return;
+  link.id=link.id||makeId('ics');
+  const current=link.color||state.colors.event;
+  openModal(`ICS-Einstellungen · ${escapeHtml(link.name)}`,`<input id="mIcsName" value="${escapeHtml(link.name)}" placeholder="Name des ICS-Kalenders"><input id="mIcsUrl" value="${escapeHtml(link.url||'')}" placeholder="ICS-Link"><div class="hint">Name, Link und Farbe gelten nur für diesen einzelnen ICS-Kalender. Wenn du den Link änderst, danach synchronisieren.</div><div class="color-palette" data-ics-color-picker>${palette.map(c=>`<button type="button" class="color-choice ${c.toLowerCase()===String(current).toLowerCase()?'active':''}" data-color="${c}" style="background:${c}" title="${c}"></button>`).join('')}</div>`,()=>{
+    const newName=$('#mIcsName').value.trim();
+    const newUrl=normalizeICSUrl($('#mIcsUrl').value.trim());
+    if(newName)link.name=newName;
+    if(newUrl)link.url=newUrl;
+    (state.calendars[pane].events||[]).forEach(e=>{if(e.icsId===link.id){e.icsName=link.name;e.source=link.name;e.icsColor=link.color||state.colors.event;}});
+    persist();render();
+  });
+  $$('[data-ics-color-picker] .color-choice').forEach(btn=>btn.onclick=()=>{
+    link.color=btn.dataset.color;
+    const newName=$('#mIcsName')?.value.trim();
+    const newUrl=normalizeICSUrl($('#mIcsUrl')?.value.trim());
+    if(newName)link.name=newName;
+    if(newUrl)link.url=newUrl;
+    (state.calendars[pane].events||[]).forEach(e=>{if(e.icsId===link.id){e.icsName=link.name;e.source=link.name;e.icsColor=link.color;}});
+    persist();render();
+    closeModal();
+  });
+}
+
+
+function openCloudModal(){
+  if(!currentUser)document.body.classList.add('login-required');
+  $('#modalTitle').textContent='Cloud-Speicherung';
+  $('#modalContent').innerHTML=`<div class="cloud-user-box" id="cloudModalStatusBox">${currentUser?'Angemeldet: '+escapeHtml(currentUser.email):'Nicht angemeldet'}</div><div class="hint">Login mit E-Mail und Passwort. Nach dem Login werden deine persönlichen Kalenderdaten automatisch aus Supabase geladen. Jede relevante Änderung wird im eingeloggten Zustand automatisch gespeichert. Beim Logout werden die Daten aus dieser Ansicht entfernt.</div><div class="cloud-modal-grid"><input id="cloudEmail" type="email" placeholder="E-Mail"><div class="password-row"><input id="cloudPassword" type="password" placeholder="Passwort"><button class="btn small ui-icon-btn password-eye" id="showPasswordBtn" type="button" title="Passwort anzeigen">${iconEye(false)}</button></div></div><div class="cloud-actions"><button class="btn primary" id="cloudLoginBtn" type="button">Login</button><button class="btn" id="cloudSignupBtn" type="button">Registrieren</button><button class="btn danger" id="cloudLogoutBtn" type="button">Logout</button></div><div id="cloudStatus" class="cloud-status warn">Cloud-Status wird hier angezeigt.</div>`;
+  $('#modalBackdrop').style.display='flex';
+  $('#saveModal').style.display='none';
+  updateCloudUserLabel();
+  setCloudStatus(currentUser?'Cloud verbunden. Änderungen werden automatisch gespeichert.':'Nicht angemeldet. Kalenderdaten sind ausgeblendet.',currentUser?'ok':'warn');
+  let passwordVisible=false;$('#showPasswordBtn').onclick=()=>{passwordVisible=!passwordVisible;const p=$('#cloudPassword'); if(p)p.type=passwordVisible?'text':'password'; $('#showPasswordBtn').innerHTML=iconEye(passwordVisible); $('#showPasswordBtn').title=passwordVisible?'Passwort ausblenden':'Passwort anzeigen';};
+  $('#cloudLoginBtn').onclick=cloudLogin;
+  $('#cloudSignupBtn').onclick=cloudSignup;
+  $('#cloudLogoutBtn').onclick=cloudLogout;
+}
+
+function openSyncSettingsModal(){openModal('Allgemeine Einstellungen',`<div class="settings-grid"><div class="field"><label>Erscheinung</label><select id="mTheme"><option value="light">Hell</option><option value="dark">Dunkel</option></select></div><div class="field"><label>Kanten</label><select id="mCornerStyle"><option value="rounded">Abgerundet</option><option value="sharp">Eckig / 90°</option></select></div><div class="section-title">Synchronisierung</div><button class="btn primary" id="mSyncNow" type="button">Alle ICS-Links aktualisieren</button><div class="field"><label>Intervall</label><select id="mSyncInterval"><option value="0">Aus / manuell</option><option value="5">Alle 5 Min.</option><option value="15">Alle 15 Min.</option><option value="30">Alle 30 Min.</option><option value="60">Alle 60 Min.</option></select></div><div class="field"><label>Proxy-URL</label><input id="mProxyUrl" class="readonly-input" value="${escapeHtml(currentUser?(state.proxyUrl||DEFAULT_PROXY_URL):'')}" readonly disabled></div><div class="dev-note">Nur während der Entwicklung sichtbar, um eventuelle Fehlerquellen beim Laden externer ICS-Links einzugrenzen. Der Wert wird automatisch verwendet und ist hier nicht bearbeitbar.</div><div class="hint" id="mSyncHint">ICS-Links werden über den fest hinterlegten Proxy geladen.</div></div>`,()=>{state.theme=$('#mTheme').value;state.cornerStyle=$('#mCornerStyle').value;state.syncInterval=Number($('#mSyncInterval').value);state.fetchMode='proxy';state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;setupAutoSync();});$('#mTheme').value=state.theme||'light';$('#mCornerStyle').value=state.cornerStyle||'rounded';$('#mSyncInterval').value=String(state.syncInterval??15);$('#mSyncNow').onclick=async()=>{state.theme=$('#mTheme').value;state.cornerStyle=$('#mCornerStyle').value;state.syncInterval=Number($('#mSyncInterval').value);state.fetchMode='proxy';state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;persist();setupAutoSync();applyAppearance();await syncAllICS();};}
+function colorPaletteHtml(key){const current=(state.colors||defaultColors)[key];return `<div class="legend-palette-wrap" id="palette-${key}"><div class="color-palette" data-color-key="${key}">${palette.map(c=>`<button type="button" class="color-choice ${c.toLowerCase()===String(current).toLowerCase()?'active':''}" data-color="${c}" style="background:${c}" title="${c}"></button>`).join('')}</div></div>`;}
+function openLegendModal(){openModal('Legende',`<div class="legend-grid">
+<div class="legend-row static-legend"><div class="legend-main"><div><b>Kalenderereignis</b><div class="hint">Die Farbe wird direkt am jeweiligen ICS- oder eigenen Kalender eingestellt.</div></div></div></div>
+<div class="legend-row static-legend"><div class="legend-main"><div><b>Tagestask</b><div class="hint">Aufgaben mit konkretem Datum. Die Gruppierung erfolgt über Tagestask-Spalten.</div></div></div></div>
+<div class="legend-row static-legend"><div class="legend-main"><div><b>Überzogener Tagestask</b><div class="hint">Offene Aufgaben aus vergangenen Tagen.</div></div></div></div>
+<div class="legend-row static-legend"><div class="legend-main"><div><b>Langfristiger Task</b><div class="hint">Aufgaben ohne feste Tagesbindung. Die Zuordnung erfolgt über langfristige Gruppen.</div></div></div></div>
+</div>`,()=>{persist();render();});}
+let syncTimer=null;function setupAutoSync(){if(syncTimer)clearInterval(syncTimer);syncTimer=null;const hint=$('#syncHint')||$('#mSyncHint');if(!currentUser){if(hint)hint.textContent='Nicht angemeldet. Automatische Synchronisierung ist deaktiviert.';return;}state.fetchMode='proxy';state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;const m=Number(state.syncInterval||0);if(hint)hint.textContent=m?`Automatische Synchronisierung aktiv: alle ${m} Minuten. ICS-Links werden über den fest hinterlegten Proxy geladen.`:'Automatische Synchronisierung aus. Manuell über den Button aktualisieren.';if(m>0){syncTimer=setInterval(syncAllICS,m*60*1000);}}
+function parseICS(text,source){const unfolded=text.replace(/\r?\n[ \t]/g,'');const blocks=unfolded.split(/BEGIN:VEVENT/i).slice(1);const events=[];for(const b of blocks){const uid=decodeICS(getRawICS(b,'UID'));const summary=decodeICS(getRawICS(b,'SUMMARY'))||'Ohne Titel';const location=decodeICS(getRawICS(b,'LOCATION'));const description=decodeICS(getRawICS(b,'DESCRIPTION'));const url=decodeICS(getRawICS(b,'URL'));const status=decodeICS(getRawICS(b,'STATUS'));const rrule=decodeICS(getRawICS(b,'RRULE'));const start=parseICalDate(getRawICS(b,'DTSTART'));const end=parseICalDate(getRawICS(b,'DTEND'));if(start)events.push({uid,summary,start:start.iso,end:end?.iso||null,allDay:start.allDay,source,location,description,url,status,rrule});}return events;}
+function getRawICS(block,key){const m=block.match(new RegExp('^'+key+'(?:;[^:]*)?:(.*)$','mi'));return m?m[1].trim():'';} function decodeICS(v){return (v||'').replace(/\\n/gi,' ').replace(/\\,/g,',').replace(/\\;/g,';').replace(/\\\\/g,'\\');}
+function parseICalDate(v){if(!v)return null;let m=v.match(/^(\d{4})(\d{2})(\d{2})$/);if(m){const[_,Y,M,D]=m;return {iso:new Date(+Y,+M-1,+D,0,0,0).toISOString(),allDay:true};}m=v.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z?)$/);if(!m)return null;const[_,Y,M,D,h,mi,s,z]=m;const d=z?new Date(Date.UTC(+Y,+M-1,+D,+h,+mi,+s)):new Date(+Y,+M-1,+D,+h,+mi,+s);return {iso:d.toISOString(),allDay:false};}
+let monthCursor=new Date();monthCursor.setDate(1);monthCursor.setHours(0,0,0,0);function openMonthModal(){monthCursor=new Date();monthCursor.setDate(1);monthCursor.setHours(0,0,0,0);$('#modalTitle').textContent='Monatsübersicht';$('#modalContent').innerHTML='<div id="monthView"></div>';$('#modalBackdrop').style.display='flex';$('#saveModal').style.display='none';renderMonthView();}
+function renderMonthView(){const root=$('#monthView');if(!root)return;const monthName=monthCursor.toLocaleDateString('de-DE',{month:'long',year:'numeric'});const first=new Date(monthCursor);const start=new Date(first);start.setDate(first.getDate()-((first.getDay()+6)%7));const days=['Mo','Di','Mi','Do','Fr','Sa','So'];let html=`<div class="month-nav"><button class="btn small" id="mPrev">← Monat</button><div class="month-title">${monthName}</div><button class="btn small" id="mNext">Monat →</button></div><div class="month-grid">${days.map(d=>`<div class="month-head">${d}</div>`).join('')}`;const today=new Date();today.setHours(0,0,0,0);const todayIso=fmtDate(today);const openOverdueToday=state.tasks.some(t=>t.date<todayIso&&!t.done);for(let i=0;i<42;i++){const d=addDays(start,i);const iso=fmtDate(d);const inMonth=d.getMonth()===monthCursor.getMonth();const events=visibleCalendars().flatMap(({cal:c})=>{const ics=(c.events||[]).map(e=>eventOccurrenceForDate(e,d)).filter(e=>{if(!e)return false;const l=(c.links||[]).find(x=>x.id===e.icsId);return !l||l.visible!==false;});const own=(c.ownEvents||[]).map(e=>eventOccurrenceForDate(e,d)).filter(e=>{if(!e)return false;const l=(c.links||[]).find(x=>x.id===e.sourceId);return l&&l.visible!==false;});return [...ics,...own];}).map(e=>({summary:e.summary,color:e.icsColor||state.colors.event,status:e.status}));const hasOpenDayTasks=state.tasks.some(t=>t.date===iso&&!t.done);const showOverdueBar=sameDay(d,today)&&openOverdueToday;const kw=(d.getDay()===1)?` <span class="kw-label">(KW${getISOWeek(d)})</span>`:'';html+=`<div class="month-cell ${inMonth?'':'out'} ${sameDay(d,today)?'today':''}" data-month-date="${iso}" title="Tagesansicht ab ${iso} öffnen"><div class="month-day"><span>${d.getDate()}</span>${kw}</div>${events.slice(0,3).map(e=>`<div class="month-event" style="background:${escapeHtml(e.color)}!important;text-decoration:${String(e.status||'').toUpperCase()==='CANCELLED'?'line-through':'none'}" title="${escapeHtml(e.summary)}">${escapeHtml(shortText(e.summary,38))}</div>`).join('')}${hasOpenDayTasks?'<div class="month-statusbar task" title="Tagesaufgaben offen"></div>':''}${showOverdueBar?'<div class="month-statusbar overdue" title="Überfällige Aufgaben offen"></div>':''}</div>`;}html+='</div>';root.innerHTML=html;$('#mPrev').onclick=()=>{monthCursor.setMonth(monthCursor.getMonth()-1);renderMonthView();};$('#mNext').onclick=()=>{monthCursor.setMonth(monthCursor.getMonth()+1);renderMonthView();};$$('[data-month-date]').forEach(cell=>cell.onclick=()=>{const target=new Date(cell.dataset.monthDate+'T00:00:00');const base=new Date();base.setHours(0,0,0,0);state.offset=Math.round((target-base)/86400000);closeModal();render();});}
+
+
+function updateSidebarToggle(){
+  const collapsed=document.body.classList.contains('sidebar-collapsed');
+  const btn=document.querySelector('#sidebarToggleBtn');
+  if(!btn)return;
+  btn.innerHTML=collapsed?'›':'‹';
+  btn.title=collapsed?'Seitenleiste aufklappen':'Seitenleiste einklappen';
+}
+function initSidebarToggle(){
+  const saved=localStorage.getItem('kalender_sidebar_collapsed')==='1';
+  document.body.classList.toggle('sidebar-collapsed',saved);
+  updateSidebarToggle();
+  const btn=document.querySelector('#sidebarToggleBtn');
+  if(btn)btn.onclick=()=>{
+    document.body.classList.toggle('sidebar-collapsed');
+    localStorage.setItem('kalender_sidebar_collapsed',document.body.classList.contains('sidebar-collapsed')?'1':'0');
+    updateSidebarToggle();
+  };
+}
+
+function collectSearchItems(){
+  const items=[];
+  (state.tasks||[]).forEach(t=>items.push({type:'Task',title:t.title||'',date:t.date||fmtDate(new Date()),meta:t.note||'Tagestask'}));
+  (state.longterm||[]).forEach(t=>items.push({type:'Langfristig',title:t.title||'',date:t.createdDate||fmtDate(new Date()),meta:t.note||'Langfristiger Task'}));
+  (state.calendars||[]).forEach(cal=>{
+    [...(cal.events||[]),...(cal.ownEvents||[])].forEach(e=>items.push({type:'Termin',title:e.summary||'',date:fmtDate(new Date(e.start)),meta:(cal.name||'')+' · '+eventTime(e)}));
+  });
+  return items;
+}
+function openDateInTimeline(iso){const target=new Date(iso+'T00:00:00');const base=new Date();base.setHours(0,0,0,0);state.offset=Math.round((target-base)/86400000);closeModal();render();}
+function setupGlobalSearch(){const input=$('#globalSearch'), box=$('#searchResults');if(!input||!box)return;input.oninput=()=>{const q=input.value.trim().toLowerCase();if(q.length<2){box.classList.remove('open');box.innerHTML='';return;}const hits=collectSearchItems().filter(x=>(x.title+' '+x.meta+' '+x.date).toLowerCase().includes(q)).slice(0,18);box.innerHTML=hits.length?hits.map((h,i)=>`<div class="search-hit" data-hit="${i}"><b>${escapeHtml(h.title||'Ohne Titel')}</b><small>${escapeHtml(h.type)} · ${escapeHtml(h.date)} · ${escapeHtml(shortText(h.meta,70))}</small></div>`).join(''):'<div class="search-hit"><small>Keine Treffer.</small></div>';box.classList.add('open');$$('[data-hit]').forEach(el=>el.onclick=()=>{const h=hits[Number(el.dataset.hit)];if(h){input.value='';box.classList.remove('open');openDateInTimeline(h.date);}});};document.addEventListener('click',ev=>{if(!ev.target.closest('.search-wrap'))box.classList.remove('open');});}
+
+
+/* Rev 033: Funktionspatches ohne Eingriff in die ICS-Ladebasis */
+function ensureRev033State(){
+  state.longColumns=state.longColumns&&state.longColumns.length?state.longColumns:[{id:'long_default',name:'Allgemein',color:state.colors?.long||defaultColors.long,visible:true}];
+  state.longColumns.forEach(c=>{c.id=c.id||makeId('lg');c.name=c.name||'Allgemein';c.color=c.color||state.colors?.long||defaultColors.long;if(c.visible===undefined)c.visible=true;});
+  const fallback=state.longColumns[0]?.id||'long_default';
+  state.longterm=state.longterm||[];
+  state.longterm.forEach(t=>{t.columnId=t.columnId||fallback;});
+  if(!state.viewModes||!Array.isArray(state.viewModes)||!state.viewModes.length){
+    state.viewModes=[
+      {id:'work',name:'Arbeitsmodus',calendarVisible:{},taskVisible:{},longVisible:{}},
+      {id:'private',name:'Privater Modus',calendarVisible:{},taskVisible:{},longVisible:{}},
+      {id:'holiday',name:'Urlaubsmodus',calendarVisible:{},taskVisible:{},longVisible:{}}
+    ];
+  }
+}
+const __oldEnsureSettings=ensureSettings;
+ensureSettings=function(){__oldEnsureSettings();ensureRev033State();};
+function snapshotCurrentVisibility(name){
+  const cal={}, ics={}, task={}, lng={};
+  (state.calendars||[]).forEach((c,i)=>{cal[c.name||('cal_'+i)]=c.visible!==false;(c.links||[]).forEach(l=>ics[l.id||l.name]=l.visible!==false);});
+  (state.taskColumns||[]).forEach(c=>task[c.id]=c.visible!==false);
+  (state.longColumns||[]).forEach(c=>lng[c.id]=c.visible!==false);
+  return {id:makeId('mode'),name,calendarVisible:cal,icsVisible:ics,taskVisible:task,longVisible:lng};
+}
+function saveActiveModeVisibility(){
+  const mode=(state.viewModes||[]).find(m=>m.id===state.activeViewMode); if(!mode)return;
+  const fresh=snapshotCurrentVisibility(mode.name); mode.calendarVisible=fresh.calendarVisible; mode.taskVisible=fresh.taskVisible; mode.longVisible=fresh.longVisible;
+}
+function applyViewMode(id){
+  const mode=(state.viewModes||[]).find(m=>m.id===id); if(!mode)return;
+  (state.calendars||[]).forEach((c,i)=>{const key=c.name||('cal_'+i); if(Object.prototype.hasOwnProperty.call(mode.calendarVisible||{},key))c.visible=!!mode.calendarVisible[key]; (c.links||[]).forEach(l=>{const lkey=l.id||l.name; if(Object.prototype.hasOwnProperty.call(mode.icsVisible||{},lkey))l.visible=!!mode.icsVisible[lkey];});});
+  (state.taskColumns||[]).forEach(c=>{if(Object.prototype.hasOwnProperty.call(mode.taskVisible||{},c.id))c.visible=!!mode.taskVisible[c.id];});
+  (state.longColumns||[]).forEach(c=>{if(Object.prototype.hasOwnProperty.call(mode.longVisible||{},c.id))c.visible=!!mode.longVisible[c.id];});
+  state.activeViewMode=id;
+}
+function renderViewModeSelect(){
+  ensureRev033State(); const sel=$('#viewModeSelect'); if(!sel)return;
+  sel.innerHTML='<option value="">Kein Modus</option>'+state.viewModes.map(m=>`<option value="${escapeHtml(m.id)}">${escapeHtml(m.name)}</option>`).join('')+'<option value="__new__">+ Neuer Modus hinzufügen</option>';
+  sel.value=state.activeViewMode||'';
+  sel.onchange=()=>{
+    if(sel.value==='__new__'){
+      const name=prompt('Name des neuen Modus:', 'Neuer Modus');
+      if(name){const m=snapshotCurrentVisibility(name.trim()||'Neuer Modus');state.viewModes.push(m);state.activeViewMode=m.id;openViewModeConfigModal(m.id);} else {render();}
+      return;
+    }
+    if(sel.value){applyViewMode(sel.value);}else state.activeViewMode='';
+    render();
+  };
+  const gear=$('#modeConfigBtn');
+  if(gear) gear.onclick=()=>{
+    if(!state.activeViewMode){toast('Bitte zuerst einen Ansichtsmodus auswählen oder neu anlegen.');return;}
+    openViewModeConfigModal(state.activeViewMode);
+  };
+}
+function modeCheckbox(label,checked,attrs,extraClass=''){return `<label class="mode-check ${extraClass}"><span title="${escapeHtml(label)}">${escapeHtml(label)}</span><input type="checkbox" ${checked?'checked':''} ${attrs}></label>`;}
+function openViewModeConfigModal(id){
+  if(!requireLogin())return; ensureRev033State();
+  const mode=(state.viewModes||[]).find(m=>m.id===id); if(!mode)return;
+  const calHtml=(state.calendars||[]).map((c,i)=>{
+    const calKey=c.name||('cal_'+i);
+    const checked=Object.prototype.hasOwnProperty.call(mode.calendarVisible||{},calKey)?!!mode.calendarVisible[calKey]:c.visible!==false;
+    const links=(c.links||[]).map(l=>{
+      const lkey=l.id||l.name;
+      const lchecked=Object.prototype.hasOwnProperty.call(mode.icsVisible||{},lkey)?!!mode.icsVisible[lkey]:l.visible!==false;
+      return modeCheckbox((l.name||'Kalenderquelle'),lchecked,`data-mode-ics="${escapeHtml(lkey)}"`,'child');
+    }).join('');
+    return `<div class="mode-config-subtitle">${escapeHtml(c.name||('Kalender '+(i+1)))}</div>${modeCheckbox('Kalender anzeigen',checked,`data-mode-cal="${escapeHtml(calKey)}"`)}${links||'<div class="hint">Keine Quellen.</div>'}`;
+  }).join('');
+  const taskHtml=(state.taskColumns||[]).map(c=>modeCheckbox(c.name,c.visible!==false,`data-mode-task="${escapeHtml(c.id)}"`)).join('')||'<div class="hint">Keine Tagestask-Spalten.</div>';
+  const longHtml=(state.longColumns||[]).map(c=>modeCheckbox(c.name,c.visible!==false,`data-mode-long="${escapeHtml(c.id)}"`)).join('')||'<div class="hint">Keine Langfrist-Gruppen.</div>';
+  $('#modalTitle').textContent='Modus konfigurieren';
+  $('#modalContent').innerHTML=`<div class="edit-grid"><label>Name des Modus</label><input id="modeNameInput" value="${escapeHtml(mode.name)}"><div class="mode-config-list"><div class="mode-config-section"><div class="mode-config-section-title">Kalender und ICS-Links</div><div class="mode-config-grid">${calHtml}</div></div><div class="mode-config-section"><div class="mode-config-section-title">Tagestask-Spalten</div><div class="mode-config-grid">${taskHtml}</div></div><div class="mode-config-section"><div class="mode-config-section-title">Langfristige Task-Gruppen</div><div class="mode-config-grid">${longHtml}</div></div></div></div>`;
+  $('#modalBackdrop').style.display='flex'; $('#saveModal').style.display='';
+  $('#saveModal').onclick=()=>{
+    mode.name=$('#modeNameInput').value.trim()||mode.name||'Modus'; mode.calendarVisible={}; mode.icsVisible={}; mode.taskVisible={}; mode.longVisible={};
+    $$('[data-mode-cal]').forEach(x=>mode.calendarVisible[x.dataset.modeCal]=x.checked);
+    $$('[data-mode-ics]').forEach(x=>mode.icsVisible[x.dataset.modeIcs]=x.checked);
+    $$('[data-mode-task]').forEach(x=>mode.taskVisible[x.dataset.modeTask]=x.checked);
+    $$('[data-mode-long]').forEach(x=>mode.longVisible[x.dataset.modeLong]=x.checked);
+    state.activeViewMode=mode.id; applyViewMode(mode.id); closeModal(); render(); toast('Modus gespeichert.');
+  };
+}
+
+function renderLongColumnConfig(){
+  const root=$('#longColumnConfig'); if(!root)return; ensureRev033State();
+  root.innerHTML=state.longColumns.map((col,idx)=>`<div class="taskcol-item ${col.visible===false?'hidden-col':''}"><div class="taskcol-main"><span class="ics-color-dot" style="background:${escapeHtml(col.color)}"></span><b title="${escapeHtml(col.name)}">${escapeHtml(col.name)}</b></div><div class="taskcol-actions"><button class="btn small ui-icon-btn visibility-btn" data-toggle-longcol="${idx}" title="${col.visible===false?'Einblenden':'Ausblenden'}">${iconEye(col.visible!==false)}</button><button class="btn small ui-icon-btn" data-edit-longcol="${idx}" title="Gruppe bearbeiten">${iconSettings()}</button><button class="btn small ui-icon-btn trash-unified" data-delete-longcol="${idx}" title="Gruppe löschen">${iconTrash()}</button></div></div>`).join('')+`<div class="add-calendar-box"><div><b>Langfristige Gruppe hinzufügen</b><div class="hint">Gruppen für langfristige Tasks, z. B. Allgemein, Geschäftlich.</div></div><button class="btn primary small" id="addLongColumnBtn">+ Gruppe</button></div>`;
+  $$('[data-toggle-longcol]').forEach(b=>b.onclick=()=>{if(!requireLogin())return;const c=state.longColumns[Number(b.dataset.toggleLongcol)];c.visible=c.visible===false;render();});
+  $$('[data-edit-longcol]').forEach(b=>b.onclick=()=>{if(requireLogin())openLongColumnModal(Number(b.dataset.editLongcol));});
+  $$('[data-delete-longcol]').forEach(b=>b.onclick=()=>{if(!requireLogin())return;const idx=Number(b.dataset.deleteLongcol);if(state.longColumns.length<=1)return toast('Mindestens eine langfristige Gruppe bleibt erhalten.');const col=state.longColumns[idx];if(!confirm('Langfristige Gruppe löschen? Bestehende Tasks werden in die erste verfügbare Gruppe verschoben.'))return;const fallback=state.longColumns.find((_,i)=>i!==idx)?.id;state.longterm.forEach(t=>{if(t.columnId===col.id)t.columnId=fallback;});state.longColumns.splice(idx,1);render();});
+  const add=$('#addLongColumnBtn'); if(add)add.onclick=()=>{if(requireLogin())openLongColumnModal(null);};
+}
+function openLongColumnModal(idx){
+  const isNew=idx===null||idx===undefined; ensureRev033State();
+  const col=isNew?{name:'',color:state.colors.long||defaultColors.long,visible:true}:state.longColumns[idx]; const current=col.color||state.colors.long;
+  openModal(isNew?'Langfristige Gruppe hinzufügen':'Langfristige Gruppe bearbeiten',`<input id="mLongColName" value="${escapeHtml(col.name||'')}" placeholder="Name, z. B. Geschäftlich"><div class="color-palette" data-longcol-color-picker>${palette.map(c=>`<button type="button" class="color-choice ${c.toLowerCase()===String(current).toLowerCase()?'active':''}" data-color="${c}" style="background:${c}" title="${c}"></button>`).join('')}</div>`,()=>{const name=$('#mLongColName').value.trim()||'Neue Gruppe';if(isNew)state.longColumns.push({id:makeId('lg'),name,color:col.color||current,visible:true});else col.name=name;});
+  $$('[data-longcol-color-picker] .color-choice').forEach(btn=>btn.onclick=()=>{col.color=btn.dataset.color;if(!isNew){const name=$('#mLongColName')?.value.trim();if(name)col.name=name;persist();render();closeModal();}});
+}
+function renderLong(){
+  const root=$('#longTermList'); if(!root)return; ensureRev033State();
+  const visible=(state.longColumns||[]).filter(c=>c.visible!==false);
+  if(!state.longterm.length){root.innerHTML='<div class="empty">Keine langfristigen Aufgaben.</div>';return;}
+  root.innerHTML=visible.map(col=>{const list=state.longterm.filter(t=>(t.columnId||state.longColumns[0].id)===col.id);return `<section class="long-group"><div class="long-group-title"><span class="ics-color-dot" style="background:${escapeHtml(col.color)}"></span>${escapeHtml(col.name)}</div><div class="long-group-grid">${list.length?list.map(t=>{const meta=t.completedDate?`Erledigt am ${t.completedDate}`:`Erstellt am ${t.createdDate||'unbekannt'}`;const note=t.note?`<span class="long-note" title="${escapeHtml(t.note)}">${escapeHtml(shortText(t.note,80))}</span>`:'';return `<div class="long-card ${t.done?'completed-task-card':''}" data-task-ref="long:${t.id}" style="border-left-color:${escapeHtml(col.color)}!important"><div class="task-row"><input type="checkbox" ${t.done?'checked':''} data-toggle-long="${t.id}"><div><span class="long-title" title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</span><span class="long-meta">${escapeHtml(meta)}</span>${note}</div><button class="kebab" data-delete-long="${t.id}">×</button></div></div>`;}).join(''):'<div class="empty">Keine Einträge.</div>'}</div></section>`;}).join('');
+  $$('[data-toggle-long]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=(ev)=>{ev.stopPropagation();const t=state.longterm.find(x=>x.id===c.dataset.toggleLong);if(!requireLogin()){c.checked=!c.checked;return;}if(t){t.done=c.checked;t.completedDate=c.checked?fmtDate(new Date()):null;render();}}});
+  $$('[data-delete-long]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();if(!requireLogin())return;state.longterm=state.longterm.filter(x=>x.id!==b.dataset.deleteLong);render();});
+  $$('#longTermList [data-task-ref]').forEach(card=>card.onclick=()=>openTaskDetailModal(card.dataset.taskRef));
+}
+function openLongModal(){
+  if(!requireLogin())return; ensureRev033State();
+  openModal('Langfristigen Task hinzufügen',`<input id="mTitle" placeholder="Langfristiger Task"><select id="mLongColumn">${state.longColumns.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join('')}</select><textarea id="mNote" rows="3" placeholder="Notiz"></textarea>`,()=>{const title=$('#mTitle').value.trim();if(!title)return toast('Aufgabe ohne Titel wurde nicht gespeichert.');state.longterm.push({id:crypto.randomUUID(),title,done:false,note:$('#mNote').value.trim(),createdDate:fmtDate(new Date()),completedDate:null,columnId:$('#mLongColumn').value});});
+}
+function openTaskDetailModal(ref){
+  if(!requireLogin())return; ensureRev033State(); const [type,id]=ref.split(':'); const isLong=type==='long'; const t=isLong?state.longterm.find(x=>x.id===id):state.tasks.find(x=>x.id===id); if(!t)return;
+  $('#modalTitle').textContent=isLong?'Langfristigen Task bearbeiten':'Tagestask bearbeiten';
+  $('#modalContent').innerHTML=`<div class="edit-grid"><label>Titel</label><input id="editTaskTitle" value="${escapeHtml(t.title||'')}">${isLong?`<label>Langfristige Gruppe</label><select id="editLongColumn">${state.longColumns.map(c=>`<option value="${escapeHtml(c.id)}" ${(t.columnId||state.longColumns[0].id)===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}</select><label>Verschieben</label><select id="moveLongToTask"><option value="keep">Langfristiger Task bleiben</option><option value="today">In Tagestask für heute verschieben</option></select>`:`<label>Task-Spalte</label><select id="editTaskColumn">${state.taskColumns.map(c=>`<option value="${escapeHtml(c.id)}" ${(t.columnId||state.taskColumns[0].id)===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}</select><label>Soll-Datum</label><input id="editTaskDate" type="date" value="${escapeHtml(t.date||fmtDate(new Date()))}"><label>Verschieben</label><select id="moveTaskToLong"><option value="keep">Tagestask bleiben</option><option value="long">In langfristige Tasks verschieben</option></select><label>Zielgruppe langfristig</label><select id="targetLongColumn">${state.longColumns.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join('')}</select>`}<label>Status</label><select id="editTaskDone"><option value="false" ${!t.done?'selected':''}>Offen</option><option value="true" ${t.done?'selected':''}>Erledigt</option></select><label>Erledigt am</label><input id="editTaskCompleted" type="date" value="${escapeHtml(t.completedDate||'')}"><label>Notiz</label><textarea id="editTaskNote" rows="7">${escapeHtml(t.note||'')}</textarea></div>`;
+  $('#modalBackdrop').style.display='flex'; $('#saveModal').style.display='';
+  $('#saveModal').onclick=()=>{
+    const title=$('#editTaskTitle').value.trim(); if(title)t.title=title; t.done=$('#editTaskDone').value==='true'; t.completedDate=$('#editTaskCompleted').value||null; if(t.done&&!t.completedDate)t.completedDate=fmtDate(new Date()); if(!t.done)t.completedDate=null; t.note=$('#editTaskNote').value.trim();
+    if(isLong){
+      t.columnId=$('#editLongColumn').value;
+      if($('#moveLongToTask').value==='today'){state.tasks.push({id:crypto.randomUUID(),title:t.title,date:fmtDate(new Date()),done:t.done,note:t.note,columnId:state.taskColumns[0]?.id||'default',completedDate:t.completedDate});state.longterm=state.longterm.filter(x=>x.id!==t.id);}
+    }else{
+      if($('#moveTaskToLong').value==='long'){state.longterm.push({id:crypto.randomUUID(),title:t.title,done:t.done,note:t.note,createdDate:fmtDate(new Date()),completedDate:t.completedDate,columnId:$('#targetLongColumn').value});state.tasks=state.tasks.filter(x=>x.id!==t.id);}else{t.date=$('#editTaskDate').value||t.date;t.columnId=$('#editTaskColumn').value;}
+    }
+    closeModal();render();
+  };
+  $('#modalContent').onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA'){e.preventDefault();$('#saveModal').click();}else if(e.key==='Enter'&&e.ctrlKey){e.preventDefault();$('#saveModal').click();}};
+}
+function initConfigBlocks(){
+  $$('.config-toggle').forEach(btn=>{btn.onclick=()=>{const block=btn.closest('.config-block');if(!block)return;block.classList.toggle('collapsed');const chev=block.querySelector('.config-chevron');if(chev)chev.textContent=block.classList.contains('collapsed')?'▸':'▾';};});
+}
+function updateSidebarToggle(){const collapsed=document.body.classList.contains('sidebar-collapsed');const btn=document.querySelector('#sidebarToggleBtn');if(!btn)return;btn.innerHTML=`<span class="sidebar-toggle-tab">${collapsed?'›':'‹'}</span>`;btn.title=collapsed?'Seitenleiste aufklappen':'Seitenleiste einklappen';}
+function initSidebarToggle(){const saved=localStorage.getItem('kalender_sidebar_collapsed')==='1';document.body.classList.toggle('sidebar-collapsed',saved);updateSidebarToggle();const btn=document.querySelector('#sidebarToggleBtn');if(btn)btn.onclick=()=>{document.body.classList.toggle('sidebar-collapsed');localStorage.setItem('kalender_sidebar_collapsed',document.body.classList.contains('sidebar-collapsed')?'1':'0');updateSidebarToggle();};}
+
+
+
+/* Rev 037: Frontend-State-Persistenz und UI-Logik ohne neue Supabase-Tabellen */
+const __rev037EnsureSettings=ensureSettings;
+ensureSettings=function(){
+  __rev037EnsureSettings();
+  state.sidebarCollapsed=!!state.sidebarCollapsed;
+  state.configCollapsed=state.configCollapsed||{};
+  state.sidebarAllCollapsed=!!state.sidebarAllCollapsed;
+  (state.calendars||[]).forEach(c=>{
+    if(c.collapsed===undefined)c.collapsed=true;
+    c.links=c.links||[];
+  });
+};
+function immediatePersist(){
+  persist();
+  if(cloudReady&&currentUser&&!suppressCloudSave){clearTimeout(cloudSaveTimer);saveStateToCloud();}
+}
+function moveLongColumn(from,to){
+  if(!requireLogin())return;
+  ensureRev033State();
+  if(to<0||to>=state.longColumns.length||from===to)return;
+  const [moved]=state.longColumns.splice(from,1);
+  state.longColumns.splice(to,0,moved);
+  render();
+}
+function setAllConfigBlocksCollapsed(collapsed){
+  ensureSettings();
+  state.sidebarAllCollapsed=!!collapsed;
+  $$('.config-block').forEach(block=>{
+    const key=block.dataset.configBlock;
+    if(key)state.configCollapsed[key]=!!collapsed;
+    block.classList.toggle('collapsed',!!collapsed);
+    const chev=block.querySelector('.config-chevron');
+    if(chev)chev.textContent=collapsed?'▸':'▾';
+  });
+  updateCollapseAllButton();
+  immediatePersist();
+}
+function updateCollapseAllButton(){
+  const btn=document.querySelector('#collapseAllConfigBtn');
+  if(!btn)return;
+  const all=$$('.config-block').every(b=>b.classList.contains('collapsed'));
+  state.sidebarAllCollapsed=all;
+  btn.innerHTML=all?'▾ Alle ausklappen':'▸ Alle einklappen';
+  btn.title=all?'Alle Bereiche in der Seitenleiste ausklappen':'Alle Bereiche in der Seitenleiste einklappen';
+}
+function initConfigBlocks(){
+  ensureSettings();
+  const viewContent=document.querySelector('[data-config-block="view"] .config-content');
+  if(viewContent&&!document.querySelector('#collapseAllConfigBtn')){
+    viewContent.insertAdjacentHTML('afterbegin','<div class="sidebar-collapse-all-row"><button class="btn small" id="collapseAllConfigBtn" type="button">▸ Alle einklappen</button></div>');
+  }
+  $$('.config-block').forEach(block=>{
+    const key=block.dataset.configBlock;
+    const collapsed=!!state.configCollapsed[key];
+    block.classList.toggle('collapsed',collapsed);
+    const chev=block.querySelector('.config-chevron');
+    if(chev)chev.textContent=collapsed?'▸':'▾';
+  });
+  $$('.config-toggle').forEach(btn=>{btn.onclick=()=>{
+    const block=btn.closest('.config-block');if(!block)return;
+    block.classList.toggle('collapsed');
+    const key=block.dataset.configBlock;if(key)state.configCollapsed[key]=block.classList.contains('collapsed');
+    const chev=block.querySelector('.config-chevron');if(chev)chev.textContent=block.classList.contains('collapsed')?'▸':'▾';
+    updateCollapseAllButton();
+    immediatePersist();
+  };});
+  const allBtn=document.querySelector('#collapseAllConfigBtn');
+  if(allBtn)allBtn.onclick=()=>setAllConfigBlocksCollapsed(!$$('.config-block').every(b=>b.classList.contains('collapsed')));
+  updateCollapseAllButton();
+}
+function updateSidebarToggle(){const collapsed=!!state.sidebarCollapsed;document.body.classList.toggle('sidebar-collapsed',collapsed);const btn=document.querySelector('#sidebarToggleBtn');if(!btn)return;btn.innerHTML=`<span class="sidebar-toggle-tab">${collapsed?'›':'‹'}</span>`;btn.title=collapsed?'Seitenleiste aufklappen':'Seitenleiste einklappen';}
+function initSidebarToggle(){ensureSettings();document.body.classList.toggle('sidebar-collapsed',!!state.sidebarCollapsed);updateSidebarToggle();const btn=document.querySelector('#sidebarToggleBtn');if(btn)btn.onclick=()=>{state.sidebarCollapsed=!state.sidebarCollapsed;updateSidebarToggle();immediatePersist();};}
+function renderCalendarConfig(){
+  const root=$('#calendarConfig');root.innerHTML='';ensureSettings();
+  state.calendars.forEach((cal,i)=>{
+    const visible=cal.visible!==false;const collapsed=cal.collapsed!==false;
+    const div=document.createElement('div');div.className='calendar-pane'+(!visible?' hidden-cal':'')+(collapsed?' cal-collapsed':'');div.dataset.calIndex=i;
+    const sources=cal.links.length?cal.links.map((l,idx)=>{const lv=l.visible!==false;const isOwn=l.type==='own';return `<div class="ics-item ${lv?'':'hidden-ics'}"><div class="ics-click" title="${isOwn?'Eigener Kalender':'ICS-Kalender'}"><b title="${escapeHtml(l.name)}"><span class="ics-color-dot" style="background:${escapeHtml(l.color||state.colors.event)}"></span>${escapeHtml(shortText(l.name,34))}</b><span>${isOwn?'Eigener Kalender':'ICS-Kalender aktiv'}</span></div><div class="ics-actions"><button class="btn small ui-icon-btn visibility-btn" data-toggle-ics="${i}:${idx}" title="${lv?'Ausblenden':'Einblenden'}">${iconEye(lv)}</button><button class="btn small ui-icon-btn" data-ics-settings="${i}:${idx}" title="${isOwn?'Eigenen Kalender einstellen':'ICS-Kalender einstellen'}">${iconSettings()}</button><button class="btn small ui-icon-btn trash-unified" data-del-ics="${i}:${idx}" title="Kalenderquelle entfernen">${iconTrash()}</button></div></div>`}).join(''):'<div class="empty">Noch keine Kalenderquelle.</div>';
+    div.innerHTML=`<div class="pane-head"><div class="cal-title-line"><button class="cal-title-click" data-edit-cal="${i}" title="Kalendername ändern"><span class="pane-name">${escapeHtml(cal.name)}</span><span class="cal-edit-icon">✎</span></button></div><div class="pane-actions"><span class="order-stack"><button class="btn small ui-icon-btn order-btn" data-move-cal="${i}:-1" title="Nach oben" ${i===0?'disabled':''}>▲</button><button class="btn small ui-icon-btn order-btn" data-move-cal="${i}:1" title="Nach unten" ${i===state.calendars.length-1?'disabled':''}>▼</button></span><button class="btn small ui-icon-btn" data-collapse-cal="${i}" title="${collapsed?'Kalender aufklappen':'Kalender einklappen'}"><span class="cal-collapse-icon">${collapsed?'▸':'▾'}</span></button><button class="btn small ui-icon-btn visibility-btn ${visible?'':'hidden-state'}" data-toggle-cal="${i}" title="${visible?'Kalender ausblenden':'Kalender einblenden'}">${iconEye(visible)}</button><button class="btn small add-source-plus" data-add-source="${i}" title="Kalenderquelle hinzufügen"><span>+</span></button><button class="btn small ui-icon-btn trash-unified" data-delete-cal="${i}" title="Kalender löschen">${iconTrash()}</button></div></div><div class="calendar-source-wrap">${sources}</div><div class="status">${escapeHtml(cal.status||'')}</div>`;
+    root.appendChild(div);
+  });
+  if(!state.calendars.length){const note=document.createElement('div');note.className='no-calendar-note';note.innerHTML='Noch kein Kalender angelegt. Lege unten einen Kalender an und füge danach einen oder mehrere ICS- oder eigene Kalender hinzu.';root.appendChild(note);}
+  const add=document.createElement('div');add.className='add-calendar-box';add.innerHTML=`<div><b>Kalender hinzufügen</b><div class="hint">Neuen Kalenderbereich erstellen und anschließend Kalenderquellen hinterlegen.</div></div><button class="btn primary small" id="addCalendarBtn">+ Kalender</button>`;root.appendChild(add);
+  $$('[data-collapse-cal]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();if(!requireLogin())return;const i=Number(b.dataset.collapseCal);state.calendars[i].collapsed=state.calendars[i].collapsed===false;render();});
+  $$('[data-toggle-cal]').forEach(b=>b.onclick=()=>{if(!requireLogin())return;const i=Number(b.dataset.toggleCal);state.calendars[i].visible=state.calendars[i].visible===false;render();});
+  $$('[data-move-cal]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();const [i,d]=b.dataset.moveCal.split(':').map(Number);moveCalendar(i,i+d);});
+  $$('[data-toggle-ics]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();if(!requireLogin())return;const [i,idx]=b.dataset.toggleIcs.split(':').map(Number);const l=state.calendars[i].links[idx];l.visible=l.visible===false;render();});
+  $$('[data-edit-cal]').forEach(b=>b.onclick=()=>{if(requireLogin())openCalendarNameModal(Number(b.dataset.editCal));});
+  $$('[data-add-source]').forEach(b=>b.onclick=()=>{if(requireLogin())openSourceChoiceModal(Number(b.dataset.addSource));});
+  $$('[data-ics-settings]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();const [i,idx]=b.dataset.icsSettings.split(':').map(Number);const link=state.calendars[i].links[idx];if(link?.type==='own')openOwnSourceModal(i,idx);else openICSSettingsModal(i,idx);});
+  $$('[data-del-ics]').forEach(b=>b.onclick=()=>{const [i,idx]=b.dataset.delIcs.split(':').map(Number);const target=state.calendars[i].links[idx];if(target?.type==='own'){const count=(state.calendars[i].ownEvents||[]).filter(e=>e.sourceId===target.id).length;const ok=confirm(`Sind Sie sicher, dass Sie diesen eigenen Kalender löschen möchten?\n\nAlle darin erstellten Termine werden unwiderruflich gelöscht.\nBetroffene Termine: ${count}`);if(!ok)return;}else{const ok=confirm('Diese Kalenderquelle wirklich entfernen?');if(!ok)return;}const removed=state.calendars[i].links.splice(idx,1)[0];if(removed?.id){state.calendars[i].events=(state.calendars[i].events||[]).filter(e=>e.icsId!==removed.id);state.calendars[i].ownEvents=(state.calendars[i].ownEvents||[]).filter(e=>e.sourceId!==removed.id);}else{state.calendars[i].events=[];}state.calendars[i].status='Kalenderquelle entfernt.';render();});
+  $$('[data-delete-cal]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.deleteCal);if(confirm('Kalender inklusive aller Quellen und eigenen Terminen löschen?')){state.calendars.splice(i,1);render();}});
+  const addBtn=$('#addCalendarBtn');if(addBtn)addBtn.onclick=()=>{if(requireLogin())openAddCalendarModal();};
+}
+function renderLongColumnConfig(){
+  const root=$('#longColumnConfig'); if(!root)return; ensureRev033State();
+  root.innerHTML=state.longColumns.map((col,idx)=>`<div class="taskcol-item ${col.visible===false?'hidden-col':''}"><div class="taskcol-main"><span class="ics-color-dot" style="background:${escapeHtml(col.color)}"></span><b title="${escapeHtml(col.name)}">${escapeHtml(col.name)}</b></div><div class="taskcol-actions"><span class="order-stack"><button class="btn small ui-icon-btn order-btn" data-move-longcol="${idx}:-1" title="Nach oben" ${idx===0?'disabled':''}>▲</button><button class="btn small ui-icon-btn order-btn" data-move-longcol="${idx}:1" title="Nach unten" ${idx===state.longColumns.length-1?'disabled':''}>▼</button></span><button class="btn small ui-icon-btn visibility-btn" data-toggle-longcol="${idx}" title="${col.visible===false?'Einblenden':'Ausblenden'}">${iconEye(col.visible!==false)}</button><button class="btn small ui-icon-btn" data-edit-longcol="${idx}" title="Gruppe bearbeiten">${iconSettings()}</button><button class="btn small ui-icon-btn trash-unified" data-delete-longcol="${idx}" title="Gruppe löschen">${iconTrash()}</button></div></div>`).join('')+`<div class="add-calendar-box"><div><b>Langfristige Gruppe hinzufügen</b><div class="hint">Gruppen für langfristige Tasks, z. B. Allgemein, Geschäftlich.</div></div><button class="btn primary small" id="addLongColumnBtn">+ Gruppe</button></div>`;
+  $$('[data-move-longcol]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();const [i,d]=b.dataset.moveLongcol.split(':').map(Number);moveLongColumn(i,i+d);});
+  $$('[data-toggle-longcol]').forEach(b=>b.onclick=()=>{if(!requireLogin())return;const c=state.longColumns[Number(b.dataset.toggleLongcol)];c.visible=c.visible===false;render();});
+  $$('[data-edit-longcol]').forEach(b=>b.onclick=()=>{if(requireLogin())openLongColumnModal(Number(b.dataset.editLongcol));});
+  $$('[data-delete-longcol]').forEach(b=>b.onclick=()=>{if(!requireLogin())return;const idx=Number(b.dataset.deleteLongcol);if(state.longColumns.length<=1)return toast('Mindestens eine langfristige Gruppe bleibt erhalten.');const col=state.longColumns[idx];if(!confirm('Langfristige Gruppe löschen? Bestehende Tasks werden in die erste verfügbare Gruppe verschoben.'))return;const fallback=state.longColumns.find((_,i)=>i!==idx)?.id;state.longterm.forEach(t=>{if(t.columnId===col.id)t.columnId=fallback;});state.longColumns.splice(idx,1);render();});
+  const add=$('#addLongColumnBtn'); if(add)add.onclick=()=>{if(requireLogin())openLongColumnModal(null);};
+}
+function visibleTaskColumnIds(){return (state.taskColumns||[]).filter(c=>c.visible!==false).map(c=>c.id);}
+function visibleLongColumnIds(){return (state.longColumns||[]).filter(c=>c.visible!==false).map(c=>c.id);}
+function dayCard(date){
+  const today=new Date();today.setHours(0,0,0,0);const iso=fmtDate(date);
+  const openTasks=state.tasks.filter(t=>t.date===iso&&!t.done);
+  const overdue=sameDay(date,today)?state.tasks.filter(t=>t.date<fmtDate(today)&&!t.done):[];
+  const visibleTaskIds=visibleTaskColumnIds(); const visibleLongIds=visibleLongColumnIds();
+  const completedTasks=state.tasks.filter(t=>t.done&&t.completedDate===iso&&visibleTaskIds.includes(t.columnId||state.taskColumns?.[0]?.id));
+  const completedLong=state.longterm.filter(t=>t.done&&t.completedDate===iso&&visibleLongIds.includes(t.columnId||state.longColumns?.[0]?.id));
+  const showCompleted=completedTasks.length||completedLong.length;
+  const day=document.createElement('div');day.className='day'+(sameDay(date,today)?' today':'');
+  day.innerHTML=`<div class="day-head"><div class="day-num"><span class="day-title-weekday">${escapeHtml(date.toLocaleDateString('de-DE',{weekday:'long'}))}</span><span class="day-title-date">${escapeHtml(date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}))}</span></div>${sameDay(date,today)?'<span class="badge">Aktueller Tag</span>':''}</div><div class="day-body"><div class="partition"><div class="part-head"><div class="part-title">1. Terminkalender</div></div><div class="split">${calendarLanes(date)}</div></div><div class="partition"><div class="part-head"><div class="part-title">2. Tagestasks</div><button class="btn small" data-task-date="${iso}">+ Hinzufügen</button></div>${taskColumnsList(openTasks)}</div>${sameDay(date,today)?`<div class="partition"><div class="part-head"><div class="part-title">3. Überzogene Tagestasks</div></div>${taskList(overdue,true)}</div>`:''}${showCompleted?`<div class="partition"><div class="part-head"><div class="part-title">${sameDay(date,today)?'4':'3'}. An diesem Tag erledigte Tasks</div></div>${completedDoneList(completedTasks,completedLong)}</div>`:''}</div>`;
+  day.querySelector('[data-task-date]').onclick=()=>openTaskModal(iso);
+  day.querySelectorAll('[data-toggle-task]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=(ev)=>{ev.stopPropagation();const t=state.tasks.find(x=>x.id===c.dataset.toggleTask);if(!requireLogin()){c.checked=!c.checked;return;}if(t){t.done=c.checked;t.completedDate=c.checked?fmtDate(new Date()):null;render();}}});
+  day.querySelectorAll('[data-delete-task]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();if(!requireLogin())return;state.tasks=state.tasks.filter(x=>x.id!==b.dataset.deleteTask);render();});
+  day.querySelectorAll('[data-task-ref]').forEach(card=>card.onclick=()=>openTaskDetailModal(card.dataset.taskRef));
+  day.querySelectorAll('[data-add-own-event]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();const [ci,iso]=b.dataset.addOwnEvent.split(':');openOwnEventModal(Number(ci),iso);});
+  day.querySelectorAll('[data-event-ref]').forEach(card=>card.onclick=()=>openEventDetailModal(card.dataset.eventRef));
+  return day;
+}
+function snapshotCurrentVisibility(name){
+  const cal={}, ics={}, task={}, lng={};
+  (state.calendars||[]).forEach((c,i)=>{cal[c.id||c.name||('cal_'+i)]=c.visible!==false;(c.links||[]).forEach(l=>ics[l.id||l.name]=l.visible!==false);});
+  (state.taskColumns||[]).forEach(c=>task[c.id]=c.visible!==false);
+  (state.longColumns||[]).forEach(c=>lng[c.id]=c.visible!==false);
+  return {id:makeId('mode'),name,calendarVisible:cal,icsVisible:ics,taskVisible:task,longVisible:lng};
+}
+function applyViewMode(id){
+  const mode=(state.viewModes||[]).find(m=>m.id===id); if(!mode)return;
+  (state.calendars||[]).forEach((c,i)=>{const key=c.id||c.name||('cal_'+i); if(Object.prototype.hasOwnProperty.call(mode.calendarVisible||{},key))c.visible=!!mode.calendarVisible[key]; (c.links||[]).forEach(l=>{const lkey=l.id||l.name; if(Object.prototype.hasOwnProperty.call(mode.icsVisible||{},lkey))l.visible=!!mode.icsVisible[lkey]; if(c.visible===false)l.visible=false;});});
+  (state.taskColumns||[]).forEach(c=>{if(Object.prototype.hasOwnProperty.call(mode.taskVisible||{},c.id))c.visible=!!mode.taskVisible[c.id];});
+  (state.longColumns||[]).forEach(c=>{if(Object.prototype.hasOwnProperty.call(mode.longVisible||{},c.id))c.visible=!!mode.longVisible[c.id];});
+  state.activeViewMode=id;
+}
+function syncModeChildrenInModal(){
+  $$('[data-mode-cal]').forEach(parent=>{
+    const section=parent.closest('.mode-config-calgroup');
+    if(!section)return;
+    section.querySelectorAll('[data-mode-ics]').forEach(child=>{
+      if(!parent.checked)child.checked=false;
+      child.disabled=!parent.checked;
+      child.closest('.mode-check')?.classList.toggle('disabled-child',!parent.checked);
+    });
+  });
+}
+function openViewModeConfigModal(id){
+  if(!requireLogin())return; ensureRev033State();
+  const mode=(state.viewModes||[]).find(m=>m.id===id); if(!mode)return;
+  const calHtml=(state.calendars||[]).map((c,i)=>{
+    const calKey=c.id||c.name||('cal_'+i);
+    const checked=Object.prototype.hasOwnProperty.call(mode.calendarVisible||{},calKey)?!!mode.calendarVisible[calKey]:c.visible!==false;
+    const links=(c.links||[]).map(l=>{
+      const lkey=l.id||l.name;
+      const lchecked=checked&&(Object.prototype.hasOwnProperty.call(mode.icsVisible||{},lkey)?!!mode.icsVisible[lkey]:l.visible!==false);
+      return modeCheckbox((l.name||'Kalenderquelle'),lchecked,`data-mode-ics="${escapeHtml(lkey)}" ${checked?'':'disabled'}`,'child '+(checked?'':'disabled-child'));
+    }).join('');
+    return `<div class="mode-config-calgroup"><div class="mode-config-subtitle">${escapeHtml(c.name||('Kalender '+(i+1)))}</div>${modeCheckbox('Kalender anzeigen',checked,`data-mode-cal="${escapeHtml(calKey)}"`)}${links||'<div class="hint">Keine Quellen.</div>'}</div>`;
+  }).join('');
+  const taskHtml=(state.taskColumns||[]).map(c=>modeCheckbox(c.name,Object.prototype.hasOwnProperty.call(mode.taskVisible||{},c.id)?!!mode.taskVisible[c.id]:c.visible!==false,`data-mode-task="${escapeHtml(c.id)}"`)).join('')||'<div class="hint">Keine Tagestask-Spalten.</div>';
+  const longHtml=(state.longColumns||[]).map(c=>modeCheckbox(c.name,Object.prototype.hasOwnProperty.call(mode.longVisible||{},c.id)?!!mode.longVisible[c.id]:c.visible!==false,`data-mode-long="${escapeHtml(c.id)}"`)).join('')||'<div class="hint">Keine Langfrist-Gruppen.</div>';
+  $('#modalTitle').textContent='Modus konfigurieren';
+  $('#modalContent').innerHTML=`<div class="edit-grid"><label>Name des Modus</label><input id="modeNameInput" value="${escapeHtml(mode.name)}"><div class="mode-config-list"><div class="mode-config-section"><div class="mode-config-section-title">Kalender und ICS-Links</div><div class="mode-config-grid">${calHtml}</div></div><div class="mode-config-section"><div class="mode-config-section-title">Tagestask-Spalten</div><div class="mode-config-grid">${taskHtml}</div></div><div class="mode-config-section"><div class="mode-config-section-title">Langfristige Task-Gruppen</div><div class="mode-config-grid">${longHtml}</div></div></div></div>`;
+  $('#modalBackdrop').style.display='flex'; $('#saveModal').style.display='';
+  $$('[data-mode-cal]').forEach(x=>x.onchange=syncModeChildrenInModal);
+  syncModeChildrenInModal();
+  $('#saveModal').onclick=()=>{
+    mode.name=$('#modeNameInput').value.trim()||mode.name||'Modus'; mode.calendarVisible={}; mode.icsVisible={}; mode.taskVisible={}; mode.longVisible={};
+    $$('[data-mode-cal]').forEach(x=>mode.calendarVisible[x.dataset.modeCal]=x.checked);
+    $$('[data-mode-ics]').forEach(x=>mode.icsVisible[x.dataset.modeIcs]=!x.disabled&&x.checked);
+    $$('[data-mode-task]').forEach(x=>mode.taskVisible[x.dataset.modeTask]=x.checked);
+    $$('[data-mode-long]').forEach(x=>mode.longVisible[x.dataset.modeLong]=x.checked);
+    state.activeViewMode=mode.id; applyViewMode(mode.id); closeModal(); render(); toast('Modus gespeichert.');
+  };
+}
+function openSyncSettingsModal(){
+  openModal('Allgemeine Einstellungen',`<div class="settings-grid"><div class="field"><label>Erscheinung</label><select id="mTheme"><option value="light">Hell</option><option value="dark">Dunkel</option></select></div><div class="field"><label>Kanten</label><select id="mCornerStyle"><option value="rounded">Abgerundet</option><option value="sharp">Eckig / 90°</option></select></div><div class="section-title">Synchronisierung</div><button class="btn primary" id="mSyncNow" type="button">Alle ICS-Links aktualisieren</button><div class="field"><label>Intervall</label><select id="mSyncInterval"><option value="0">Aus / manuell</option><option value="5">Alle 5 Min.</option><option value="15">Alle 15 Min.</option><option value="30">Alle 30 Min.</option><option value="60">Alle 60 Min.</option></select></div><div class="hint" id="mSyncHint">ICS-Links werden über den intern fest hinterlegten Proxy geladen. Die Proxy-URL wird nicht mehr angezeigt.</div></div>`,()=>{state.theme=$('#mTheme').value;state.cornerStyle=$('#mCornerStyle').value;state.syncInterval=Number($('#mSyncInterval').value);state.fetchMode='proxy';state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;setupAutoSync();});
+  $('#mTheme').value=state.theme||'light';$('#mCornerStyle').value=state.cornerStyle||'rounded';$('#mSyncInterval').value=String(state.syncInterval??15);
+  $('#mSyncNow').onclick=async()=>{state.theme=$('#mTheme').value;state.cornerStyle=$('#mCornerStyle').value;state.syncInterval=Number($('#mSyncInterval').value);state.fetchMode='proxy';state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;persist();setupAutoSync();applyAppearance();await syncAllICS();};
+}
+
+
+
+/* Rev 039: echte Tabellen-Persistenz + Proxy-404-Fix
+   - App-State speichert nur UI/Ansichtsoptionen.
+   - Fachliche Daten werden als relationaler Snapshot in Supabase-Tabellen gespeichert.
+   - Der ICS-Proxy zeigt bewusst noch auf die vorhandene funktionierende Edge Function, weil im neuen Supabase-Projekt noch keine Function deployed ist. */
+const UUID_RE=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+let relationalSaveTimer=null;
+let relationalSaveRunning=false;
+let relationalSaveQueued=false;
+function isUuid(v){return UUID_RE.test(String(v||''));}
+function newUuid(){return crypto.randomUUID();}
+function uiStateOnly(){
+  return {
+    days:state.days,dayRows:state.dayRows,startMode:state.startMode,panes:state.panes,offset:state.offset,
+    syncInterval:state.syncInterval,fetchMode:'proxy',proxyUrl:'',viewModes:state.viewModes||[],activeViewMode:state.activeViewMode||'',
+    theme:state.theme||'light',cornerStyle:state.cornerStyle||'rounded',colors:state.colors||defaultColors,
+    sidebarCollapseAll:state.sidebarCollapseAll||false,configCollapsed:state.configCollapsed||{}
+  };
+}
+function applyUiState(ui){
+  if(!ui)return;
+  ['days','dayRows','startMode','panes','offset','syncInterval','viewModes','activeViewMode','theme','cornerStyle','colors','sidebarCollapseAll','configCollapsed'].forEach(k=>{if(ui[k]!==undefined)state[k]=ui[k];});
+  state.fetchMode='proxy';state.proxyUrl='';
+}
+function normalizeRelationalIds(){
+  const calMap=new Map(), sourceMap=new Map(), taskGroupMap=new Map(), longGroupMap=new Map();
+  (state.calendars||[]).forEach(cal=>{
+    const old=cal.id||cal.dbId;
+    if(!isUuid(old)){cal.id=newUuid();}else cal.id=old;
+    cal.dbId=cal.id;
+    if(old&&old!==cal.id)calMap.set(old,cal.id);
+    (cal.links||[]).forEach(src=>{
+      const so=src.id;
+      if(!isUuid(so)){src.id=newUuid();sourceMap.set(so,src.id);} 
+      src.calendarGroupId=cal.id;
+    });
+  });
+  (state.taskColumns||[]).forEach(g=>{const old=g.id;if(!isUuid(old)){g.id=newUuid();taskGroupMap.set(old,g.id);}});
+  (state.tasks||[]).forEach(t=>{if(!isUuid(t.id))t.id=newUuid(); if(taskGroupMap.has(t.columnId))t.columnId=taskGroupMap.get(t.columnId);});
+  (state.longColumns||[]).forEach(g=>{const old=g.id;if(!isUuid(old)){g.id=newUuid();longGroupMap.set(old,g.id);}});
+  (state.longterm||[]).forEach(t=>{if(!isUuid(t.id))t.id=newUuid(); if(longGroupMap.has(t.columnId))t.columnId=longGroupMap.get(t.columnId);});
+  (state.calendars||[]).forEach(cal=>(cal.ownEvents||[]).forEach(e=>{if(!isUuid(e.id))e.id=newUuid(); if(sourceMap.has(e.sourceId))e.sourceId=sourceMap.get(e.sourceId);}));
+}
+async function deleteMissing(table,ids){
+  let q=supabaseClient.from(table).delete().eq('user_id',currentUser.id);
+  if(ids&&ids.length) q=q.not('id','in',`(${ids.join(',')})`);
+  const {error}=await q;
+  if(error)throw error;
+}
+async function upsertRows(table,rows){
+  if(!rows.length)return;
+  const {error}=await supabaseClient.from(table).upsert(rows,{onConflict:'id'});
+  if(error)throw error;
+}
+function scheduleRelationalSave(){
+  if(!currentUser||suppressCloudSave)return;
+  clearTimeout(relationalSaveTimer);
+  relationalSaveTimer=setTimeout(saveRelationalSnapshot,650);
+}
+async function saveRelationalSnapshot(){
+  if(!currentUser||suppressCloudSave)return;
+  if(relationalSaveRunning){relationalSaveQueued=true;return;}
+  relationalSaveRunning=true;
+  try{
+    normalizeRelationalIds();
+    const uid=currentUser.id;
+    const calendarGroups=(state.calendars||[]).map((c,i)=>({id:c.id,user_id:uid,name:c.name||`Kalender ${i+1}`,visible:c.visible!==false,collapsed:c.collapsed!==false,position:i}));
+    const calendarSources=[];
+    (state.calendars||[]).forEach((c)=>{(c.links||[]).forEach((l,j)=>calendarSources.push({id:l.id,user_id:uid,calendar_group_id:c.id,type:l.type||'ics',name:l.name||'Kalenderquelle',url:l.type==='own'?null:(l.url||null),color:l.color||state.colors?.event||defaultColors.event,visible:l.visible!==false,position:j}));});
+    const taskGroups=(state.taskColumns||[]).map((g,i)=>({id:g.id,user_id:uid,name:g.name||`Gruppe ${i+1}`,color:g.color||state.colors?.task||defaultColors.task,visible:g.visible!==false,position:i}));
+    const tasks=(state.tasks||[]).map((t,i)=>({id:t.id,user_id:uid,task_group_id:isUuid(t.columnId)?t.columnId:null,title:t.title||'Ohne Titel',note:t.note||null,task_date:t.date||fmtDate(new Date()),done:!!t.done,completed_date:t.completedDate||null,position:i}));
+    const longTaskGroups=(state.longColumns||[]).map((g,i)=>({id:g.id,user_id:uid,name:g.name||`Gruppe ${i+1}`,color:g.color||state.colors?.long||defaultColors.long,visible:g.visible!==false,position:i}));
+    const longTasks=(state.longterm||[]).map((t,i)=>({id:t.id,user_id:uid,long_task_group_id:isUuid(t.columnId)?t.columnId:null,title:t.title||'Ohne Titel',note:t.note||null,done:!!t.done,completed_date:t.completedDate||null,position:i}));
+    const ownEvents=[];
+    (state.calendars||[]).forEach(c=>(c.ownEvents||[]).forEach((e,i)=>ownEvents.push({id:e.id,user_id:uid,calendar_source_id:e.sourceId,title:e.summary||e.title||'Ohne Titel',location:e.location||null,description:e.description||null,start_time:e.start,end_time:e.end||null,all_day:!!e.allDay,recurrence:e.recurrence||'none',travel_time:e.travelTime||null,status:e.status||'active'})));
+
+    await upsertRows('calendar_groups',calendarGroups);
+    await deleteMissing('calendar_groups',calendarGroups.map(x=>x.id));
+    await upsertRows('calendar_sources',calendarSources);
+    await deleteMissing('calendar_sources',calendarSources.map(x=>x.id));
+    await upsertRows('task_groups',taskGroups);
+    await deleteMissing('task_groups',taskGroups.map(x=>x.id));
+    await upsertRows('tasks',tasks);
+    await deleteMissing('tasks',tasks.map(x=>x.id));
+    await upsertRows('long_task_groups',longTaskGroups);
+    await deleteMissing('long_task_groups',longTaskGroups.map(x=>x.id));
+    await upsertRows('long_tasks',longTasks);
+    await deleteMissing('long_tasks',longTasks.map(x=>x.id));
+    await upsertRows('own_events',ownEvents);
+    await deleteMissing('own_events',ownEvents.map(x=>x.id));
+    const diag=document.querySelector('#diagBox'); if(diag)diag.textContent='Relationale Daten gespeichert: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+    setCloudStatus('Tabellen gespeichert: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}),'ok');
+  }catch(error){
+    console.error('Relationale Speicherung fehlgeschlagen',error);
+    setCloudStatus('Tabellen-Speichern fehlgeschlagen: '+(error.message||error),'bad');
+    const diag=document.querySelector('#diagBox'); if(diag)diag.textContent='Tabellen-Speichern fehlgeschlagen: '+(error.message||error);
+  }finally{
+    relationalSaveRunning=false;
+    if(relationalSaveQueued){relationalSaveQueued=false;scheduleRelationalSave();}
+  }
+}
+async function ensureDefaultRelationalRows(){
+  const uid=currentUser.id;
+  const {data:cg}=await supabaseClient.from('calendar_groups').select('id').eq('user_id',uid).limit(1);
+  if(!cg||!cg.length)await supabaseClient.from('calendar_groups').insert({user_id:uid,name:'Mein Kalender',visible:true,collapsed:true,position:0});
+  const {data:tg}=await supabaseClient.from('task_groups').select('id').eq('user_id',uid).limit(1);
+  if(!tg||!tg.length)await supabaseClient.from('task_groups').insert({user_id:uid,name:'Allgemein',color:'#ffb020',visible:true,position:0});
+  const {data:lg}=await supabaseClient.from('long_task_groups').select('id').eq('user_id',uid).limit(1);
+  if(!lg||!lg.length)await supabaseClient.from('long_task_groups').insert({user_id:uid,name:'Allgemein',color:'#48d38b',visible:true,position:0});
+}
+async function loadRelationalData(){
+  if(!currentUser)return;
+  await ensureDefaultRelationalRows();
+  const uid=currentUser.id;
+  const [cg,cs,tg,ts,lg,lt,oe]=await Promise.all([
+    supabaseClient.from('calendar_groups').select('*').eq('user_id',uid).order('position'),
+    supabaseClient.from('calendar_sources').select('*').eq('user_id',uid).order('position'),
+    supabaseClient.from('task_groups').select('*').eq('user_id',uid).order('position'),
+    supabaseClient.from('tasks').select('*').eq('user_id',uid).order('position'),
+    supabaseClient.from('long_task_groups').select('*').eq('user_id',uid).order('position'),
+    supabaseClient.from('long_tasks').select('*').eq('user_id',uid).order('position'),
+    supabaseClient.from('own_events').select('*').eq('user_id',uid).order('created_at')
+  ]);
+  const errors=[cg,cs,tg,ts,lg,lt,oe].map(r=>r.error).filter(Boolean); if(errors.length)throw errors[0];
+  const sourcesByGroup=new Map();(cs.data||[]).forEach(s=>{if(!sourcesByGroup.has(s.calendar_group_id))sourcesByGroup.set(s.calendar_group_id,[]);sourcesByGroup.get(s.calendar_group_id).push(s);});
+  const eventsBySource=new Map();(oe.data||[]).forEach(e=>{if(!eventsBySource.has(e.calendar_source_id))eventsBySource.set(e.calendar_source_id,[]);eventsBySource.get(e.calendar_source_id).push(e);});
+  state.calendars=(cg.data||[]).map(g=>{
+    const links=(sourcesByGroup.get(g.id)||[]).map(s=>({id:s.id,type:s.type,name:s.name,url:s.url||'',color:s.color||state.colors?.event||defaultColors.event,visible:s.visible!==false,calendarGroupId:g.id}));
+    const ownEvents=links.filter(l=>l.type==='own').flatMap(l=>(eventsBySource.get(l.id)||[]).map(e=>({id:e.id,sourceId:l.id,summary:e.title,location:e.location||'',description:e.description||'',start:e.start_time,end:e.end_time,allDay:!!e.all_day,recurrence:e.recurrence||'none',source:l.name,icsName:l.name,icsColor:l.color,travelTime:e.travel_time||'',status:e.status||'active',manual:true})));
+    return {id:g.id,dbId:g.id,name:g.name,visible:g.visible!==false,collapsed:g.collapsed!==false,links,events:[],ownEvents,status:'Aus Tabellen geladen.'};
+  });
+  state.taskColumns=(tg.data||[]).map(g=>({id:g.id,name:g.name,color:g.color,visible:g.visible!==false}));
+  state.tasks=(ts.data||[]).map(t=>({id:t.id,title:t.title,note:t.note||'',date:t.task_date,done:!!t.done,completedDate:t.completed_date||null,columnId:t.task_group_id||state.taskColumns[0]?.id}));
+  state.longColumns=(lg.data||[]).map(g=>({id:g.id,name:g.name,color:g.color,visible:g.visible!==false}));
+  state.longterm=(lt.data||[]).map(t=>({id:t.id,title:t.title,note:t.note||'',done:!!t.done,completedDate:t.completed_date||null,columnId:t.long_task_group_id||state.longColumns[0]?.id,createdDate:t.created_at?fmtDate(new Date(t.created_at)):fmtDate(new Date())}));
+}
+
+// App-State speichert ab Rev039 nur noch UI-Einstellungen; fachliche Daten laufen über Tabellen.
+saveStateToCloud=async function(){
+  if(!currentUser)return setCloudStatus('Nicht angemeldet. Online-Speicherung nicht möglich.','bad');
+  const payload={user_id:currentUser.id,state:uiStateOnly(),updated_at:new Date().toISOString()};
+  const {error}=await supabaseClient.from('app_state').upsert(payload,{onConflict:'user_id'});
+  if(error){setCloudStatus('UI-State speichern fehlgeschlagen: '+error.message,'bad');return;}
+  scheduleRelationalSave();
+};
+loadStateFromCloud=async function(){
+  if(!currentUser)return setCloudStatus('Nicht angemeldet. Online-Laden nicht möglich.','bad');
+  suppressCloudSave=true;
+  try{
+    const {data,error}=await supabaseClient.from('app_state').select('state,updated_at').eq('user_id',currentUser.id).maybeSingle();
+    if(error)throw error;
+    state=getBlankState();ensureSettings();
+    if(data&&data.state)applyUiState(data.state);
+    await loadRelationalData();
+    ensureSettings();clearRuntimeICSCache();render();setupAutoSync();
+    setCloudStatus('Tabellendaten geladen. Stand: '+new Date().toLocaleString('de-DE'),'ok');
+    scheduleInitialICSSync(900);
+  }catch(error){
+    console.error(error);setCloudStatus('Laden aus Tabellen fehlgeschlagen: '+(error.message||error),'bad');
+  }finally{suppressCloudSave=false;}
+};
+
+// Persistenz: UI-State + relationaler Snapshot werden beide geschrieben.
+persist=function(){
+  if(currentUser){localStorage.setItem(storeKey,JSON.stringify(uiStateOnly()));}else{localStorage.removeItem(storeKey);}
+  if(cloudReady&&currentUser&&!suppressCloudSave){scheduleCloudSave();scheduleRelationalSave();}
+};
+
+// Kalendergruppen standardmäßig einklappbar machen, ohne Quellen aus der DB zu verlieren.
+const __rev39_renderCalendarConfig=renderCalendarConfig;
+renderCalendarConfig=function(){
+  __rev39_renderCalendarConfig();
+  $$('.calendar-pane').forEach(pane=>{
+    const i=Number(pane.dataset.calIndex); const cal=state.calendars[i]; if(!cal)return;
+    const items=Array.from(pane.querySelectorAll('.ics-item,.status,.empty'));
+    if(cal.collapsed!==false)items.forEach(x=>x.style.display='none');
+    const head=pane.querySelector('.pane-head');
+    if(head&&!head.querySelector('[data-collapse-cal]')){
+      const btn=document.createElement('button');btn.className='btn small ui-icon-btn';btn.type='button';btn.title=cal.collapsed!==false?'Kalendergruppe ausklappen':'Kalendergruppe einklappen';btn.innerHTML=cal.collapsed!==false?'▸':'▾';btn.dataset.collapseCal=String(i);
+      const actions=head.querySelector('.pane-actions'); if(actions)actions.prepend(btn);
+      btn.onclick=(ev)=>{ev.stopPropagation();cal.collapsed=!(cal.collapsed!==false);render();};
+    }
+  });
+};
+
+// Bestehende Neuanlage von Kalenderquellen schreibt sofort in die Tabellen, damit der Eintrag direkt in calendar_sources sichtbar ist.
+openICSModal=function(pane){
+  if(!requireLogin())return;
+  openModal(`ICS-Link hinzufügen · ${state.calendars[pane].name}`,`<input id="mName" placeholder="Name, z. B. Privat Kalender"><input id="mUrl" placeholder="webcal://... oder https://.../calendar.ics"><div class="hint">Der Link wird sofort in calendar_sources gespeichert. Danach wird der ICS-Kalender über den Proxy geladen.</div>`,async()=>{
+    const name=$('#mName').value.trim()||'ICS Kalender';const url=normalizeICSUrl($('#mUrl').value.trim());if(!url)return toast('Kein ICS-Link gespeichert.');
+    normalizeRelationalIds(); const cal=state.calendars[pane];
+    const row={user_id:currentUser.id,calendar_group_id:cal.id,type:'ics',name,url,color:state.colors?.event||defaultColors.event,visible:true,position:(cal.links||[]).length};
+    const {data,error}=await supabaseClient.from('calendar_sources').insert(row).select('*').single();
+    if(error){toast('ICS-Quelle konnte nicht gespeichert werden: '+error.message);return;}
+    cal.links.push({id:data.id,type:'ics',name:data.name,url:data.url,color:data.color,visible:data.visible!==false,calendarGroupId:cal.id});
+    await loadICS(pane);
+    scheduleRelationalSave();
+  });
+};
+
+openCreateOwnSourceModal=function(pane){
+  if(!requireLogin())return;
+  openModal(`Eigenen Kalender hinzufügen · ${state.calendars[pane].name}`,`<input id="mOwnName" placeholder="Name, z. B. Eigene Termine"><div class="hint">Der eigene Kalender wird sofort in calendar_sources gespeichert.</div>`,async()=>{
+    const name=$('#mOwnName').value.trim()||'Eigener Kalender';normalizeRelationalIds();const cal=state.calendars[pane];
+    const row={user_id:currentUser.id,calendar_group_id:cal.id,type:'own',name,url:null,color:state.colors?.event||defaultColors.event,visible:true,position:(cal.links||[]).length};
+    const {data,error}=await supabaseClient.from('calendar_sources').insert(row).select('*').single();
+    if(error){toast('Eigener Kalender konnte nicht gespeichert werden: '+error.message);return;}
+    cal.links.push({id:data.id,type:'own',name:data.name,color:data.color,visible:data.visible!==false,calendarGroupId:cal.id});scheduleRelationalSave();
+  });
+};
+
+// Rev038 final: eigener Proxy im neuen Supabase-Projekt.
+buildICSFetchUrl=function(url){
+  const sourceUrl=normalizeICSUrl(url);
+  return DEFAULT_PROXY_URL+encodeURIComponent(sourceUrl);
+};
+
+async function ensureCalendarGroupInDb(pane){
+  if(!currentUser)throw new Error('Nicht angemeldet.');
+  const cal=state.calendars[pane];
+  if(!cal)throw new Error('Kalendergruppe nicht gefunden.');
+  normalizeRelationalIds();
+  const row={
+    id:cal.id,
+    user_id:currentUser.id,
+    name:cal.name||('Kalender '+(pane+1)),
+    visible:cal.visible!==false,
+    collapsed:cal.collapsed!==false,
+    position:pane
+  };
+  const {data,error}=await supabaseClient
+    .from('calendar_groups')
+    .upsert(row,{onConflict:'id'})
+    .select('*')
+    .single();
+  if(error)throw error;
+  cal.id=data.id;
+  cal.dbId=data.id;
+  return cal;
+}
+
+openAddCalendarModal=function(){
+  if(!requireLogin())return;
+  openModal('Kalender hinzufügen',`<input id="mNewCalName" placeholder="Kalendername, z. B. Geschäftskalender"><div class="hint">Die Kalendergruppe wird sofort in calendar_groups gespeichert.</div>`,async()=>{
+    const name=$('#mNewCalName').value.trim()||`Kalender ${state.calendars.length+1}`;
+    const row={user_id:currentUser.id,name,visible:true,collapsed:true,position:state.calendars.length};
+    const {data,error}=await supabaseClient.from('calendar_groups').insert(row).select('*').single();
+    if(error){toast('Kalendergruppe konnte nicht gespeichert werden: '+error.message);return;}
+    state.calendars.push({id:data.id,dbId:data.id,name:data.name,links:[],events:[],ownEvents:[],status:'Noch keine Kalenderquelle hinterlegt.',visible:data.visible!==false,collapsed:data.collapsed!==false});
+    scheduleRelationalSave();
+  });
+};
+
+openICSModal=function(pane){
+  if(!requireLogin())return;
+  openModal(`ICS-Link hinzufügen · ${state.calendars[pane].name}`,`<input id="mName" placeholder="Name, z. B. Privat Kalender"><input id="mUrl" placeholder="webcal://... oder https://.../calendar.ics"><div class="hint">Der Link wird sofort in calendar_sources gespeichert. Danach wird der ICS-Kalender über den neuen Supabase-Proxy geladen.</div>`,async()=>{
+    const name=$('#mName').value.trim()||'ICS Kalender';
+    const url=normalizeICSUrl($('#mUrl').value.trim());
+    if(!url)return toast('Kein ICS-Link gespeichert.');
+    let cal;
+    try{cal=await ensureCalendarGroupInDb(pane);}catch(error){toast('Kalendergruppe konnte nicht vorbereitet werden: '+(error.message||error));return;}
+    const row={user_id:currentUser.id,calendar_group_id:cal.id,type:'ics',name,url,color:state.colors?.event||defaultColors.event,visible:true,position:(cal.links||[]).length};
+    const {data,error}=await supabaseClient.from('calendar_sources').insert(row).select('*').single();
+    if(error){toast('ICS-Quelle konnte nicht gespeichert werden: '+error.message);return;}
+    cal.links=cal.links||[];
+    cal.links.push({id:data.id,type:'ics',name:data.name,url:data.url,color:data.color,visible:data.visible!==false,calendarGroupId:cal.id});
+    await loadICS(pane);
+    scheduleRelationalSave();
+  });
+};
+
+openCreateOwnSourceModal=function(pane){
+  if(!requireLogin())return;
+  openModal(`Eigenen Kalender hinzufügen · ${state.calendars[pane].name}`,`<input id="mOwnName" placeholder="Name, z. B. Eigene Termine"><div class="hint">Der eigene Kalender wird sofort in calendar_sources gespeichert.</div>`,async()=>{
+    const name=$('#mOwnName').value.trim()||'Eigener Kalender';
+    let cal;
+    try{cal=await ensureCalendarGroupInDb(pane);}catch(error){toast('Kalendergruppe konnte nicht vorbereitet werden: '+(error.message||error));return;}
+    const row={user_id:currentUser.id,calendar_group_id:cal.id,type:'own',name,url:null,color:state.colors?.event||defaultColors.event,visible:true,position:(cal.links||[]).length};
+    const {data,error}=await supabaseClient.from('calendar_sources').insert(row).select('*').single();
+    if(error){toast('Eigener Kalender konnte nicht gespeichert werden: '+error.message);return;}
+    cal.links=cal.links||[];
+    cal.links.push({id:data.id,type:'own',name:data.name,color:data.color,visible:data.visible!==false,calendarGroupId:cal.id});
+    scheduleRelationalSave();
+  });
+};
+
+// Rev038: ICS wird über die neue Edge Function geladen. Die Function sollte im Dashboard ohne JWT-Verifikation bereitgestellt werden.
+loadICS=async function(pane){
+  if(!requireLogin())return;
+  const cal=state.calendars[pane];
+  if(!cal)return;
+  cal.events=[];
+  cal.status='Lade ICS...';
+  renderCalendarConfig();
+  persist();
+  let errors=[];
+  for(const link of (cal.links||[])){
+    if(link.type==='own'||!link.url)continue;
+    try{
+      const sourceUrl=normalizeICSUrl(link.url);
+      const res=await fetch(buildICSFetchUrl(sourceUrl),{cache:'no-store'});
+      if(!res.ok){
+        const msg=await res.text().catch(()=>'');
+        throw new Error('HTTP '+res.status+(msg?': '+msg.slice(0,160):''));
+      }
+      const text=await res.text();
+      if(!/BEGIN:VCALENDAR|BEGIN:VEVENT/i.test(text))throw new Error('Antwort ist keine ICS-Datei. Link/Freigabe/Proxy prüfen.');
+      const parsed=parseICS(text,link.name).map(e=>Object.assign(e,{icsId:link.id,icsColor:link.color||state.colors.event,icsName:link.name}));
+      cal.events.push(...parsed);
+      if(!parsed.length)errors.push(`${link.name}: ICS geladen, aber keine Termine gefunden.`);
+    }catch(e){
+      errors.push(`${link.name}: ${e.message}`);
+    }
+  }
+  cal.events=dedupeEvents(cal.events);
+  const stamp=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+  cal.status=errors.length?`${cal.events.length} Termine geladen. Fehler: ${errors.join(' | ')}. Zuletzt: ${stamp}`:`${cal.events.length} Termine geladen. Zuletzt: ${stamp}`;
+  $('#diagBox').textContent=cal.status;
+  persist();
+};
+
+window.addEventListener('pagehide',()=>{try{supabaseClient.auth.signOut({scope:'local'});}catch(e){} localStorage.removeItem(storeKey);});
+$('#daysSelect').onchange=e=>{state.days=Number(e.target.value);render()};if($('#rowsSelect'))$('#rowsSelect').onchange=e=>{state.dayRows=Number(e.target.value);render()};if($('#startModeSelect'))$('#startModeSelect').onchange=e=>{state.startMode=e.target.value;if(state.startMode==='week'){state.days=7;state.dayRows=1;state.offset=0;}if(state.startMode==='workweek'){state.days=5;state.dayRows=1;state.offset=0;}render()};$('#prevBtn').onclick=()=>{state.offset-=1;render()};$('#nextBtn').onclick=()=>{state.offset+=1;render()};$('#todayBtn').onclick=()=>{state.offset=0;render()};$('#monthBtn').onclick=openMonthModal;$('#settingsBtn').onclick=openSyncSettingsModal;$('#legendBtn').onclick=openLegendModal;$('#cloudBtn').onclick=openCloudModal;$('#addLongBtn2').onclick=()=>{if(requireLogin())openLongModal();};initSidebarToggle();setupGlobalSearch();initConfigBlocks();render();setupAutoSync();
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+  currentUser=session?.user||null;
+  cloudReady=!!currentUser;
+  updateCloudUserLabel();
+  if(event==='SIGNED_OUT')resetVisibleStateAfterLogout();
+  if(event==='SIGNED_IN')setupAutoSync();
+});
+initCloud();
+</script></body></html>
