@@ -1,4 +1,4 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kalender-F Rev 037</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kalender-F Rev 041</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 :root{--bg:#0d1320;--panel:#111a2b;--panel2:#18233a;--line:#31405e;--text:#e9eef8;--muted:#9eabc1;--accent:#39bdf8;--violet:#7c5cff;--warn:#ffb020;--radius:22px;--shadow:0 18px 60px rgba(0,0,0,.35);--days:4;--calpanes:2}*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0d1320,#10182a 55%,#09101d);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;color:inherit}.app{min-height:100vh;padding:28px;display:flex;gap:20px;flex-direction:column}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}h1{font-size:42px;line-height:1;margin:0 0 8px}.sub{font-size:17px;color:var(--muted)}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.btn{background:var(--panel2);border:1px solid var(--line);padding:12px 15px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.12)}.btn.primary{background:linear-gradient(135deg,var(--accent),var(--violet));border:0;color:#fff;font-weight:800}.btn.small{padding:8px 10px;border-radius:10px;font-size:13px}.btn.danger{background:#2b1520;color:#ff9aa0;border-color:#65313a}.layout{display:grid;grid-template-columns:minmax(280px,350px) 1fr;gap:20px;align-items:start}.sidebar,.board,.longterm{background:rgba(17,26,43,.88);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.sidebar{padding:18px;position:sticky;top:18px}.section-title{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#9aa8bd;font-weight:900;margin:16px 0 10px}.field{display:flex;gap:8px;align-items:center;margin:8px 0}.field label{font-size:14px;color:var(--muted);min-width:118px}.field input,.field select{width:100%;background:#070d1a;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:10px}.hint{font-size:12px;color:#7f8ca3;line-height:1.35}.calendar-pane{border:1px solid var(--line);background:#0b1221;border-radius:16px;padding:12px;margin:10px 0}.pane-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.pane-name{font-weight:900}.ics-item{background:#060b16;border:1px solid #23324d;border-radius:12px;padding:9px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin:8px 0}.ics-item b{font-size:13px}.ics-item span{font-size:11px;color:var(--muted);word-break:break-all}.status{font-size:11px;color:#aeb7c7;margin-top:8px}.board{padding:18px;min-width:0}.timeline-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.timeline{display:grid;gap:14px;grid-template-columns:repeat(var(--days),minmax(280px,1fr));overflow-x:auto;padding-bottom:8px}.day{min-height:690px;background:#0b1221;border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}.day.today{border-color:var(--accent);box-shadow:0 0 0 1px rgba(57,189,248,.55),0 0 44px rgba(57,189,248,.10)}.day-head{background:var(--panel2);padding:18px 18px 14px}.day-num{font-size:34px;font-weight:1000;letter-spacing:.04em}.day-meta{color:var(--muted);font-size:14px}.badge{display:inline-flex;margin-top:9px;border-radius:999px;background:#263866;color:#c9d8ff;padding:5px 10px;font-size:12px;font-weight:800}.day-body{padding:16px;display:flex;flex-direction:column;gap:14px;flex:1}.partition{border-top:1px solid rgba(49,64,94,.75);padding-top:13px}.part-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.part-title{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#a7b3c6;font-weight:1000}.split{display:grid;grid-template-columns:repeat(var(--calpanes),1fr);gap:10px}.lane{min-width:0;background:#070d1a;border:1px dashed #293955;border-radius:15px;padding:10px}.lane-title{font-size:12px;color:#9eabc1;font-weight:900;margin-bottom:8px}.card{background:#050a16;border:1px solid #263655;border-radius:14px;padding:11px;margin:8px 0}.card.event{border-left:3px solid var(--accent)}.card.task{border-left:3px solid var(--violet)}.card.overdue{border-left:3px solid var(--warn);background:#1a1003}.card.done{opacity:.56;text-decoration:line-through}.card b{display:block;font-size:15px}.card small{display:block;color:var(--muted);margin-top:5px}.empty{color:#718097;font-size:14px;padding:7px 0}.task-row{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:start}.task-row input{margin-top:4px}.kebab{background:transparent;color:#718097;font-size:18px}.longterm{padding:18px}.long-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}.long-card{background:#070d1a;border:1px solid #293955;border-radius:16px;padding:12px}.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.62);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}.modal{width:min(920px,100%);max-height:90vh;overflow:auto;background:#111a2b;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:20px}.modal h2{margin:0 0 14px}.modal-grid{display:grid;gap:10px}.modal-grid input,.modal-grid textarea,.modal-grid select{width:100%;background:#070d1a;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:11px}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}.toast{position:fixed;right:22px;bottom:22px;background:#06101c;border:1px solid var(--line);padding:12px 14px;border-radius:14px;color:#dce6f6;box-shadow:var(--shadow);display:none;z-index:20;max-width:520px}.pill{display:inline-flex;border:1px solid #273853;background:#06101c;border-radius:999px;padding:6px 9px;color:#aeb7c7;font-size:12px;margin:3px 3px 0 0}.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.month-head{font-size:12px;color:#9eabc1;text-align:center;font-weight:900;text-transform:uppercase}.month-cell{min-height:96px;background:#070d1a;border:1px solid #293955;border-radius:14px;padding:8px}.month-cell.out{opacity:.35}.month-cell.today{border-color:var(--accent);box-shadow:0 0 0 1px rgba(57,189,248,.35)}.month-day{font-size:13px;color:#aeb7c7;font-weight:900;margin-bottom:6px}.month-event{background:rgba(124,92,255,.9);color:#fff;border-radius:9px;padding:4px 6px;font-size:11px;margin:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.month-task{background:rgba(255,176,32,.18);border:1px solid rgba(255,176,32,.45);color:#ffd99a;border-radius:9px;padding:4px 6px;font-size:11px;margin:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}.month-title{font-size:20px;font-weight:1000}.diag{background:#07101d;border:1px solid #243653;border-radius:14px;padding:10px;margin-top:8px;color:#9fb0c8;font-size:12px}@media(max-width:1000px){.layout{grid-template-columns:1fr}.sidebar{position:relative;top:0}.timeline{grid-template-columns:repeat(var(--days),minmax(310px,86vw))}h1{font-size:32px}.top{flex-direction:column}.toolbar{justify-content:flex-start}.app{padding:16px}.month-grid{grid-template-columns:repeat(7,minmax(70px,1fr));overflow-x:auto}}
 
 /* Rev 007: Begrenzungen und saubere Anzeige */
@@ -771,11 +771,118 @@ body.light #modalContent .mode-config-section{background:#f8fbff!important;borde
 .ics-item.parent-disabled{opacity:.42;filter:grayscale(.8);pointer-events:none}
 body.light .mode-check.disabled-child span{color:#6b7280!important}
 
-</style></head><body><div class="app"><div class="top"><div><h1>Kalenderübersicht</h1><div class="sub">Termine · Tagestasks · überzogene Tagestasks · langfristige Tasks</div></div><div class="toolbar"><button class="btn" id="prevBtn">← Tage zurück</button><button class="btn" id="todayBtn">Heute</button><button class="btn" id="nextBtn">Tage vor →</button><button class="btn primary" id="monthBtn">Monat aufklappen</button><div class="search-wrap"><input class="search-input" id="globalSearch" placeholder="🔍 Suchen"><div class="search-results" id="searchResults"></div></div></div></div><div class="layout"><aside class="sidebar"><button class="sidebar-toggle" id="sidebarToggleBtn" title="Seitenleiste einklappen">‹</button><div class="config-block" data-config-block="view"><button class="config-toggle" type="button"><span>Ansicht konfigurieren</span><span class="config-chevron">▾</span></button><div class="config-content"><div class="field"><label>Tage sichtbar</label><select id="daysSelect"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option></select></div><div class="field"><label>Zeilen</label><select id="rowsSelect"><option value="1">1</option><option value="2">2</option></select></div><div class="field"><label>Startmodus</label><select id="startModeSelect"><option value="rolling">Fortlaufend</option><option value="week">Aktuelle Woche</option><option value="workweek">Arbeitswoche</option></select></div><div class="field mode-field"><label>Ansichtsmodus</label><div class="mode-row"><select id="viewModeSelect"></select><button class="btn small ui-icon-btn" id="modeConfigBtn" title="Modus konfigurieren" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 1 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.08A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.08A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.08A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.4 9c.2.36.5.67.9.86.32.15.68.22 1.1.22H21a2 2 0 1 1 0 4h-.08a1.7 1.7 0 0 0-1.52.92Z"/></svg></button></div></div></div></div><div class="config-block" data-config-block="cal"><button class="config-toggle" type="button"><span>Kalender-Partition</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="calendarConfig"></div></div></div><div class="config-block" data-config-block="task"><button class="config-toggle" type="button"><span>Tagestask-Spalten</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="taskColumnConfig"></div></div></div><div class="config-block" data-config-block="long"><button class="config-toggle" type="button"><span>Langfristige Task-Gruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="longColumnConfig"></div></div></div><div class="config-block" data-config-block="opt"><button class="config-toggle" type="button"><span>Optionen</span><span class="config-chevron">▾</span></button><div class="config-content"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="settingsBtn" title="Allgemeine Einstellungen">Einstellungen</button><button class="btn" id="legendBtn" title="Legende und Farben anzeigen">Legende</button><button class="btn" id="cloudBtn" title="Login und Benutzerkonto">Login</button></div><div class="diag" id="diagBox">Diagnose: noch keine Synchronisierung durchgeführt.</div></div></div></aside><main class="board"><div class="timeline-controls"><div class="timeline-title-wrap"><b>Tagesplaner</b><div class="timeline-help">Aktueller Tag plus Folge- oder Vergangenheitsdaten. Erledigte Aufgaben bleiben nachvollziehbar sichtbar.</div></div><div id="rangeLabel" class="hint"></div></div><div id="timeline" class="timeline"></div><section class="longterm main-longterm"><div class="timeline-controls"><div><b>Langfristige Tasks</b><div class="hint">Ohne Datum. Wird bewusst getrennt von Tagestasks geführt.</div></div><button class="btn small" id="addLongBtn2">+ Hinzufügen</button></div><div id="longTermList" class="long-grid"></div></section></main></div></div><div class="modal-backdrop" id="modalBackdrop"><div class="modal"><h2 id="modalTitle"></h2><div id="modalContent" class="modal-grid"></div><div class="modal-actions"><button class="btn" id="cancelModal">Abbrechen</button><button class="btn primary" id="saveModal">Speichern</button></div></div></div><div class="toast" id="toast"></div>
+
+
+/* Rev 040: Design-/Bedienrevision */
+.app{padding-top:14px!important}
+.top{align-items:center!important;margin-bottom:-6px!important}
+h1{font-size:31px!important;margin:0!important}
+.sub{display:none!important}
+.compact-toolbar{align-items:center!important;justify-content:flex-end!important;gap:8px!important}
+.search-wrap{min-width:170px!important;max-width:240px!important;flex:0 1 220px!important}
+.search-input{padding:10px 12px!important;border-radius:12px!important}
+.icon-only-month{width:44px!important;min-width:44px!important;padding:10px 0!important;font-size:18px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
+.board{padding-top:14px!important}
+.sidebar{top:10px!important}
+.calendar-pane{position:relative!important;padding-top:36px!important}
+.calendar-pane .pane-head{margin-top:-8px!important}
+.calendar-pane .cal-title-line{align-items:flex-start!important}
+.calendar-pane .cal-title-click{padding-top:0!important}
+.calendar-pane .cal-collapse-corner{position:absolute!important;right:10px!important;top:10px!important;width:36px!important;height:34px!important;min-width:36px!important;border-radius:0!important}
+.own-event-btn.plus-only{width:34px!important;height:34px!important;min-width:34px!important;border-radius:12px!important;font-size:24px!important;line-height:1!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;transform:none!important}
+.lane-title{align-items:center!important}
+.card.overdue,.card.task.overdue{background:var(--overdueColor)!important;border-color:var(--overdueColor)!important;border-left-color:var(--overdueColor)!important;color:#fff!important}
+.card.overdue small,.card.overdue b,.card.overdue .kebab{color:#fff!important}
+.overdue-color-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#070d1a;border:1px solid var(--line);border-radius:14px;padding:10px;margin:8px 0}
+body.light .overdue-color-row{background:#f8fbff;border-color:#cbd6e7;color:#152033}
+.color-bucket-btn{width:38px!important;height:38px!important;min-width:38px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;font-size:20px!important}
+.hidden-color-input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.color-bucket-label{display:flex;align-items:center;gap:8px;font-weight:900}.color-bucket-preview{width:18px;height:18px;border-radius:6px;border:1px solid rgba(0,0,0,.25);display:inline-block}
+.security-note{border:1px solid var(--line);border-radius:14px;padding:10px;background:#070d1a;color:var(--muted);font-size:12px;line-height:1.4;margin-top:12px}
+body.light .security-note{background:#f8fbff;border-color:#cbd6e7;color:#42536b}
+.mode-config-calgroup{border:1px solid rgba(0,0,0,.12);border-radius:12px;padding:7px 8px;margin-bottom:7px}
+.mode-config-calgroup-head{display:grid;grid-template-columns:minmax(0,1fr) 34px;align-items:center;gap:10px;margin-bottom:4px}
+.mode-config-calgroup-title{font-weight:1000;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#111827!important}
+.mode-parent-check{width:24px!important;height:24px!important;justify-self:end!important;accent-color:var(--accent)}
+.mode-config-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;margin-bottom:8px}
+.mode-config-toolbar select{height:38px!important}
+.mode-delete-btn{height:38px!important;padding:0 12px!important}
+@media(max-width:900px){.top{align-items:flex-start!important;flex-direction:column!important}.compact-toolbar{justify-content:flex-start!important}.search-wrap{max-width:none!important;width:100%!important;flex:1 1 auto!important}}
+
+body.theme-blue{background:linear-gradient(145deg,#071827,#0e2a44 58%,#06121f)!important;color:#eaf6ff}
+body.theme-blue .sidebar,body.theme-blue .board,body.theme-blue .longterm,body.theme-blue .modal{background:rgba(12,32,54,.93)!important;border-color:#2b608a!important}
+body.theme-red{background:linear-gradient(145deg,#250b12,#3a111d 58%,#17070c)!important;color:#fff1f3}
+body.theme-red .sidebar,body.theme-red .board,body.theme-red .longterm,body.theme-red .modal{background:rgba(50,16,28,.93)!important;border-color:#8a3045!important}
+body.theme-green{background:linear-gradient(145deg,#071d15,#113826 58%,#06140e)!important;color:#effff6}
+body.theme-green .sidebar,body.theme-green .board,body.theme-green .longterm,body.theme-green .modal{background:rgba(12,43,29,.93)!important;border-color:#2c7a51!important}
+
+
+/* Rev 040 Fix: funktionierende Proxy-Revision + kompakter Kopfbereich */
+.top{display:grid!important;grid-template-columns:auto minmax(220px,360px) auto!important;align-items:center!important;justify-content:start!important;gap:12px!important;margin-bottom:-10px!important;}
+.top-title h1{margin:0!important;font-size:34px!important;white-space:nowrap!important;}
+.top-search{max-width:360px!important;min-width:220px!important;flex:0 1 360px!important;}
+.top-search .search-input{height:42px!important;padding:9px 12px!important;}
+.compact-toolbar{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;flex-wrap:nowrap!important;}
+.compact-toolbar .btn{height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:9px 12px!important;}
+.icon-only-month{height:42px!important;width:44px!important;min-width:44px!important;padding:0!important;font-size:18px!important;}
+.sidebar-collapse-all-top{margin:0 0 14px 0!important;}
+@media(max-width:1000px){.top{grid-template-columns:1fr!important;align-items:stretch!important}.top-search{max-width:none!important;width:100%!important}.compact-toolbar{flex-wrap:wrap!important}.top-title h1{font-size:30px!important}}
+
+
+
+/* Rev 041 Layout-Fix: Suchleiste absolut mittig, Navigation rechts, kompakter Plus-Button */
+.top{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:auto 1fr auto!important;
+  align-items:center!important;
+  justify-content:stretch!important;
+  gap:12px!important;
+  min-height:46px!important;
+  margin-bottom:0!important;
+}
+.top-title{grid-column:1!important;justify-self:start!important;}
+.top-search{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  width:min(340px,28vw)!important;
+  max-width:340px!important;
+  min-width:220px!important;
+  z-index:2!important;
+}
+.compact-toolbar{grid-column:3!important;justify-self:end!important;margin-left:auto!important;}
+.compact-toolbar .btn{height:40px!important;}
+.icon-only-month{height:40px!important;width:42px!important;min-width:42px!important;}
+#modePickerTop{min-height:42px!important;height:auto!important;padding-top:10px!important;padding-bottom:10px!important;white-space:normal!important;line-height:1.25!important;}
+.mode-config-toolbar{grid-template-columns:1fr!important;}
+.mode-delete-btn{display:none!important;}
+.modal-actions .mode-delete-action{height:42px!important;min-width:110px!important;padding:9px 14px!important;}
+.own-event-btn.plus-only{
+  width:26px!important;
+  height:26px!important;
+  min-width:26px!important;
+  padding:0!important;
+  font-size:18px!important;
+  line-height:1!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:8px!important;
+}
+body.sharp-corners .own-event-btn.plus-only{border-radius:0!important;}
+@media(max-width:1100px){
+  .top{grid-template-columns:1fr!important;align-items:stretch!important;}
+  .top-search{position:relative!important;left:auto!important;top:auto!important;transform:none!important;width:100%!important;max-width:none!important;min-width:0!important;}
+  .compact-toolbar{grid-column:auto!important;justify-self:start!important;flex-wrap:wrap!important;}
+}
+
+</style></head><body><div class="app"><div class="top"><div class="top-title"><h1>Kalenderübersicht</h1></div><div class="search-wrap top-search"><input class="search-input" id="globalSearch" placeholder="🔍 Suchen"><div class="search-results" id="searchResults"></div></div><div class="toolbar compact-toolbar"><button class="btn" id="prevBtn">← Tag zurück</button><button class="btn" id="todayBtn">Heute</button><button class="btn" id="nextBtn">Tag vor →</button><button class="btn primary icon-only-month" id="monthBtn" title="Monat aufklappen">📅</button></div></div><div class="layout"><aside class="sidebar"><button class="sidebar-toggle" id="sidebarToggleBtn" title="Seitenleiste einklappen">‹</button><div class="sidebar-collapse-all-row sidebar-collapse-all-top"><button class="btn small" id="collapseAllConfigBtn" type="button">▸ Alle einklappen</button></div><div class="config-block" data-config-block="view"><button class="config-toggle" type="button"><span>Ansicht konfigurieren</span><span class="config-chevron">▾</span></button><div class="config-content"><div class="field"><label>Tage sichtbar</label><select id="daysSelect"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option></select></div><div class="field"><label>Zeilen</label><select id="rowsSelect"><option value="1">1</option><option value="2">2</option></select></div><div class="field"><label>Startmodus</label><select id="startModeSelect"><option value="rolling">Fortlaufend</option><option value="week">Aktuelle Woche</option><option value="workweek">Arbeitswoche</option></select></div><div class="field mode-field"><label>Ansichtsmodus</label><div class="mode-row"><select id="viewModeSelect"></select><button class="btn small ui-icon-btn" id="modeConfigBtn" title="Modus konfigurieren" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 1 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.08A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.08A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.08A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.4 9c.2.36.5.67.9.86.32.15.68.22 1.1.22H21a2 2 0 1 1 0 4h-.08a1.7 1.7 0 0 0-1.52.92Z"/></svg></button></div></div></div></div><div class="config-block" data-config-block="cal"><button class="config-toggle" type="button"><span>Kalender-Partition</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="calendarConfig"></div></div></div><div class="config-block" data-config-block="task"><button class="config-toggle" type="button"><span>Tagestask-Spalten</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="taskColumnConfig"></div></div></div><div class="config-block" data-config-block="long"><button class="config-toggle" type="button"><span>Langfristige Task-Gruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="longColumnConfig"></div></div></div><div class="config-block" data-config-block="opt"><button class="config-toggle" type="button"><span>Optionen</span><span class="config-chevron">▾</span></button><div class="config-content"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="settingsBtn" title="Allgemeine Einstellungen">Einstellungen</button><button class="btn" id="legendBtn" title="Legende und Farben anzeigen">Legende</button><button class="btn" id="cloudBtn" title="Login und Benutzerkonto">Login</button></div><div class="diag" id="diagBox">Diagnose: noch keine Synchronisierung durchgeführt.</div></div></div></aside><main class="board"><div class="timeline-controls"><div class="timeline-title-wrap"><b>Tagesplaner</b><div class="timeline-help">Aktueller Tag plus Folge- oder Vergangenheitsdaten. Erledigte Aufgaben bleiben nachvollziehbar sichtbar.</div></div><div id="rangeLabel" class="hint"></div></div><div id="timeline" class="timeline"></div><section class="longterm main-longterm"><div class="timeline-controls"><div><b>Langfristige Tasks</b><div class="hint">Ohne Datum. Wird bewusst getrennt von Tagestasks geführt.</div></div><button class="btn small" id="addLongBtn2">+ Hinzufügen</button></div><div id="longTermList" class="long-grid"></div></section></main></div></div><div class="modal-backdrop" id="modalBackdrop"><div class="modal"><h2 id="modalTitle"></h2><div id="modalContent" class="modal-grid"></div><div class="modal-actions"><button class="btn" id="cancelModal">Abbrechen</button><button class="btn primary" id="saveModal">Speichern</button></div></div></div><div class="toast" id="toast"></div>
 <script>
 const SUPABASE_URL='https://ihvhghzbhrujtkgkyhdi.supabase.co';
 const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlodmhnaHpiaHJ1anRrZ2t5aGRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNzUxOTksImV4cCI6MjA5MzY1MTE5OX0.b3mGh0vSnpCK6T1CkGH1PGXMNIkqd44bJjdyYgI-PB8';
-const DEFAULT_PROXY_URL='https://ihvhghzbhrujtkgkyhdi.supabase.co/functions/v1/ics-proxy?url='; // Rev038: eigener ICS-Proxy im neuen Supabase-Projekt.
+const DEFAULT_PROXY_URL='https://ihvhghzbhrujtkgkyhdi.supabase.co/functions/v1/ics-proxy?url='; // Rev040 korrigiert: eigener Proxy im neuen Supabase-Projekt.
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
 // Revision 038 relational persistence scaffold
 const DB_TABLES={
@@ -1149,7 +1256,7 @@ function openTaskDetailModal(ref){
 function taskList(list,overdue=false){if(!list.length)return'<div class="empty">Keine Einträge.</div>';return list.map(t=>taskCardHtml(t,overdue,false)).join('');}
 function completedLongList(list){if(!list.length)return '';return `<div style="margin-top:10px">${list.map(t=>`<div class="card completed-long done"><div><b>${escapeHtml(shortText(t.title,30))}</b><small>Langfristiger Task erledigt am ${escapeHtml(t.completedDate)}</small></div></div>`).join('')}</div>`;}
 function renderLong(){const root=$('#longTermList');root.innerHTML=state.longterm.length?state.longterm.map(t=>{const meta=t.completedDate?`Erledigt am ${t.completedDate}`:`Erstellt am ${t.createdDate||'unbekannt'}`;const note=t.note?`<span class="long-note" title="${escapeHtml(t.note)}">${escapeHtml(shortText(t.note,80))}</span>`:'';return `<div class="long-card ${t.done?'completed-task-card':''}" data-task-ref="long:${t.id}"><div class="task-row"><input type="checkbox" ${t.done?'checked':''} data-toggle-long="${t.id}"><div><span class="long-title" title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</span><span class="long-meta">${escapeHtml(meta)}</span>${note}</div><button class="kebab" data-delete-long="${t.id}">×</button></div></div>`}).join(''):'<div class="empty">Keine langfristigen Aufgaben.</div>';$$('[data-toggle-long]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=(ev)=>{ev.stopPropagation();const t=state.longterm.find(x=>x.id===c.dataset.toggleLong);if(!requireLogin()){c.checked=!c.checked;return;}if(t){t.done=c.checked;t.completedDate=c.checked?fmtDate(new Date()):null;render();}}});$$('[data-delete-long]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();if(!requireLogin())return;state.longterm=state.longterm.filter(x=>x.id!==b.dataset.deleteLong);render();});$$('#longTermList [data-task-ref]').forEach(card=>card.onclick=()=>openTaskDetailModal(card.dataset.taskRef));}
-function closeModal(){if(document.body.classList.contains('login-required')&&!currentUser)return;$('#modalBackdrop').style.display='none';$('#saveModal').style.display='';$('#modalContent').onkeydown=null;} function openModal(title,html,onSave){$('#saveModal').style.display='';$('#modalTitle').textContent=title;$('#modalContent').innerHTML=html;$('#modalBackdrop').style.display='flex';setTimeout(()=>{const focusEl=$('#modalContent input:not([disabled]):not([readonly]), #modalContent textarea:not([disabled]):not([readonly]), #modalContent select:not([disabled])');if(focusEl){focusEl.focus();if(focusEl.select&&focusEl.tagName==='INPUT')focusEl.select();}},0);const doSave=()=>{onSave();closeModal();render();};$('#saveModal').onclick=doSave;$('#modalContent').onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA'){e.preventDefault();doSave();}else if(e.key==='Enter'&&e.ctrlKey){e.preventDefault();doSave();}};} $('#cancelModal').onclick=closeModal;$('#modalBackdrop').onclick=e=>{if(e.target.id==='modalBackdrop')closeModal()};
+function closeModal(){if(document.body.classList.contains('login-required')&&!currentUser)return;const md=document.querySelector('#deleteModeBtnAction');if(md)md.remove();$('#modalBackdrop').style.display='none';$('#saveModal').style.display='';$('#modalContent').onkeydown=null;} function openModal(title,html,onSave){$('#saveModal').style.display='';$('#modalTitle').textContent=title;$('#modalContent').innerHTML=html;$('#modalBackdrop').style.display='flex';setTimeout(()=>{const focusEl=$('#modalContent input:not([disabled]):not([readonly]), #modalContent textarea:not([disabled]):not([readonly]), #modalContent select:not([disabled])');if(focusEl){focusEl.focus();if(focusEl.select&&focusEl.tagName==='INPUT')focusEl.select();}},0);const doSave=()=>{onSave();closeModal();render();};$('#saveModal').onclick=doSave;$('#modalContent').onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA'){e.preventDefault();doSave();}else if(e.key==='Enter'&&e.ctrlKey){e.preventDefault();doSave();}};} $('#cancelModal').onclick=closeModal;$('#modalBackdrop').onclick=e=>{if(e.target.id==='modalBackdrop')closeModal()};
 function openAddCalendarModal(){if(!requireLogin())return;openModal('Kalender hinzufügen',`<input id="mNewCalName" placeholder="Kalendername, z. B. Geschäftskalender"><div class="hint">Der Kalender wird direkt sichtbar angelegt. Danach kannst du mehrere ICS-Links hinzufügen oder ihn ausblenden.</div>`,()=>{const name=$('#mNewCalName').value.trim()||`Kalender ${state.calendars.length+1}`;state.calendars.push({name,links:[],events:[],ownEvents:[],status:'Noch kein ICS-Link hinterlegt.',visible:true});});}
 function openSourceChoiceModal(pane){
   if(!requireLogin())return;
@@ -1509,10 +1616,7 @@ function updateCollapseAllButton(){
 }
 function initConfigBlocks(){
   ensureSettings();
-  const viewContent=document.querySelector('[data-config-block="view"] .config-content');
-  if(viewContent&&!document.querySelector('#collapseAllConfigBtn')){
-    viewContent.insertAdjacentHTML('afterbegin','<div class="sidebar-collapse-all-row"><button class="btn small" id="collapseAllConfigBtn" type="button">▸ Alle einklappen</button></div>');
-  }
+  // Rev040 Fix: globaler Einklapp-Button steht statisch oben in der Seitenleiste, nicht unter Ansicht konfigurieren.
   $$('.config-block').forEach(block=>{
     const key=block.dataset.configBlock;
     const collapsed=!!state.configCollapsed[key];
@@ -1857,115 +1961,246 @@ openCreateOwnSourceModal=function(pane){
   });
 };
 
-// Rev038 final: eigener Proxy im neuen Supabase-Projekt.
-buildICSFetchUrl=function(url){
-  const sourceUrl=normalizeICSUrl(url);
-  return DEFAULT_PROXY_URL+encodeURIComponent(sourceUrl);
-};
+// Proxy-Build robuster: falls versehentlich /rest/v1/ eingetragen wäre, wird trotzdem die fest gesetzte Edge Function genutzt.
+buildICSFetchUrl=function(url){const sourceUrl=normalizeICSUrl(url);return DEFAULT_PROXY_URL+encodeURIComponent(sourceUrl);};
 
-async function ensureCalendarGroupInDb(pane){
-  if(!currentUser)throw new Error('Nicht angemeldet.');
-  const cal=state.calendars[pane];
-  if(!cal)throw new Error('Kalendergruppe nicht gefunden.');
-  normalizeRelationalIds();
-  const row={
-    id:cal.id,
-    user_id:currentUser.id,
-    name:cal.name||('Kalender '+(pane+1)),
-    visible:cal.visible!==false,
-    collapsed:cal.collapsed!==false,
-    position:pane
-  };
-  const {data,error}=await supabaseClient
-    .from('calendar_groups')
-    .upsert(row,{onConflict:'id'})
-    .select('*')
-    .single();
-  if(error)throw error;
-  cal.id=data.id;
-  cal.dbId=data.id;
-  return cal;
+
+/* Rev 040: Design-/Bedienrevision - Funktionspatches */
+function openNativeColorPicker(initial,onPick){
+  const input=document.createElement('input');
+  input.type='color'; input.className='hidden-color-input'; input.value=initial||'#7c5cff';
+  document.body.appendChild(input);
+  input.oninput=()=>{ if(onPick)onPick(input.value); };
+  input.onchange=()=>{ if(onPick)onPick(input.value); setTimeout(()=>input.remove(),120); };
+  input.click();
+}
+function colorBucketButtonHtml(color,attr='data-color-bucket'){
+  return `<button type="button" class="btn small color-bucket-btn" ${attr} title="Weitere Farbe wählen">🪣</button><span class="color-bucket-preview" style="background:${escapeHtml(color||'#7c5cff')}"></span>`;
 }
 
-openAddCalendarModal=function(){
-  if(!requireLogin())return;
-  openModal('Kalender hinzufügen',`<input id="mNewCalName" placeholder="Kalendername, z. B. Geschäftskalender"><div class="hint">Die Kalendergruppe wird sofort in calendar_groups gespeichert.</div>`,async()=>{
-    const name=$('#mNewCalName').value.trim()||`Kalender ${state.calendars.length+1}`;
-    const row={user_id:currentUser.id,name,visible:true,collapsed:true,position:state.calendars.length};
-    const {data,error}=await supabaseClient.from('calendar_groups').insert(row).select('*').single();
-    if(error){toast('Kalendergruppe konnte nicht gespeichert werden: '+error.message);return;}
-    state.calendars.push({id:data.id,dbId:data.id,name:data.name,links:[],events:[],ownEvents:[],status:'Noch keine Kalenderquelle hinterlegt.',visible:data.visible!==false,collapsed:data.collapsed!==false});
-    scheduleRelationalSave();
+// Kalendergruppen-Collapse oben rechts statt in der Aktionszeile
+const __rev40_renderCalendarConfig=renderCalendarConfig;
+renderCalendarConfig=function(){
+  __rev40_renderCalendarConfig();
+  $$('.calendar-pane').forEach(pane=>{
+    const i=Number(pane.dataset.calIndex); const cal=state.calendars[i]; if(!cal)return;
+    pane.querySelectorAll('[data-collapse-cal]').forEach((b,idx)=>{ if(idx>0)b.remove(); });
+    const old=pane.querySelector('[data-collapse-cal]');
+    if(old){old.classList.add('cal-collapse-corner'); if(old.parentElement?.classList.contains('pane-actions')) pane.appendChild(old);}
+    const btn=pane.querySelector('[data-collapse-cal]');
+    if(btn){btn.innerHTML=cal.collapsed!==false?'▸':'▾';btn.title=cal.collapsed!==false?'Kalendergruppe ausklappen':'Kalendergruppe einklappen';}
   });
 };
 
-openICSModal=function(pane){
-  if(!requireLogin())return;
-  openModal(`ICS-Link hinzufügen · ${state.calendars[pane].name}`,`<input id="mName" placeholder="Name, z. B. Privat Kalender"><input id="mUrl" placeholder="webcal://... oder https://.../calendar.ics"><div class="hint">Der Link wird sofort in calendar_sources gespeichert. Danach wird der ICS-Kalender über den neuen Supabase-Proxy geladen.</div>`,async()=>{
-    const name=$('#mName').value.trim()||'ICS Kalender';
-    const url=normalizeICSUrl($('#mUrl').value.trim());
-    if(!url)return toast('Kein ICS-Link gespeichert.');
-    let cal;
-    try{cal=await ensureCalendarGroupInDb(pane);}catch(error){toast('Kalendergruppe konnte nicht vorbereitet werden: '+(error.message||error));return;}
-    const row={user_id:currentUser.id,calendar_group_id:cal.id,type:'ics',name,url,color:state.colors?.event||defaultColors.event,visible:true,position:(cal.links||[]).length};
-    const {data,error}=await supabaseClient.from('calendar_sources').insert(row).select('*').single();
-    if(error){toast('ICS-Quelle konnte nicht gespeichert werden: '+error.message);return;}
-    cal.links=cal.links||[];
-    cal.links.push({id:data.id,type:'ics',name:data.name,url:data.url,color:data.color,visible:data.visible!==false,calendarGroupId:cal.id});
-    await loadICS(pane);
-    scheduleRelationalSave();
-  });
-};
-
-openCreateOwnSourceModal=function(pane){
-  if(!requireLogin())return;
-  openModal(`Eigenen Kalender hinzufügen · ${state.calendars[pane].name}`,`<input id="mOwnName" placeholder="Name, z. B. Eigene Termine"><div class="hint">Der eigene Kalender wird sofort in calendar_sources gespeichert.</div>`,async()=>{
-    const name=$('#mOwnName').value.trim()||'Eigener Kalender';
-    let cal;
-    try{cal=await ensureCalendarGroupInDb(pane);}catch(error){toast('Kalendergruppe konnte nicht vorbereitet werden: '+(error.message||error));return;}
-    const row={user_id:currentUser.id,calendar_group_id:cal.id,type:'own',name,url:null,color:state.colors?.event||defaultColors.event,visible:true,position:(cal.links||[]).length};
-    const {data,error}=await supabaseClient.from('calendar_sources').insert(row).select('*').single();
-    if(error){toast('Eigener Kalender konnte nicht gespeichert werden: '+error.message);return;}
-    cal.links=cal.links||[];
-    cal.links.push({id:data.id,type:'own',name:data.name,color:data.color,visible:data.visible!==false,calendarGroupId:cal.id});
-    scheduleRelationalSave();
-  });
-};
-
-// Rev038: ICS wird über die neue Edge Function geladen. Die Function sollte im Dashboard ohne JWT-Verifikation bereitgestellt werden.
-loadICS=async function(pane){
-  if(!requireLogin())return;
-  const cal=state.calendars[pane];
-  if(!cal)return;
-  cal.events=[];
-  cal.status='Lade ICS...';
-  renderCalendarConfig();
-  persist();
-  let errors=[];
-  for(const link of (cal.links||[])){
-    if(link.type==='own'||!link.url)continue;
-    try{
-      const sourceUrl=normalizeICSUrl(link.url);
-      const res=await fetch(buildICSFetchUrl(sourceUrl),{cache:'no-store'});
-      if(!res.ok){
-        const msg=await res.text().catch(()=>'');
-        throw new Error('HTTP '+res.status+(msg?': '+msg.slice(0,160):''));
-      }
-      const text=await res.text();
-      if(!/BEGIN:VCALENDAR|BEGIN:VEVENT/i.test(text))throw new Error('Antwort ist keine ICS-Datei. Link/Freigabe/Proxy prüfen.');
-      const parsed=parseICS(text,link.name).map(e=>Object.assign(e,{icsId:link.id,icsColor:link.color||state.colors.event,icsName:link.name}));
-      cal.events.push(...parsed);
-      if(!parsed.length)errors.push(`${link.name}: ICS geladen, aber keine Termine gefunden.`);
-    }catch(e){
-      errors.push(`${link.name}: ${e.message}`);
-    }
+// Tagestask-Konfiguration: Farbe für überzogene Tagestasks ergänzen
+const __rev40_renderTaskColumnConfig=renderTaskColumnConfig;
+renderTaskColumnConfig=function(){
+  __rev40_renderTaskColumnConfig();
+  const root=$('#taskColumnConfig'); if(!root)return;
+  if(!root.querySelector('#overdueColorBtn')){
+    const box=document.createElement('div');
+    box.className='overdue-color-row';
+    box.innerHTML=`<div class="color-bucket-label"><span class="color-bucket-preview" style="background:${escapeHtml(state.colors?.overdue||defaultColors.overdue)}"></span><span>Überzogene Tagestasks</span></div><button class="btn small color-bucket-btn" id="overdueColorBtn" title="Farbe wählen">🪣</button>`;
+    root.prepend(box);
+    $('#overdueColorBtn').onclick=()=>openNativeColorPicker(state.colors?.overdue||defaultColors.overdue,(c)=>{state.colors=Object.assign({},defaultColors,state.colors||{});state.colors.overdue=c;persist();render();});
   }
-  cal.events=dedupeEvents(cal.events);
-  const stamp=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
-  cal.status=errors.length?`${cal.events.length} Termine geladen. Fehler: ${errors.join(' | ')}. Zuletzt: ${stamp}`:`${cal.events.length} Termine geladen. Zuletzt: ${stamp}`;
-  $('#diagBox').textContent=cal.status;
-  persist();
 };
+
+// Task-/Long-/ICS-Farbmodal: zusätzlichen Farbeimer nach vorhandenen Paletten ermöglichen
+function attachPaletteBucket(scopeSelector, targetObj, prop='color', fallback='#7c5cff'){
+  const wrap=document.querySelector(scopeSelector); if(!wrap||wrap.dataset.bucketReady)return; wrap.dataset.bucketReady='1';
+  const bucket=document.createElement('div'); bucket.style.marginTop='8px'; bucket.innerHTML=colorBucketButtonHtml(targetObj?.[prop]||fallback);
+  wrap.after(bucket);
+  bucket.querySelector('[data-color-bucket]').onclick=()=>openNativeColorPicker(targetObj?.[prop]||fallback,(c)=>{targetObj[prop]=c;persist();render();closeModal();});
+}
+const __rev40_openTaskColumnModal=openTaskColumnModal;
+openTaskColumnModal=function(idx){__rev40_openTaskColumnModal(idx);setTimeout(()=>{const isNew=idx===null||idx===undefined;const obj=isNew?{}:state.taskColumns[idx];attachPaletteBucket('[data-taskcol-color-picker]',obj,'color',state.colors?.task||defaultColors.task);},0);};
+const __rev40_openLongColumnModal=openLongColumnModal;
+openLongColumnModal=function(idx){__rev40_openLongColumnModal(idx);setTimeout(()=>{const isNew=idx===null||idx===undefined;const obj=isNew?{}:state.longColumns[idx];attachPaletteBucket('[data-longcol-color-picker]',obj,'color',state.colors?.long||defaultColors.long);},0);};
+const __rev40_openICSSettingsModal=openICSSettingsModal;
+openICSSettingsModal=function(pane,idx){__rev40_openICSSettingsModal(pane,idx);setTimeout(()=>{const obj=state.calendars[pane]?.links?.[idx]||{};attachPaletteBucket('[data-ics-color-picker]',obj,'color',state.colors?.event||defaultColors.event);},0);};
+const __rev40_openOwnSourceModal=openOwnSourceModal;
+openOwnSourceModal=function(pane,idx){__rev40_openOwnSourceModal(pane,idx);setTimeout(()=>{const obj=state.calendars[pane]?.links?.[idx]||{};attachPaletteBucket('[data-own-color-picker]',obj,'color',state.colors?.event||defaultColors.event);},0);};
+
+// Robusteres Dedupe: zusätzlich bei Tagesdarstellung nach tatsächlicher Occurrence deduplizieren
+function dedupeOccurrences(events){
+  const map=new Map(); const norm=v=>String(v||'').trim().toLowerCase().replace(/\s+/g,' ');
+  (events||[]).forEach(e=>{
+    const start=new Date(e.start); const end=e.end?new Date(e.end):null;
+    const key=[e.icsId||e.sourceId||'',norm(e.summary),isNaN(start)?String(e.start):start.toISOString(),end&&!isNaN(end)?end.toISOString():''].join('|');
+    const old=map.get(key);
+    if(!old)map.set(key,e);
+    else if(old.rrule && !e.rrule)map.set(key,e);
+  });
+  return Array.from(map.values());
+}
+const __rev40_calendarLanes=calendarLanes;
+calendarLanes=function(date){
+  // Kopie der Originallogik mit deduplizierter Eventliste
+  const iso=fmtDate(date);const visible=visibleCalendars();return visible.map(({cal,idx:ci})=>{
+    const visibleOwnIds=(cal.links||[]).filter(l=>l.type==='own'&&l.visible!==false).map(l=>l.id);
+    const icsEvents=(cal.events||[]).map((e,ei)=>{const occ=eventOccurrenceForDate(e,date);return occ?Object.assign(occ,{_type:'ics',_cal:ci,_idx:ei}):null;}).filter(e=>{if(!e)return false;const l=(cal.links||[]).find(x=>x.id===e.icsId);return (!l||l.visible!==false);});
+    const ownEvents=(cal.ownEvents||[]).map((e,ei)=>{const occ=eventOccurrenceForDate(e,date);return occ?Object.assign(occ,{_type:'own',_cal:ci,_idx:ei}):null;}).filter(e=>e&&visibleOwnIds.includes(e.sourceId));
+    const events=dedupeOccurrences([...icsEvents,...ownEvents]).sort((a,b)=>new Date(a.start)-new Date(b.start));
+    const ownSources=(cal.links||[]).filter(l=>l.type==='own'&&l.visible!==false);
+    return `<div class="lane"><div class="lane-title" style="display:flex;align-items:center;gap:8px"><span>${escapeHtml(cal.name)}</span>${ownSources.length?`<button class="btn small own-event-btn plus-only" data-add-own-event="${ci}:${iso}" title="Eigenen Termin hinzufügen">+</button>`:''}</div>${events.length?events.map(e=>{const tp=eventTimeParts(e);const ref=`${e._type}:${e._cal}:${e._idx}:${iso}`;const recur=(e.recurrence&&e.recurrence!=='none')?` · ${recurrenceLabel(e.recurrence)}`:(e.rrule?` · Wiederholung`:'');const cancelled=(String(e.status||'').toUpperCase()==='CANCELLED');const label=cancelled?' · Abgesagt':'';const h=eventVisualHeight(e);return `<div class="card event ${cancelled?'cancelled':''}" data-event-ref="${ref}" data-ics-color="1" style="border-left-color:${escapeHtml(e.icsColor||state.colors.event)}!important;min-height:${h}px;padding-top:${h<42?'7':'11'}px;padding-bottom:${h<42?'7':'11'}px" title="${escapeHtml(e.summary)}"><div class="event-row"><div class="event-timebox"><span>${escapeHtml(tp.start)}</span><span>${escapeHtml(tp.end)}</span></div><div class="event-title"><b>${escapeHtml(shortText(e.summary+(cancelled?' (abgesagt)':''),30))}</b><small>${escapeHtml(shortText((e.icsName||e.source||cal.name)+recur+label,34))}</small></div></div></div>`}).join(''):'<div class="empty">Keine Einträge.</div>'}</div>`;
+  }).join('');
+};
+
+// Login per Enter in E-Mail-/Passwortfeld
+const __rev40_openCloudModal=openCloudModal;
+openCloudModal=function(){
+  __rev40_openCloudModal();
+  setTimeout(()=>{['#cloudEmail','#cloudPassword'].forEach(sel=>{const el=$(sel); if(el)el.onkeydown=(e)=>{if(e.key==='Enter'){e.preventDefault();cloudLogin();}};});},0);
+};
+
+// Einstellungen: Sicherheitshinweis + mehr Erscheinungsoptionen
+openSyncSettingsModal=function(){
+  openModal('Allgemeine Einstellungen',`<div class="settings-grid"><div class="field"><label>Erscheinung</label><select id="mTheme"><option value="light">Hell</option><option value="dark">Dunkel</option><option value="blue">Bläulich</option><option value="red">Rötlich</option><option value="green">Grünlich</option></select></div><div class="field"><label>Kanten</label><select id="mCornerStyle"><option value="rounded">Abgerundet</option><option value="sharp">Eckig / 90°</option></select></div><div class="section-title">Synchronisierung</div><button class="btn primary" id="mSyncNow" type="button">Alle ICS-Links aktualisieren</button><div class="field"><label>Intervall</label><select id="mSyncInterval"><option value="0">Aus / manuell</option><option value="5">Alle 5 Min.</option><option value="15">Alle 15 Min.</option><option value="30">Alle 30 Min.</option><option value="60">Alle 60 Min.</option></select></div><div class="hint" id="mSyncHint">ICS-Links werden über den intern fest hinterlegten Proxy geladen.</div><div class="security-note"><b>Datenschutzhinweis:</b> Kalenderbezogene Informationen wie Kalenderquellen, ICS-Links, Tasks und eigene Termine liegen nutzerbezogen in der Datenbank. Der Entwickler könnte diese Daten hypothetisch administrativ aus der Datenbank auslesen, tut dies aber nicht. <br><br><b>Wichtig:</b> Passwörter und Anmeldeinformationen können nicht angezeigt werden. Die Authentifizierung wird über Supabase Auth verwaltet; Passwörter liegen nicht im Klartext vor.</div></div>`,()=>{state.theme=$('#mTheme').value;state.cornerStyle=$('#mCornerStyle').value;state.syncInterval=Number($('#mSyncInterval').value);state.fetchMode='proxy';state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;setupAutoSync();});
+  $('#mTheme').value=state.theme||'light';$('#mCornerStyle').value=state.cornerStyle||'rounded';$('#mSyncInterval').value=String(state.syncInterval??15);
+  $('#mSyncNow').onclick=async()=>{state.theme=$('#mTheme').value;state.cornerStyle=$('#mCornerStyle').value;state.syncInterval=Number($('#mSyncInterval').value);state.fetchMode='proxy';state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;persist();setupAutoSync();applyAppearance();await syncAllICS();};
+};
+const __rev40_applyAppearance=applyAppearance;
+applyAppearance=function(){
+  __rev40_applyAppearance();
+  document.body.classList.toggle('theme-blue',state.theme==='blue');
+  document.body.classList.toggle('theme-red',state.theme==='red');
+  document.body.classList.toggle('theme-green',state.theme==='green');
+};
+
+// Modus-Konfiguration: Modusauswahl + Löschen, Kalender-Haken in Titelzeile, Unterkalender behalten ihre Haken
+function syncModeChildrenInModal(){
+  $$('[data-mode-cal]').forEach(parent=>{
+    const section=parent.closest('.mode-config-calgroup'); if(!section)return;
+    section.querySelectorAll('[data-mode-ics]').forEach(child=>{
+      child.disabled=!parent.checked;
+      child.closest('.mode-check')?.classList.toggle('disabled-child',!parent.checked);
+    });
+  });
+}
+openViewModeConfigModal=function(id){
+  if(!requireLogin())return; ensureRev033State();
+  let mode=(state.viewModes||[]).find(m=>m.id===id); if(!mode)return;
+  const modeOptions=(state.viewModes||[]).map(m=>`<option value="${escapeHtml(m.id)}" ${m.id===mode.id?'selected':''}>${escapeHtml(m.name)}</option>`).join('');
+  const calHtml=(state.calendars||[]).map((c,i)=>{
+    const calKey=c.id||c.name||('cal_'+i);
+    const checked=Object.prototype.hasOwnProperty.call(mode.calendarVisible||{},calKey)?!!mode.calendarVisible[calKey]:c.visible!==false;
+    const links=(c.links||[]).map(l=>{
+      const lkey=l.id||l.name;
+      const lchecked=Object.prototype.hasOwnProperty.call(mode.icsVisible||{},lkey)?!!mode.icsVisible[lkey]:l.visible!==false;
+      return modeCheckbox((l.name||'Kalenderquelle'),lchecked,`data-mode-ics="${escapeHtml(lkey)}" ${checked?'':'disabled'}`,'child '+(checked?'':'disabled-child'));
+    }).join('');
+    return `<div class="mode-config-calgroup"><div class="mode-config-calgroup-head"><div class="mode-config-calgroup-title">${escapeHtml(c.name||('Kalender '+(i+1)))}</div><input class="mode-parent-check" type="checkbox" ${checked?'checked':''} data-mode-cal="${escapeHtml(calKey)}"></div>${links||'<div class="hint">Keine Quellen.</div>'}</div>`;
+  }).join('');
+  const taskHtml=(state.taskColumns||[]).map(c=>modeCheckbox(c.name,Object.prototype.hasOwnProperty.call(mode.taskVisible||{},c.id)?!!mode.taskVisible[c.id]:c.visible!==false,`data-mode-task="${escapeHtml(c.id)}"`)).join('')||'<div class="hint">Keine Tagestask-Spalten.</div>';
+  const longHtml=(state.longColumns||[]).map(c=>modeCheckbox(c.name,Object.prototype.hasOwnProperty.call(mode.longVisible||{},c.id)?!!mode.longVisible[c.id]:c.visible!==false,`data-mode-long="${escapeHtml(c.id)}"`)).join('')||'<div class="hint">Keine Langfrist-Gruppen.</div>';
+  $('#modalTitle').textContent='Modus konfigurieren';
+  $('#modalContent').innerHTML=`<div class="edit-grid"><div class="mode-config-toolbar"><select id="modePickerTop">${modeOptions}</select></div><label>Name des Modus</label><input id="modeNameInput" value="${escapeHtml(mode.name)}"><div class="mode-config-list"><div class="mode-config-section"><div class="mode-config-section-title">Kalender und ICS-Links</div><div class="mode-config-grid">${calHtml}</div></div><div class="mode-config-section"><div class="mode-config-section-title">Tagestask-Spalten</div><div class="mode-config-grid">${taskHtml}</div></div><div class="mode-config-section"><div class="mode-config-section-title">Langfristige Task-Gruppen</div><div class="mode-config-grid">${longHtml}</div></div></div></div>`;
+  $('#modalBackdrop').style.display='flex'; $('#saveModal').style.display='';
+  const actions=document.querySelector('.modal-actions');
+  let oldDelete=document.querySelector('#deleteModeBtnAction'); if(oldDelete)oldDelete.remove();
+  const deleteBtn=document.createElement('button'); deleteBtn.className='btn danger mode-delete-action'; deleteBtn.id='deleteModeBtnAction'; deleteBtn.type='button'; deleteBtn.textContent='Löschen';
+  actions.insertBefore(deleteBtn,$('#saveModal'));
+  $('#modePickerTop').onchange=e=>openViewModeConfigModal(e.target.value);
+  deleteBtn.onclick=()=>{if(!confirm('Diesen Ansichtsmodus löschen?'))return; state.viewModes=state.viewModes.filter(m=>m.id!==mode.id); state.activeViewMode=state.viewModes[0]?.id||''; deleteBtn.remove(); closeModal(); render(); toast('Modus gelöscht.');};
+  $$('[data-mode-cal]').forEach(x=>x.onchange=syncModeChildrenInModal); syncModeChildrenInModal();
+  $('#saveModal').onclick=()=>{
+    mode.name=$('#modeNameInput').value.trim()||mode.name||'Modus'; mode.calendarVisible={}; mode.icsVisible={}; mode.taskVisible={}; mode.longVisible={};
+    $$('[data-mode-cal]').forEach(x=>mode.calendarVisible[x.dataset.modeCal]=x.checked);
+    $$('[data-mode-ics]').forEach(x=>mode.icsVisible[x.dataset.modeIcs]=x.checked);
+    $$('[data-mode-task]').forEach(x=>mode.taskVisible[x.dataset.modeTask]=x.checked);
+    $$('[data-mode-long]').forEach(x=>mode.longVisible[x.dataset.modeLong]=x.checked);
+    state.activeViewMode=mode.id; applyViewMode(mode.id); closeModal(); render(); toast('Modus gespeichert.');
+  };
+};
+
+
+
+/* Rev 041: Schutz gegen unbeabsichtigtes Löschen tabellarischer Fachdatensätze
+   Problemursache: Der bisherige relationale Snapshot hat nicht nur geupsertet,
+   sondern auch alle Tabellenzeilen gelöscht, die im aktuellen Frontend-State fehlten.
+   Wenn ein Reload/Versionswechsel/Load-Fehler kurzzeitig einen leeren state.tasks erzeugt,
+   konnten dadurch vorhandene Tagestasks aus Supabase verschwinden.
+   Korrektur: Snapshot-Speicherung löscht nichts mehr automatisch. Löschungen erfolgen nur noch
+   explizit über Nutzeraktionen und dann gezielt per DELETE auf der passenden Tabelle. */
+async function dbDeleteRowRev041(table,id){
+  if(!currentUser||!id)return;
+  const {error}=await supabaseClient.from(table).delete().eq('user_id',currentUser.id).eq('id',id);
+  if(error){console.error('DELETE fehlgeschlagen',table,id,error);toast('Löschen in Tabelle fehlgeschlagen: '+error.message);}
+}
+async function dbUpdateRowRev041(table,id,values){
+  if(!currentUser||!id)return;
+  const {error}=await supabaseClient.from(table).update(values).eq('user_id',currentUser.id).eq('id',id);
+  if(error){console.error('UPDATE fehlgeschlagen',table,id,error);toast('Speichern in Tabelle fehlgeschlagen: '+error.message);}
+}
+// WICHTIG: kein automatisches Tabellen-Bereinigungs-DELETE mehr beim Snapshot.
+deleteMissing=async function(table,ids){ return; };
+// Schnellere, aber weiterhin entprellte Speicherung.
+scheduleRelationalSave=function(){
+  if(!currentUser||suppressCloudSave)return;
+  clearTimeout(relationalSaveTimer);
+  relationalSaveTimer=setTimeout(saveRelationalSnapshot,150);
+};
+
+// Tagestask-Tageskarte mit expliziter Tabellenlöschung und sofortigem Update beim Abhaken.
+dayCard=function(date){
+  const today=new Date();today.setHours(0,0,0,0);const iso=fmtDate(date);
+  const visibleTaskIds=(state.taskColumns||[]).filter(c=>c.visible!==false).map(c=>c.id);
+  const visibleLongIds=(state.longColumns||[]).filter(c=>c.visible!==false).map(c=>c.id);
+  const openTasks=state.tasks.filter(t=>t.date===iso&&!t.done&&visibleTaskIds.includes(t.columnId||state.taskColumns?.[0]?.id));
+  const overdue=sameDay(date,today)?state.tasks.filter(t=>t.date<fmtDate(today)&&!t.done&&visibleTaskIds.includes(t.columnId||state.taskColumns?.[0]?.id)):[];
+  const completedLong=state.longterm.filter(t=>t.done&&t.completedDate===iso&&visibleLongIds.includes(t.columnId||state.longColumns?.[0]?.id));
+  const completedTasks=state.tasks.filter(t=>t.done&&t.completedDate===iso&&visibleTaskIds.includes(t.columnId||state.taskColumns?.[0]?.id));
+  const showCompleted=completedTasks.length||completedLong.length;
+  const day=document.createElement('div');day.className='day'+(sameDay(date,today)?' today':'');
+  day.innerHTML=`<div class="day-head"><div class="day-num"><span class="day-title-weekday">${escapeHtml(date.toLocaleDateString('de-DE',{weekday:'long'}))}</span><span class="day-title-date">${escapeHtml(date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}))}</span></div>${sameDay(date,today)?'<span class="badge">Aktueller Tag</span>':''}</div><div class="day-body"><div class="partition"><div class="part-head"><div class="part-title">1. Terminkalender</div></div><div class="split">${calendarLanes(date)}</div></div><div class="partition"><div class="part-head"><div class="part-title">2. Tagestasks</div><button class="btn small" data-task-date="${iso}">+ Hinzufügen</button></div>${taskColumnsList(openTasks)}</div>${sameDay(date,today)?`<div class="partition"><div class="part-head"><div class="part-title">3. Überzogene Tagestasks</div></div>${taskList(overdue,true)}</div>`:''}${showCompleted?`<div class="partition"><div class="part-head"><div class="part-title">${sameDay(date,today)?'4':'3'}. An diesem Tag erledigte Tasks</div></div>${completedDoneList(completedTasks,completedLong)}</div>`:''}</div>`;
+  day.querySelector('[data-task-date]').onclick=()=>openTaskModal(iso);
+  day.querySelectorAll('[data-toggle-task]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=async(ev)=>{ev.stopPropagation();const t=state.tasks.find(x=>x.id===c.dataset.toggleTask);if(!requireLogin()){c.checked=!c.checked;return;}if(t){t.done=c.checked;t.completedDate=c.checked?fmtDate(new Date()):null;render();await dbUpdateRowRev041('tasks',t.id,{done:!!t.done,completed_date:t.completedDate||null});scheduleRelationalSave();}}});
+  day.querySelectorAll('[data-delete-task]').forEach(b=>b.onclick=async(ev)=>{ev.stopPropagation();if(!requireLogin())return;const id=b.dataset.deleteTask;state.tasks=state.tasks.filter(x=>x.id!==id);render();await dbDeleteRowRev041('tasks',id);});
+  day.querySelectorAll('[data-task-ref]').forEach(card=>card.onclick=()=>openTaskDetailModal(card.dataset.taskRef));
+  day.querySelectorAll('[data-add-own-event]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();const [ci,iso]=b.dataset.addOwnEvent.split(':');openOwnEventModal(Number(ci),iso);});
+  day.querySelectorAll('[data-event-ref]').forEach(card=>card.onclick=()=>openEventDetailModal(card.dataset.eventRef));
+  return day;
+};
+
+// Langfristige Tasks: explizites DELETE statt indirektem Snapshot-Löschen.
+const __rev041_renderLong=renderLong;
+renderLong=function(){
+  __rev041_renderLong();
+  $$('[data-delete-long]').forEach(b=>b.onclick=async(ev)=>{ev.stopPropagation();if(!requireLogin())return;const id=b.dataset.deleteLong;state.longterm=state.longterm.filter(x=>x.id!==id);render();await dbDeleteRowRev041('long_tasks',id);});
+  $$('[data-toggle-long]').forEach(c=>{c.onchange=async(ev)=>{ev.stopPropagation();const t=state.longterm.find(x=>x.id===c.dataset.toggleLong);if(!requireLogin()){c.checked=!c.checked;return;}if(t){t.done=c.checked;t.completedDate=c.checked?fmtDate(new Date()):null;render();await dbUpdateRowRev041('long_tasks',t.id,{done:!!t.done,completed_date:t.completedDate||null});scheduleRelationalSave();}}});
+};
+
+// Kalendergruppen und Kalenderquellen: Löschungen nur gezielt per Nutzeraktion.
+const __rev041_renderCalendarConfig=renderCalendarConfig;
+renderCalendarConfig=function(){
+  __rev041_renderCalendarConfig();
+  $$('[data-del-ics]').forEach(b=>b.onclick=async(ev)=>{ev.stopPropagation();if(!requireLogin())return;const [i,idx]=b.dataset.delIcs.split(':').map(Number);const target=state.calendars[i]?.links?.[idx];if(!target)return;
+    if(target.type==='own'){
+      const count=(state.calendars[i].ownEvents||[]).filter(e=>e.sourceId===target.id).length;
+      if(!confirm(`Sind Sie sicher, dass Sie diesen eigenen Kalender löschen möchten?\n\nAlle darin erstellten Termine werden unwiderruflich gelöscht.\nBetroffene Termine: ${count}`))return;
+    }else if(!confirm('Diese Kalenderquelle wirklich entfernen?'))return;
+    state.calendars[i].links.splice(idx,1);
+    state.calendars[i].events=(state.calendars[i].events||[]).filter(e=>e.icsId!==target.id);
+    state.calendars[i].ownEvents=(state.calendars[i].ownEvents||[]).filter(e=>e.sourceId!==target.id);
+    render();
+    await dbDeleteRowRev041('calendar_sources',target.id);
+  });
+  $$('[data-delete-cal]').forEach(b=>b.onclick=async(ev)=>{ev.stopPropagation();if(!requireLogin())return;const i=Number(b.dataset.deleteCal);const cal=state.calendars[i];if(!cal)return;if(!confirm('Kalender inklusive aller Quellen und eigenen Terminen löschen?'))return;state.calendars.splice(i,1);render();await dbDeleteRowRev041('calendar_groups',cal.id);});
+};
+
+// Gruppenlöschung: zuerst betroffene Tasks lokal und tabellarisch auf Fallback-Gruppe verschieben, dann Gruppe gezielt löschen.
+const __rev041_renderTaskColumnConfig=renderTaskColumnConfig;
+renderTaskColumnConfig=function(){
+  __rev041_renderTaskColumnConfig();
+  $$('[data-delete-taskcol]').forEach(b=>b.onclick=async()=>{if(!requireLogin())return;const idx=Number(b.dataset.deleteTaskcol);if(state.taskColumns.length<=1)return toast('Mindestens eine Task-Spalte bleibt erhalten.');const col=state.taskColumns[idx];if(!confirm('Task-Spalte löschen? Bestehende Tasks werden in die erste verfügbare Spalte verschoben.'))return;const fallback=state.taskColumns.find((_,i)=>i!==idx)?.id||null;state.tasks.forEach(t=>{if(t.columnId===col.id)t.columnId=fallback;});state.taskColumns.splice(idx,1);render();if(fallback)await supabaseClient.from('tasks').update({task_group_id:fallback}).eq('user_id',currentUser.id).eq('task_group_id',col.id);await dbDeleteRowRev041('task_groups',col.id);scheduleRelationalSave();});
+};
+const __rev041_renderLongColumnConfig=renderLongColumnConfig;
+renderLongColumnConfig=function(){
+  __rev041_renderLongColumnConfig();
+  $$('[data-delete-longcol]').forEach(b=>b.onclick=async()=>{if(!requireLogin())return;const idx=Number(b.dataset.deleteLongcol);if(state.longColumns.length<=1)return toast('Mindestens eine langfristige Gruppe bleibt erhalten.');const col=state.longColumns[idx];if(!confirm('Langfristige Gruppe löschen? Bestehende Tasks werden in die erste verfügbare Gruppe verschoben.'))return;const fallback=state.longColumns.find((_,i)=>i!==idx)?.id||null;state.longterm.forEach(t=>{if(t.columnId===col.id)t.columnId=fallback;});state.longColumns.splice(idx,1);render();if(fallback)await supabaseClient.from('long_tasks').update({long_task_group_id:fallback}).eq('user_id',currentUser.id).eq('long_task_group_id',col.id);await dbDeleteRowRev041('long_task_groups',col.id);scheduleRelationalSave();});
+};
+
 
 window.addEventListener('pagehide',()=>{try{supabaseClient.auth.signOut({scope:'local'});}catch(e){} localStorage.removeItem(storeKey);});
 $('#daysSelect').onchange=e=>{state.days=Number(e.target.value);render()};if($('#rowsSelect'))$('#rowsSelect').onchange=e=>{state.dayRows=Number(e.target.value);render()};if($('#startModeSelect'))$('#startModeSelect').onchange=e=>{state.startMode=e.target.value;if(state.startMode==='week'){state.days=7;state.dayRows=1;state.offset=0;}if(state.startMode==='workweek'){state.days=5;state.dayRows=1;state.offset=0;}render()};$('#prevBtn').onclick=()=>{state.offset-=1;render()};$('#nextBtn').onclick=()=>{state.offset+=1;render()};$('#todayBtn').onclick=()=>{state.offset=0;render()};$('#monthBtn').onclick=openMonthModal;$('#settingsBtn').onclick=openSyncSettingsModal;$('#legendBtn').onclick=openLegendModal;$('#cloudBtn').onclick=openCloudModal;$('#addLongBtn2').onclick=()=>{if(requireLogin())openLongModal();};initSidebarToggle();setupGlobalSearch();initConfigBlocks();render();setupAutoSync();
