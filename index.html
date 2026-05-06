@@ -2262,6 +2262,140 @@ persist=function(){
 function noopPagehideRev042(){ localStorage.removeItem(storeKey); }
 
 
+
+/* Rev 043 Sicherheitsfix Multi-Gerät: Keine Frontend-Snapshots mehr für Fachdaten.
+   Datenbanktabellen sind Quelle der Wahrheit. Fachliche Änderungen laufen nur noch
+   über gezielte INSERT/UPDATE/DELETE-Operationen. Dadurch kann ein zweites Gerät
+   mit leerem/teilgeladenem State keine Task-Tabelle mehr überschreiben oder leeren. */
+function currentTaskGroupIdRev043(){
+  ensureSettings();
+  const g=(state.taskColumns||[]).find(x=>isUuid(x.id))||(state.taskColumns||[])[0];
+  return g?.id||null;
+}
+function currentLongGroupIdRev043(){
+  ensureRev033State();
+  const g=(state.longColumns||[]).find(x=>isUuid(x.id))||(state.longColumns||[])[0];
+  return g?.id||null;
+}
+async function insertTaskRev043(task){
+  if(!currentUser)throw new Error('Nicht angemeldet');
+  const row={
+    user_id:currentUser.id,
+    task_group_id:isUuid(task.columnId)?task.columnId:null,
+    title:task.title||'Ohne Titel',
+    note:task.note||null,
+    task_date:task.date||fmtDate(new Date()),
+    done:!!task.done,
+    completed_date:task.completedDate||null,
+    position:state.tasks?.length||0
+  };
+  const {data,error}=await supabaseClient.from('tasks').insert(row).select('*').single();
+  if(error)throw error;
+  return {id:data.id,title:data.title,note:data.note||'',date:data.task_date,done:!!data.done,completedDate:data.completed_date||null,columnId:data.task_group_id||currentTaskGroupIdRev043()};
+}
+async function insertLongTaskRev043(task){
+  if(!currentUser)throw new Error('Nicht angemeldet');
+  const row={
+    user_id:currentUser.id,
+    long_task_group_id:isUuid(task.columnId)?task.columnId:null,
+    title:task.title||'Ohne Titel',
+    note:task.note||null,
+    done:!!task.done,
+    completed_date:task.completedDate||null,
+    position:state.longterm?.length||0
+  };
+  const {data,error}=await supabaseClient.from('long_tasks').insert(row).select('*').single();
+  if(error)throw error;
+  return {id:data.id,title:data.title,note:data.note||'',done:!!data.done,completedDate:data.completed_date||null,columnId:data.long_task_group_id||currentLongGroupIdRev043(),createdDate:data.created_at?fmtDate(new Date(data.created_at)):fmtDate(new Date())};
+}
+async function updateTaskRev043(id,patch){
+  if(!currentUser||!isUuid(id))return;
+  const {error}=await supabaseClient.from('tasks').update(patch).eq('user_id',currentUser.id).eq('id',id);
+  if(error)throw error;
+}
+async function updateLongTaskRev043(id,patch){
+  if(!currentUser||!isUuid(id))return;
+  const {error}=await supabaseClient.from('long_tasks').update(patch).eq('user_id',currentUser.id).eq('id',id);
+  if(error)throw error;
+}
+
+// Keine automatischen Fachdatensnapshots mehr. AppState speichert weiterhin nur UI.
+scheduleRelationalSave=function(){ return; };
+saveRelationalSnapshot=async function(){ return; };
+persist=function(){
+  if(currentUser){localStorage.setItem(storeKey,JSON.stringify(uiStateOnly()));}else{localStorage.removeItem(storeKey);}
+  if(cloudReady&&currentUser&&!suppressCloudSave){scheduleCloudSave();}
+};
+
+// Tagestask-Anlage: erst Datenbank INSERT, dann lokaler State. Kein Snapshot.
+openTaskModal=function(date=fmtDate(new Date())){
+  if(!requireLogin())return;ensureSettings();
+  openModal('Tagestask hinzufügen',`<input id="mTitle" placeholder="Aufgabe"><select id="mTaskColumn">${state.taskColumns.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join('')}</select><input id="mDate" type="date" value="${date}"><textarea id="mNote" rows="3" placeholder="Notiz / Kontext"></textarea>`,async()=>{
+    const title=$('#mTitle').value.trim();
+    if(!title)return toast('Aufgabe ohne Titel wurde nicht gespeichert.');
+    try{
+      const saved=await insertTaskRev043({title,date:$('#mDate').value,done:false,note:$('#mNote').value.trim(),columnId:$('#mTaskColumn').value});
+      state.tasks.push(saved);render();toast('Tagestask gespeichert.');
+    }catch(error){toast('Tagestask konnte nicht gespeichert werden: '+(error.message||error));}
+  });
+};
+
+// Langfristige Task-Anlage: erst Datenbank INSERT, dann lokaler State. Kein Snapshot.
+openLongModal=function(){
+  if(!requireLogin())return;ensureRev033State();
+  openModal('Langfristigen Task hinzufügen',`<input id="mTitle" placeholder="Langfristiger Task"><select id="mLongColumn">${state.longColumns.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join('')}</select><textarea id="mNote" rows="3" placeholder="Notiz"></textarea>`,async()=>{
+    const title=$('#mTitle').value.trim();
+    if(!title)return toast('Aufgabe ohne Titel wurde nicht gespeichert.');
+    try{
+      const saved=await insertLongTaskRev043({title,done:false,note:$('#mNote').value.trim(),columnId:$('#mLongColumn').value});
+      state.longterm.push(saved);render();toast('Langfristiger Task gespeichert.');
+    }catch(error){toast('Langfristiger Task konnte nicht gespeichert werden: '+(error.message||error));}
+  });
+};
+
+// Task-Detail: Änderungen gezielt per UPDATE/INSERT/DELETE speichern.
+openTaskDetailModal=function(ref){
+  if(!requireLogin())return;ensureRev033State();
+  const [type,id]=ref.split(':');const isLong=type==='long';
+  const t=isLong?state.longterm.find(x=>x.id===id):state.tasks.find(x=>x.id===id);if(!t)return;
+  $('#modalTitle').textContent=isLong?'Langfristigen Task bearbeiten':'Tagestask bearbeiten';
+  const moveOptions=!isLong?`${state.taskColumns.map(c=>`<option value="task:${escapeHtml(c.id)}" ${(t.columnId||state.taskColumns[0]?.id)===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}${state.longColumns.map(c=>`<option value="long:${escapeHtml(c.id)}">${escapeHtml(c.name)} (langfristig)</option>`).join('')}`:'';
+  $('#modalContent').innerHTML=`<div class="edit-grid"><label>Titel</label><input id="editTaskTitle" value="${escapeHtml(t.title||'')}">${isLong?`<label>Gruppe</label><select id="editLongColumn">${state.longColumns.map(c=>`<option value="${escapeHtml(c.id)}" ${(t.columnId||state.longColumns[0]?.id)===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}</select><label>Verschieben</label><select id="moveLongToTask"><option value="keep">Langfristiger Task bleiben</option><option value="today">In Tagestask für heute verschieben</option></select>`:`<label>Verschieben</label><select id="moveTaskTarget">${moveOptions}</select><label>Soll-Datum</label><input id="editTaskDate" type="date" value="${escapeHtml(t.date||fmtDate(new Date()))}">`}<label>Status</label><select id="editTaskDone"><option value="false" ${!t.done?'selected':''}>Offen</option><option value="true" ${t.done?'selected':''}>Erledigt</option></select><label>Erledigt am</label><input id="editTaskCompleted" type="date" value="${escapeHtml(t.completedDate||'')}"><label>Notiz</label><textarea id="editTaskNote" rows="7">${escapeHtml(t.note||'')}</textarea></div>`;
+  $('#modalBackdrop').style.display='flex';$('#saveModal').style.display='';
+  $('#saveModal').onclick=async()=>{
+    try{
+      const title=$('#editTaskTitle').value.trim()||t.title||'Ohne Titel';
+      const done=$('#editTaskDone').value==='true';
+      let completed=$('#editTaskCompleted').value||null;if(done&&!completed)completed=fmtDate(new Date());if(!done)completed=null;
+      const note=$('#editTaskNote').value.trim();
+      if(isLong){
+        if($('#moveLongToTask').value==='today'){
+          const saved=await insertTaskRev043({title,date:fmtDate(new Date()),done,note,columnId:currentTaskGroupIdRev043(),completedDate:completed});
+          await dbDeleteRowRev041('long_tasks',t.id);
+          state.tasks.push(saved);state.longterm=state.longterm.filter(x=>x.id!==t.id);
+        }else{
+          t.title=title;t.done=done;t.completedDate=completed;t.note=note;t.columnId=$('#editLongColumn').value;
+          await updateLongTaskRev043(t.id,{title,note:note||null,done,completed_date:completed,long_task_group_id:isUuid(t.columnId)?t.columnId:null});
+        }
+      }else{
+        const target=$('#moveTaskTarget').value;
+        if(target.startsWith('long:')){
+          const longGroupId=target.slice(5);
+          const saved=await insertLongTaskRev043({title,done,note,columnId:longGroupId,completedDate:completed});
+          await dbDeleteRowRev041('tasks',t.id);
+          state.longterm.push(saved);state.tasks=state.tasks.filter(x=>x.id!==t.id);
+        }else{
+          const taskGroupId=target.replace(/^task:/,'');
+          t.title=title;t.done=done;t.completedDate=completed;t.note=note;t.date=$('#editTaskDate').value||t.date;t.columnId=taskGroupId;
+          await updateTaskRev043(t.id,{title,note:note||null,task_date:t.date,done,completed_date:completed,task_group_id:isUuid(taskGroupId)?taskGroupId:null});
+        }
+      }
+      closeModal();render();toast('Änderung gespeichert.');
+    }catch(error){toast('Änderung konnte nicht gespeichert werden: '+(error.message||error));}
+  };
+  $('#modalContent').onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA'){e.preventDefault();$('#saveModal').click();}else if(e.key==='Enter'&&e.ctrlKey){e.preventDefault();$('#saveModal').click();}};
+};
+
 window.addEventListener('pagehide',noopPagehideRev042);
 $('#daysSelect').onchange=e=>{state.days=Number(e.target.value);render()};if($('#rowsSelect'))$('#rowsSelect').onchange=e=>{state.dayRows=Number(e.target.value);render()};if($('#startModeSelect'))$('#startModeSelect').onchange=e=>{state.startMode=e.target.value;if(state.startMode==='week'){state.days=7;state.dayRows=1;state.offset=0;}if(state.startMode==='workweek'){state.days=5;state.dayRows=1;state.offset=0;}render()};$('#prevBtn').onclick=()=>{state.offset-=1;render()};$('#nextBtn').onclick=()=>{state.offset+=1;render()};$('#todayBtn').onclick=()=>{state.offset=0;render()};$('#monthBtn').onclick=openMonthModal;$('#settingsBtn').onclick=openSyncSettingsModal;$('#legendBtn').onclick=openLegendModal;$('#cloudBtn').onclick=openCloudModal;$('#addLongBtn2').onclick=()=>{if(requireLogin())openLongModal();};initSidebarToggle();setupGlobalSearch();initConfigBlocks();render();setupAutoSync();
 supabaseClient.auth.onAuthStateChange((event,session)=>{
