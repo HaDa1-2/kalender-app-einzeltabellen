@@ -900,6 +900,66 @@ body.sharp-corners .pane-actions .add-source-plus,body.sharp-corners .own-event-
 .cal-collapse-corner{top:8px!important;right:8px!important;}
 @media(max-width:1000px){.top{grid-template-columns:1fr!important}.top-title,.top-search,.compact-toolbar{grid-column:1!important;justify-self:stretch!important}.top-search{width:100%!important;max-width:none!important}.compact-toolbar{justify-self:start!important;flex-wrap:wrap!important}}
 
+
+
+/* Rev 045: Reload-Button, einheitliche Kalenderquellen-Buttons, zentrierter Farbdialog */
+#reloadDbBtn{
+  background:linear-gradient(135deg,#16a34a,#22c55e)!important;
+  border:0!important;
+  color:#fff!important;
+  font-size:27px!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.25)!important;
+}
+#reloadDbBtn:hover{filter:brightness(1.08)!important;}
+#reloadDbBtn::first-letter{font-weight:1000!important;}
+.pane-actions .add-source-plus{
+  width:40px!important;
+  height:40px!important;
+  min-width:40px!important;
+  padding:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:26px!important;
+  line-height:1!important;
+}
+.pane-actions .add-source-plus span{line-height:1!important;transform:translateY(-1px)!important;}
+.color-dialog-backdrop{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.58);
+  z-index:80;
+  padding:20px;
+}
+.color-dialog{
+  width:min(520px,100%);
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;
+  color:var(--text);
+}
+body.light .color-dialog{background:#fff;border-color:#cbd6e7;color:#152033;}
+.color-dialog h3{margin:0 0 12px 0;font-size:20px;}
+.color-dialog-main{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;margin:12px 0;}
+.color-dialog-preview{width:96px;height:96px;border-radius:18px;border:1px solid rgba(255,255,255,.28);box-shadow:0 8px 28px rgba(0,0,0,.24);}
+body.light .color-dialog-preview{border-color:#cbd6e7;}
+.color-dialog input[type="color"]{width:100%;height:52px;background:transparent;border:1px solid var(--line);border-radius:12px;padding:5px;}
+body.light .color-dialog input[type="color"]{border-color:#cbd6e7;}
+.color-dialog-palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:8px;margin-top:10px;}
+.color-dialog-choice{height:34px;border-radius:10px;border:2px solid rgba(255,255,255,.28);box-shadow:0 2px 10px rgba(0,0,0,.18);}
+.color-dialog-choice.active{outline:3px solid var(--text);outline-offset:2px;}
+body.light .color-dialog-choice.active{outline-color:#152033;}
+.color-dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px;}
+body.sharp-corners .color-dialog,body.sharp-corners .color-dialog *{border-radius:0!important;}
+@media(max-width:640px){.color-dialog-main{grid-template-columns:1fr}.color-dialog-preview{width:100%;height:70px}}
+
 </style></head><body><div class="app"><div class="top"><div class="top-title"><h1>Kalenderübersicht</h1></div><div class="search-wrap top-search"><input class="search-input" id="globalSearch" placeholder="🔍 Suchen"><div class="search-results" id="searchResults"></div></div><div class="toolbar compact-toolbar"><button class="btn" id="prevBtn">← Tag zurück</button><button class="btn" id="todayBtn">Heute</button><button class="btn" id="nextBtn">Tag vor →</button><button class="btn primary icon-only-month" id="monthBtn" title="Monat aufklappen">📅</button><button class="btn icon-only-month" id="reloadDbBtn" title="Daten aus Datenbanken neu laden">↻</button></div></div><div class="layout"><aside class="sidebar"><button class="sidebar-toggle" id="sidebarToggleBtn" title="Seitenleiste einklappen">‹</button><div class="sidebar-collapse-all-row sidebar-collapse-all-top"><button class="btn small" id="collapseAllConfigBtn" type="button">▸ Alle einklappen</button></div><div class="config-block" data-config-block="view"><button class="config-toggle" type="button"><span>Ansicht konfigurieren</span><span class="config-chevron">▾</span></button><div class="config-content"><div class="field"><label>Tage sichtbar</label><select id="daysSelect"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option></select></div><div class="field"><label>Zeilen</label><select id="rowsSelect"><option value="1">1</option><option value="2">2</option></select></div><div class="field"><label>Startmodus</label><select id="startModeSelect"><option value="rolling">Fortlaufend</option><option value="week">Aktuelle Woche</option><option value="workweek">Arbeitswoche</option></select></div><div class="field mode-field"><label>Ansichtsmodus</label><div class="mode-row"><select id="viewModeSelect"></select><button class="btn small ui-icon-btn" id="modeConfigBtn" title="Modus konfigurieren" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 1 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.08A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.08A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.08A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.4 9c.2.36.5.67.9.86.32.15.68.22 1.1.22H21a2 2 0 1 1 0 4h-.08a1.7 1.7 0 0 0-1.52.92Z"/></svg></button></div></div></div></div><div class="config-block" data-config-block="cal"><button class="config-toggle" type="button"><span>Kalendergruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="calendarConfig"></div></div></div><div class="config-block" data-config-block="task"><button class="config-toggle" type="button"><span>Tagestask-Gruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="taskColumnConfig"></div></div></div><div class="config-block" data-config-block="long"><button class="config-toggle" type="button"><span>Langfristige Task-Gruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="longColumnConfig"></div></div></div><div class="config-block" data-config-block="opt"><button class="config-toggle" type="button"><span>Optionen</span><span class="config-chevron">▾</span></button><div class="config-content"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="settingsBtn" title="Allgemeine Einstellungen">Einstellungen</button><button class="btn" id="legendBtn" title="Legende und Farben anzeigen">Legende</button><button class="btn" id="cloudBtn" title="Login und Benutzerkonto">Login</button></div><div class="diag" id="diagBox">Diagnose: noch keine Synchronisierung durchgeführt.</div></div></div></aside><main class="board"><div class="timeline-controls"><div class="timeline-title-wrap"><b>Tagesplaner</b><div class="timeline-help">Aktueller Tag plus Folge- oder Vergangenheitsdaten. Erledigte Aufgaben bleiben nachvollziehbar sichtbar.</div></div><div id="rangeLabel" class="hint"></div></div><div id="timeline" class="timeline"></div><section class="longterm main-longterm"><div class="timeline-controls"><div><b>Langfristige Tasks</b><div class="hint">Ohne Datum. Wird bewusst getrennt von Tagestasks geführt.</div></div><button class="btn small" id="addLongBtn2">+ Hinzufügen</button></div><div id="longTermList" class="long-grid"></div></section></main></div></div><div class="modal-backdrop" id="modalBackdrop"><div class="modal"><h2 id="modalTitle"></h2><div id="modalContent" class="modal-grid"></div><div class="modal-actions"><button class="btn" id="cancelModal">Abbrechen</button><button class="btn primary" id="saveModal">Speichern</button></div></div></div><div class="toast" id="toast"></div>
 <script>
 const SUPABASE_URL='https://ihvhghzbhrujtkgkyhdi.supabase.co';
@@ -2463,6 +2523,73 @@ renderCalendarConfig=function(){
 };
 
 window.addEventListener('pagehide',noopPagehideRev042);
+
+
+/* Rev 045: zentrierter Farbdialog statt Browser-Farbpicker */
+const rev045ExtendedPalette=[
+  '#7c5cff','#39bdf8','#22c55e','#ffb020','#ff5050','#ec4899','#14b8a6','#f97316','#a855f7','#64748b','#111827','#ffffff',
+  '#ef4444','#dc2626','#b91c1c','#fb7185','#f43f5e','#e11d48','#f97316','#ea580c','#c2410c','#f59e0b','#d97706','#b45309',
+  '#84cc16','#65a30d','#4d7c0f','#22c55e','#16a34a','#15803d','#10b981','#059669','#047857','#06b6d4','#0891b2','#0e7490',
+  '#38bdf8','#0ea5e9','#0284c7','#3b82f6','#2563eb','#1d4ed8','#6366f1','#4f46e5','#4338ca','#8b5cf6','#7c3aed','#6d28d9',
+  '#d946ef','#c026d3','#a21caf','#ec4899','#db2777','#be185d','#94a3b8','#64748b','#475569','#334155','#1e293b','#0f172a'
+];
+function normalizeHexColorRev045(c){
+  c=String(c||'').trim();
+  return /^#[0-9a-fA-F]{6}$/.test(c)?c:'#7c5cff';
+}
+openNativeColorPicker=function(initial,onPick){
+  const start=normalizeHexColorRev045(initial);
+  let selected=start;
+  const old=document.querySelector('.color-dialog-backdrop');
+  if(old)old.remove();
+  const backdrop=document.createElement('div');
+  backdrop.className='color-dialog-backdrop';
+  backdrop.innerHTML=`<div class="color-dialog" role="dialog" aria-modal="true">
+    <h3>Farbe auswählen</h3>
+    <div class="hint">Wähle eine Standardfarbe oder lege eine eigene Farbe fest.</div>
+    <div class="color-dialog-main">
+      <div class="color-dialog-preview" id="rev045ColorPreview" style="background:${escapeHtml(start)}"></div>
+      <div>
+        <label class="hint" for="rev045ColorInput">Eigene Farbe</label>
+        <input id="rev045ColorInput" type="color" value="${escapeHtml(start)}">
+      </div>
+    </div>
+    <div class="color-dialog-palette">${rev045ExtendedPalette.map(c=>`<button type="button" class="color-dialog-choice ${c.toLowerCase()===start.toLowerCase()?'active':''}" data-rev045-color="${c}" style="background:${c}" title="${c}"></button>`).join('')}</div>
+    <div class="color-dialog-actions">
+      <button class="btn" type="button" id="rev045ColorCancel">Abbrechen</button>
+      <button class="btn primary" type="button" id="rev045ColorSave">Speichern</button>
+    </div>
+  </div>`;
+  document.body.appendChild(backdrop);
+  const input=backdrop.querySelector('#rev045ColorInput');
+  const preview=backdrop.querySelector('#rev045ColorPreview');
+  function setSelected(c){
+    selected=normalizeHexColorRev045(c);
+    input.value=selected;
+    preview.style.background=selected;
+    backdrop.querySelectorAll('.color-dialog-choice').forEach(b=>b.classList.toggle('active',String(b.dataset.rev045Color).toLowerCase()===selected.toLowerCase()));
+  }
+  input.oninput=()=>setSelected(input.value);
+  backdrop.querySelectorAll('[data-rev045-color]').forEach(btn=>btn.onclick=()=>setSelected(btn.dataset.rev045Color));
+  backdrop.querySelector('#rev045ColorCancel').onclick=()=>backdrop.remove();
+  backdrop.querySelector('#rev045ColorSave').onclick=()=>{ if(onPick)onPick(selected); backdrop.remove(); };
+  backdrop.onclick=e=>{if(e.target===backdrop)backdrop.remove();};
+  setTimeout(()=>input.focus(),0);
+};
+
+/* Rev 045: Überzogene Tagestasks in der Konfiguration unten halten */
+const __rev045_renderTaskColumnConfig=renderTaskColumnConfig;
+renderTaskColumnConfig=function(){
+  __rev045_renderTaskColumnConfig();
+  const root=document.querySelector('#taskColumnConfig');
+  const row=document.querySelector('.overdue-color-row');
+  if(root&&row){
+    const add=root.querySelector('.add-calendar-box');
+    if(add)root.insertBefore(row,add);
+    else root.appendChild(row);
+  }
+};
+
 $('#daysSelect').onchange=e=>{state.days=Number(e.target.value);render()};if($('#rowsSelect'))$('#rowsSelect').onchange=e=>{state.dayRows=Number(e.target.value);render()};if($('#startModeSelect'))$('#startModeSelect').onchange=e=>{state.startMode=e.target.value;if(state.startMode==='week'){state.days=7;state.dayRows=1;state.offset=0;}if(state.startMode==='workweek'){state.days=5;state.dayRows=1;state.offset=0;}render()};$('#prevBtn').onclick=()=>{state.offset-=1;render()};$('#nextBtn').onclick=()=>{state.offset+=1;render()};$('#todayBtn').onclick=()=>{state.offset=0;render()};$('#monthBtn').onclick=openMonthModal;const reloadBtnRev044=$('#reloadDbBtn');if(reloadBtnRev044)reloadBtnRev044.onclick=reloadDatabaseDataRev044;$('#settingsBtn').onclick=openSyncSettingsModal;$('#legendBtn').onclick=openLegendModal;$('#cloudBtn').onclick=openCloudModal;$('#addLongBtn2').onclick=()=>{if(requireLogin())openLongModal();};initSidebarToggle();setupGlobalSearch();initConfigBlocks();render();setupAutoSync();
 supabaseClient.auth.onAuthStateChange((event,session)=>{
   currentUser=session?.user||null;
