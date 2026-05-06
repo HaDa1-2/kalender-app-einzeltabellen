@@ -2202,7 +2202,67 @@ renderLongColumnConfig=function(){
 };
 
 
-window.addEventListener('pagehide',()=>{try{supabaseClient.auth.signOut({scope:'local'});}catch(e){} localStorage.removeItem(storeKey);});
+/* Rev 042 Sicherheitsfix: Tabellen sind Quelle der Wahrheit, keine Löschung bei Reload/Schließen. */
+let relationalDataLoadedRev042=false;
+const __rev042_loadStateFromCloud=loadStateFromCloud;
+loadStateFromCloud=async function(){
+  relationalDataLoadedRev042=false;
+  await __rev042_loadStateFromCloud();
+  if(currentUser) relationalDataLoadedRev042=true;
+};
+
+// Relationale Speicherung darf nur nach vollständig geladenen Tabellen laufen.
+scheduleRelationalSave=function(){
+  if(!currentUser||suppressCloudSave||!relationalDataLoadedRev042)return;
+  clearTimeout(relationalSaveTimer);
+  relationalSaveTimer=setTimeout(saveRelationalSnapshot,180);
+};
+
+// Vollständig entschärfter Snapshot: nur UPSERT, niemals automatisches DELETE.
+saveRelationalSnapshot=async function(){
+  if(!currentUser||suppressCloudSave||!relationalDataLoadedRev042)return;
+  if(relationalSaveRunning){relationalSaveQueued=true;return;}
+  relationalSaveRunning=true;
+  try{
+    normalizeRelationalIds();
+    const uid=currentUser.id;
+    const calendarGroups=(state.calendars||[]).map((c,i)=>({id:c.id,user_id:uid,name:c.name||`Kalender ${i+1}`,visible:c.visible!==false,collapsed:c.collapsed!==false,position:i}));
+    const calendarSources=[];
+    (state.calendars||[]).forEach((c)=>{(c.links||[]).forEach((l,j)=>calendarSources.push({id:l.id,user_id:uid,calendar_group_id:c.id,type:l.type||'ics',name:l.name||'Kalenderquelle',url:l.type==='own'?null:(l.url||null),color:l.color||state.colors?.event||defaultColors.event,visible:l.visible!==false,position:j}));});
+    const taskGroups=(state.taskColumns||[]).map((g,i)=>({id:g.id,user_id:uid,name:g.name||`Gruppe ${i+1}`,color:g.color||state.colors?.task||defaultColors.task,visible:g.visible!==false,position:i}));
+    const tasks=(state.tasks||[]).map((t,i)=>({id:t.id,user_id:uid,task_group_id:isUuid(t.columnId)?t.columnId:null,title:t.title||'Ohne Titel',note:t.note||null,task_date:t.date||fmtDate(new Date()),done:!!t.done,completed_date:t.completedDate||null,position:i}));
+    const longTaskGroups=(state.longColumns||[]).map((g,i)=>({id:g.id,user_id:uid,name:g.name||`Gruppe ${i+1}`,color:g.color||state.colors?.long||defaultColors.long,visible:g.visible!==false,position:i}));
+    const longTasks=(state.longterm||[]).map((t,i)=>({id:t.id,user_id:uid,long_task_group_id:isUuid(t.columnId)?t.columnId:null,title:t.title||'Ohne Titel',note:t.note||null,done:!!t.done,completed_date:t.completedDate||null,position:i}));
+    const ownEvents=[];
+    (state.calendars||[]).forEach(c=>(c.ownEvents||[]).forEach((e,i)=>ownEvents.push({id:e.id,user_id:uid,calendar_source_id:e.sourceId,title:e.summary||e.title||'Ohne Titel',location:e.location||null,description:e.description||null,start_time:e.start,end_time:e.end||null,all_day:!!e.allDay,recurrence:e.recurrence||'none',travel_time:e.travelTime||null,status:e.status||'active'})));
+    await upsertRows('calendar_groups',calendarGroups);
+    await upsertRows('calendar_sources',calendarSources);
+    await upsertRows('task_groups',taskGroups);
+    await upsertRows('tasks',tasks);
+    await upsertRows('long_task_groups',longTaskGroups);
+    await upsertRows('long_tasks',longTasks);
+    await upsertRows('own_events',ownEvents);
+    const diag=document.querySelector('#diagBox'); if(diag)diag.textContent='Tabellen sicher gespeichert: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+  }catch(error){
+    console.error('Sichere Tabellen-Speicherung fehlgeschlagen',error);
+    setCloudStatus('Tabellen-Speichern fehlgeschlagen: '+(error.message||error),'bad');
+  }finally{
+    relationalSaveRunning=false;
+    if(relationalSaveQueued){relationalSaveQueued=false;scheduleRelationalSave();}
+  }
+};
+
+// AppState bleibt UI-only. Fachdatenspeicherung wird nicht beim Entladen erzwungen.
+persist=function(){
+  if(currentUser){localStorage.setItem(storeKey,JSON.stringify(uiStateOnly()));}else{localStorage.removeItem(storeKey);}
+  if(cloudReady&&currentUser&&!suppressCloudSave){scheduleCloudSave();}
+};
+
+// Sicherheitsregel: Beim Schließen/Reload niemals signOut/reset/render/save auslösen.
+function noopPagehideRev042(){ localStorage.removeItem(storeKey); }
+
+
+window.addEventListener('pagehide',noopPagehideRev042);
 $('#daysSelect').onchange=e=>{state.days=Number(e.target.value);render()};if($('#rowsSelect'))$('#rowsSelect').onchange=e=>{state.dayRows=Number(e.target.value);render()};if($('#startModeSelect'))$('#startModeSelect').onchange=e=>{state.startMode=e.target.value;if(state.startMode==='week'){state.days=7;state.dayRows=1;state.offset=0;}if(state.startMode==='workweek'){state.days=5;state.dayRows=1;state.offset=0;}render()};$('#prevBtn').onclick=()=>{state.offset-=1;render()};$('#nextBtn').onclick=()=>{state.offset+=1;render()};$('#todayBtn').onclick=()=>{state.offset=0;render()};$('#monthBtn').onclick=openMonthModal;$('#settingsBtn').onclick=openSyncSettingsModal;$('#legendBtn').onclick=openLegendModal;$('#cloudBtn').onclick=openCloudModal;$('#addLongBtn2').onclick=()=>{if(requireLogin())openLongModal();};initSidebarToggle();setupGlobalSearch();initConfigBlocks();render();setupAutoSync();
 supabaseClient.auth.onAuthStateChange((event,session)=>{
   currentUser=session?.user||null;
