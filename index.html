@@ -5330,4 +5330,509 @@ dayCard=function(date){
 })();
 </script>
 
+
+
+<script>
+/* Rev 061: robuste AppState-Persistenz + saubere Own-Event-Löschaktion nur bei bestehenden eigenen Terminen */
+(function(){
+  const REV61_DEFAULTS={
+    vacationHighlight:{enabled:false,color:'#f97316',opacity:0.18},
+    todayHighlight:{borderWidth:4,borderColor:'#0284c7',opacity:0.18},
+    outlineStyle:'current',outlineCustomColor:'#64748b',timelineStep:30,timelinePauseMinutes:0,workStartTime:'08:00'
+  };
+  const isHex=v=>/^#[0-9a-f]{6}$/i.test(String(v||''));
+  function clamp(n,min,max){n=Number(n);return Number.isFinite(n)?Math.max(min,Math.min(max,n)):min;}
+  function ensureRev61State(){
+    state.vacationHighlight=Object.assign({},REV61_DEFAULTS.vacationHighlight,state.vacationHighlight||{});
+    state.todayHighlight=Object.assign({},REV61_DEFAULTS.todayHighlight,state.todayHighlight||{});
+    state.vacationHighlight.color=isHex(state.vacationHighlight.color)?state.vacationHighlight.color:REV61_DEFAULTS.vacationHighlight.color;
+    state.vacationHighlight.opacity=clamp(state.vacationHighlight.opacity,0.05,0.55);
+    state.todayHighlight.borderColor=isHex(state.todayHighlight.borderColor)?state.todayHighlight.borderColor:REV61_DEFAULTS.todayHighlight.borderColor;
+    state.todayHighlight.borderWidth=clamp(state.todayHighlight.borderWidth,1,10);
+    state.todayHighlight.opacity=clamp(state.todayHighlight.opacity,0,0.65);
+    state.outlineStyle=['current','none','gray','black','custom'].includes(state.outlineStyle)?state.outlineStyle:REV61_DEFAULTS.outlineStyle;
+    state.outlineCustomColor=isHex(state.outlineCustomColor)?state.outlineCustomColor:REV61_DEFAULTS.outlineCustomColor;
+    state.timelineStep=[15,30,60].includes(Number(state.timelineStep))?Number(state.timelineStep):30;
+    state.timelinePauseMinutes=Math.max(0,Number(state.timelinePauseMinutes||0));
+    state.workStartTime=/^\d{2}:\d{2}$/.test(String(state.workStartTime||''))?state.workStartTime:'08:00';
+    state.fetchMode='proxy';
+    state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;
+  }
+  async function saveAppStateRev61(){
+    ensureRev61State();
+    try{localStorage.setItem(storeKey,JSON.stringify(stripRuntimeICSCache(state)));}catch(e){}
+    try{persist();}catch(e){}
+    if(currentUser){
+      clearTimeout(cloudSaveTimer);
+      const payload={user_id:currentUser.id,state:stripRuntimeICSCache(state),updated_at:new Date().toISOString()};
+      const {error}=await supabaseClient.from('app_state').upsert(payload,{onConflict:'user_id'});
+      if(error){toast('App-State konnte nicht gespeichert werden: '+error.message);return false;}
+      if(typeof setCloudStatus==='function')setCloudStatus('App-State gespeichert: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}),'ok');
+    }
+    return true;
+  }
+  const prevEnsure61=ensureSettings;
+  ensureSettings=function(){prevEnsure61();ensureRev61State();};
+  const prevApply61=applyAppearance;
+  applyAppearance=function(){
+    prevApply61();ensureRev61State();
+    const outline=state.outlineStyle==='none'?'transparent':state.outlineStyle==='black'?'#000000':state.outlineStyle==='gray'?'#7b8494':state.outlineStyle==='custom'?state.outlineCustomColor:(getComputedStyle(document.documentElement).getPropertyValue('--line')||'#31405e');
+    document.documentElement.style.setProperty('--frameBorderColor53',outline);
+    document.documentElement.style.setProperty('--outlineColorRev52',outline);
+    document.documentElement.style.setProperty('--todayBorderWidth56',state.todayHighlight.borderWidth+'px');
+    document.documentElement.style.setProperty('--todayBorderColor56',state.todayHighlight.borderColor);
+    document.documentElement.style.setProperty('--todayFillOpacity56',String(state.todayHighlight.opacity));
+    document.documentElement.style.setProperty('--todayFillOpacityPercent56',Math.round(state.todayHighlight.opacity*100)+'%');
+  };
+
+  const colors=['#64748b','#000000','#ffffff','#0284c7','#7c5cff','#22c55e','#ffb020','#f97316','#ff5050','#ec4899','#14b8a6','#a855f7'];
+  const esc=s=>escapeHtml(String(s??''));
+  function deepDraft(){ensureRev61State();return JSON.parse(JSON.stringify({theme:state.theme,cornerStyle:state.cornerStyle,outlineStyle:state.outlineStyle,outlineCustomColor:state.outlineCustomColor,vacationHighlight:state.vacationHighlight,todayHighlight:state.todayHighlight,syncInterval:state.syncInterval}));}
+  function colorButton(id,color,label){return `<button type="button" class="btn small rev61-color-button" id="${id}" title="${esc(label)}"><span class="rev61-color-dot" style="background:${esc(color)}"></span>🪣</button>`;}
+  function palette(id,current){return `<div class="rev61-palette" id="${id}">${colors.map(c=>`<button type="button" class="color-choice" data-rev61-color="${c}" style="background:${c}" title="${c}"></button>`).join('')}<input type="color" value="${esc(isHex(current)?current:'#64748b')}" data-rev61-input="1"></div>`;}
+  function bindPalette(id,cb){const p=document.querySelector('#'+id);if(!p)return;p.querySelectorAll('[data-rev61-color]').forEach(b=>b.onclick=()=>cb(b.dataset.rev61Color));const i=p.querySelector('[data-rev61-input]');if(i)i.oninput=()=>cb(i.value);}
+  function togglePalette(btn,pal){const b=document.querySelector('#'+btn),p=document.querySelector('#'+pal);if(b&&p)b.onclick=()=>p.classList.toggle('open');}
+  function openSettings61(){
+    ensureRev61State();
+    const draft=deepDraft();
+    let active='general';
+    document.querySelector('#modalTitle').textContent='Allgemeine Einstellungen';
+    document.querySelector('#modalContent').innerHTML=`<div class="settings-layout-rev56 rev61-settings"><div class="settings-tabs-rev56"><button class="settings-tab-rev56 active" data-rev61-tab="general" type="button">Allgemein</button><button class="settings-tab-rev56" data-rev61-tab="sync" type="button">Synchronisierung</button><button class="settings-tab-rev56" data-rev61-tab="info" type="button">Hinweise</button></div><div id="settingsTabContentRev61" class="settings-tab-content-rev53"></div></div>`;
+    document.querySelector('#modalBackdrop').style.display='flex';
+    document.querySelector('#saveModal').style.display='';
+    function readVisible(){
+      const q=s=>document.querySelector(s);
+      if(q('#mTheme61'))draft.theme=q('#mTheme61').value;
+      if(q('#mCornerStyle61'))draft.cornerStyle=q('#mCornerStyle61').value;
+      if(q('#mOutlineStyle61'))draft.outlineStyle=q('#mOutlineStyle61').value;
+      if(q('#mVacationEnabled61'))draft.vacationHighlight.enabled=q('#mVacationEnabled61').checked;
+      if(q('#mVacationOpacity61'))draft.vacationHighlight.opacity=clamp(q('#mVacationOpacity61').value,0.05,0.55);
+      if(q('#mTodayBorderWidth61'))draft.todayHighlight.borderWidth=clamp(q('#mTodayBorderWidth61').value,1,10);
+      if(q('#mTodayOpacity61'))draft.todayHighlight.opacity=clamp(q('#mTodayOpacity61').value,0,0.65);
+      if(q('#mSyncInterval61'))draft.syncInterval=Number(q('#mSyncInterval61').value);
+    }
+    function renderGeneral(){
+      const root=document.querySelector('#settingsTabContentRev61');if(!root)return;
+      root.innerHTML=`<div class="settings-grid">
+        <div class="rev61-card"><div class="rev61-card-title">Darstellung</div>
+          <div class="rev61-row"><label>Erscheinung</label><select id="mTheme61"><option value="light">Hell</option><option value="dark">Dunkel</option></select></div>
+          <div class="rev61-row"><label>Kanten</label><select id="mCornerStyle61"><option value="rounded">Abgerundet</option><option value="sharp">Eckig / 90°</option></select></div>
+          <div class="rev61-row"><label>Konturfarbe</label><div class="rev61-inline"><select id="mOutlineStyle61"><option value="current">Wie aktuell</option><option value="none">Keine</option><option value="gray">Grau</option><option value="black">Schwarz</option><option value="custom">Farbpalette</option></select>${colorButton('mOutlineColorBtn61',draft.outlineCustomColor,'Konturfarbe wählen')}</div></div>
+          ${palette('mOutlinePalette61',draft.outlineCustomColor)}
+        </div>
+        <div class="rev61-card"><label class="rev61-check"><span><b>Urlaubstage anders anzeigen</b><small>Ganztägige Termine mit exakt dem Titel „Urlaub“ markieren den gesamten Tag.</small></span><input id="mVacationEnabled61" type="checkbox"></label>
+          <div class="rev61-row"><label>Urlaubsfarbe</label><div>${colorButton('mVacationColorBtn61',draft.vacationHighlight.color,'Urlaubsfarbe wählen')}</div></div>
+          ${palette('mVacationPalette61',draft.vacationHighlight.color)}
+          <div class="rev61-row"><label>Deckkraft</label><input id="mVacationOpacity61" type="range" min="0.05" max="0.55" step="0.01" value="${esc(draft.vacationHighlight.opacity)}"></div>
+        </div>
+        <div class="rev61-card"><div class="rev61-card-title">Aktueller Tag<small>Kontur und Füllung des heutigen Tages.</small></div>
+          <div class="rev61-row"><label>Linienstärke</label><input id="mTodayBorderWidth61" type="range" min="1" max="10" step="1" value="${esc(draft.todayHighlight.borderWidth)}"></div>
+          <div class="rev61-row"><label>Linienfarbe</label><div>${colorButton('mTodayBorderColorBtn61',draft.todayHighlight.borderColor,'Linienfarbe wählen')}</div></div>
+          ${palette('mTodayBorderPalette61',draft.todayHighlight.borderColor)}
+          <div class="rev61-row"><label>Flächen-Deckkraft</label><input id="mTodayOpacity61" type="range" min="0" max="0.65" step="0.01" value="${esc(draft.todayHighlight.opacity)}"></div>
+        </div>
+        <div class="hint">Wichtig: Diese Werte werden erst beim Klick auf „Speichern“ in den App-State geschrieben und danach explizit in Supabase gespeichert.</div>
+      </div>`;
+      document.querySelector('#mTheme61').value=draft.theme||'light';
+      document.querySelector('#mCornerStyle61').value=draft.cornerStyle||'rounded';
+      document.querySelector('#mOutlineStyle61').value=draft.outlineStyle||'current';
+      document.querySelector('#mVacationEnabled61').checked=!!draft.vacationHighlight.enabled;
+      togglePalette('mOutlineColorBtn61','mOutlinePalette61');togglePalette('mVacationColorBtn61','mVacationPalette61');togglePalette('mTodayBorderColorBtn61','mTodayBorderPalette61');
+      bindPalette('mOutlinePalette61',c=>{readVisible();draft.outlineStyle='custom';draft.outlineCustomColor=c;renderGeneral();});
+      bindPalette('mVacationPalette61',c=>{readVisible();draft.vacationHighlight.color=c;renderGeneral();});
+      bindPalette('mTodayBorderPalette61',c=>{readVisible();draft.todayHighlight.borderColor=c;renderGeneral();});
+    }
+    function renderSync(){
+      const root=document.querySelector('#settingsTabContentRev61');if(!root)return;
+      root.innerHTML=`<div class="settings-grid"><div class="rev61-card"><div class="rev61-card-title">Synchronisierung</div><div class="rev61-row"><label>Intervall</label><select id="mSyncInterval61"><option value="0">Aus / manuell</option><option value="5">Alle 5 Min.</option><option value="15">Alle 15 Min.</option><option value="30">Alle 30 Min.</option><option value="60">Alle 60 Min.</option></select></div><div class="hint">Der obere grüne Reload-Button lädt Daten manuell neu.</div></div></div>`;
+      document.querySelector('#mSyncInterval61').value=String(draft.syncInterval??15);
+    }
+    function renderInfo(){const root=document.querySelector('#settingsTabContentRev61');if(root)root.innerHTML=`<div class="settings-grid"><div class="security-note"><b>Speicherprotokoll</b><br>Gespeichert werden hier nur UI-/Anzeigeparameter im <code>app_state</code>. Fachliche Daten wie Termine, Tasks und Kalenderquellen bleiben in ihren eigenen Tabellen beziehungsweise Strukturen.</div></div>`;}
+    function renderActive(){if(active==='general')renderGeneral();else if(active==='sync')renderSync();else renderInfo();}
+    renderActive();
+    document.querySelectorAll('[data-rev61-tab]').forEach(btn=>btn.onclick=()=>{readVisible();active=btn.dataset.rev61Tab;document.querySelectorAll('[data-rev61-tab]').forEach(b=>b.classList.toggle('active',b===btn));renderActive();});
+    document.querySelector('#saveModal').onclick=async()=>{
+      readVisible();
+      state.theme=draft.theme||'light';state.cornerStyle=draft.cornerStyle||'rounded';state.outlineStyle=draft.outlineStyle||'current';state.outlineCustomColor=draft.outlineCustomColor;
+      state.vacationHighlight=Object.assign({},draft.vacationHighlight);state.todayHighlight=Object.assign({},draft.todayHighlight);state.syncInterval=Number(draft.syncInterval??15);
+      ensureRev61State();if(typeof setupAutoSync==='function')setupAutoSync();if(typeof applyAppearance==='function')applyAppearance();
+      const ok=await saveAppStateRev61();closeModal();render();toast(ok?'Einstellungen im App-State gespeichert.':'Einstellungen lokal übernommen, Cloud-Speicherung fehlgeschlagen.');
+    };
+    cleanupForeignTrashRev61();
+  }
+
+  function bindTimelineRev61(){
+    ensureRev61State();
+    const input=document.querySelector('#timelineWorkStartRev50,#timelineWorkStartRev49,#timelineWorkStartRev60');
+    if(input&&!input.dataset.rev61Bound){
+      input.dataset.rev61Bound='1';input.value=state.workStartTime||'08:00';
+      const save=async()=>{state.workStartTime=input.value||'08:00';await saveAppStateRev61();};
+      input.addEventListener('input',save);input.addEventListener('change',async()=>{await save();if(typeof renderSidebarTimelineRev050==='function')renderSidebarTimelineRev050();});
+    }
+    const step=document.querySelector('#timelineStepModalRev52,#timelineStepModalRev50,#timelineStepModalRev60');
+    const pause=document.querySelector('#timelinePauseModalRev52,#timelinePauseModalRev50,#timelinePauseModalRev60');
+    if(step&&!step.dataset.rev61Bound){step.dataset.rev61Bound='1';step.value=String(state.timelineStep||30);step.addEventListener('change',async()=>{state.timelineStep=Number(step.value||30);await saveAppStateRev61();});}
+    if(pause&&!pause.dataset.rev61Bound){pause.dataset.rev61Bound='1';pause.value=String(state.timelinePauseMinutes||0);pause.addEventListener('input',async()=>{state.timelinePauseMinutes=Math.max(0,Number(pause.value||0));await saveAppStateRev61();});pause.addEventListener('change',async()=>{state.timelinePauseMinutes=Math.max(0,Number(pause.value||0));await saveAppStateRev61();});}
+  }
+
+  function cleanupForeignTrashRev61(){
+    const title=(document.querySelector('#modalTitle')?.textContent||'').trim();
+    const actions=document.querySelector('.modal-actions');if(!actions)return;
+    const original=document.querySelector('#modalContent #deleteOwnFromEditRev51,#modalContent #deleteOwnEvent');
+    const isOwnExisting=/Eigenen Termin bearbeiten|Termindetails/.test(title) && !!original;
+    actions.querySelectorAll('.rev58-own-trash,.rev57-trash-left,.own-delete-square56,#rev58DeleteOwnEvent,#deleteOwnFromEditRev51,#deleteOwnEvent').forEach(b=>b.remove());
+    if(!isOwnExisting){
+      actions.querySelectorAll('.rev61-trash-left').forEach(b=>b.remove());
+      document.querySelectorAll('#modalContent #deleteOwnFromEditRev51,#modalContent #deleteOwnEvent,.settings-layout-rev56 .own-delete-square56,.settings-layout-rev53 .own-delete-square56').forEach(b=>b.remove());
+      return;
+    }
+    if(actions.querySelector('.rev61-trash-left')){original.style.display='none';return;}
+    const handler=original.onclick;
+    original.style.display='none';
+    const btn=document.createElement('button');
+    btn.type='button';btn.className='btn danger rev61-trash-left';btn.title='Eigenen Termin löschen';btn.innerHTML=iconTrash();
+    btn.onclick=ev=>{ev.preventDefault();ev.stopPropagation(); if(typeof handler==='function')handler.call(original,ev); else original.click();};
+    actions.prepend(btn);
+  }
+  const style=document.createElement('style');
+  style.textContent=`
+    .rev61-settings .settings-tab-rev56{color:#111827!important;background:#f8fafc!important;border:1px solid #cbd5e1!important;}
+    .rev61-settings .settings-tab-rev56.active{background:#d1d5db!important;color:#111827!important;font-weight:1000!important;}
+    .rev61-card{border:1px solid #cbd5e1;border-radius:14px;padding:12px;background:#f8fafc;display:grid;gap:10px;color:#111827;}
+    .rev61-card-title{font-weight:1000;color:#111827;display:block;}
+    .rev61-card-title small,.rev61-check small{display:block;color:#475569;font-weight:600;line-height:1.35;margin-top:3px;}
+    .rev61-row{display:grid;grid-template-columns:minmax(145px,210px) minmax(0,1fr);gap:10px;align-items:center;}
+    .rev61-row label{font-weight:800;color:#111827;font-size:13px;}.rev61-row input,.rev61-row select{min-width:0;}
+    .rev61-inline{display:flex;gap:8px;align-items:center;}.rev61-check{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;}.rev61-check b{color:#111827;font-weight:1000;}
+    .rev61-color-button{height:40px!important;min-width:46px!important;border-radius:12px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;}
+    .rev61-color-dot{width:18px;height:18px;border-radius:6px;border:1px solid rgba(0,0,0,.25);display:inline-block;}.rev61-palette{display:none;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:8px;margin-top:8px;}.rev61-palette.open{display:grid;}.rev61-palette input[type="color"]{height:34px;padding:2px;border-radius:9px;}
+    .modal-actions{display:flex!important;align-items:center!important;gap:10px!important;}.rev61-trash-left{margin-right:auto!important;width:42px!important;height:42px!important;min-width:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;border-radius:12px!important;}.rev61-trash-left svg{width:22px!important;height:22px!important;stroke:currentColor!important;}body.sharp-corners .rev61-trash-left{border-radius:0!important;}
+    @media(max-width:700px){.rev61-row{grid-template-columns:1fr;gap:5px;}}
+  `;
+  document.head.appendChild(style);
+
+  window.openSettingsRev56=openSettings61;window.openSyncSettingsModal=openSettings61;
+  const prevRender61=window.render||render;window.render=render=function(){const r=prevRender61();bindTimelineRev61();setTimeout(cleanupForeignTrashRev61,0);return r;};
+  if(typeof renderSidebarTimelineRev050==='function'){const old=renderSidebarTimelineRev050;renderSidebarTimelineRev050=function(){const r=old();bindTimelineRev61();return r;};}
+  if(typeof openTimelineSettingsRev52==='function'){const old=openTimelineSettingsRev52;openTimelineSettingsRev52=function(){const r=old.apply(this,arguments);setTimeout(bindTimelineRev61,0);return r;};}
+  const observer=new MutationObserver(()=>{cleanupForeignTrashRev61();bindTimelineRev61();});
+  setTimeout(()=>{const modal=document.querySelector('#modalBackdrop');if(modal)observer.observe(modal,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class']});const s=document.querySelector('#settingsBtn');if(s)s.onclick=openSettings61;ensureRev61State();applyAppearance();bindTimelineRev61();cleanupForeignTrashRev61();},150);
+})();
+</script>
+
+<script>
+/* Rev 062: Kontextgenaue Löschbuttons + Zeitstrahl ohne Zahnrad, Halbstundentakt fix, Start/Pause persistent */
+(function(){
+  function rev62EnsureState(){
+    if(!state) return;
+    state.timelineStep=30; // feste Vorgabe: Halbstundentakt
+    state.workStartTime=/^\d{2}:\d{2}$/.test(String(state.workStartTime||''))?state.workStartTime:'08:00';
+    state.timelinePauseMinutes=Math.max(0,Number(state.timelinePauseMinutes||0));
+    state.fetchMode='proxy';
+    state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;
+  }
+  async function rev62SaveAppState(){
+    rev62EnsureState();
+    try{localStorage.setItem(storeKey,JSON.stringify(stripRuntimeICSCache(state)));}catch(e){}
+    try{persist();}catch(e){}
+    if(currentUser){
+      clearTimeout(cloudSaveTimer);
+      const payload={user_id:currentUser.id,state:stripRuntimeICSCache(state),updated_at:new Date().toISOString()};
+      const {error}=await supabaseClient.from('app_state').upsert(payload,{onConflict:'user_id'});
+      if(error){toast('App-State konnte nicht gespeichert werden: '+error.message);return false;}
+      if(typeof setCloudStatus==='function')setCloudStatus('App-State gespeichert: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}),'ok');
+    }
+    return true;
+  }
+  const prevEnsure62=ensureSettings;
+  ensureSettings=function(){prevEnsure62();rev62EnsureState();};
+
+  function rev62HHMM(min){min=((Math.round(min)%1440)+1440)%1440;return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0');}
+  function rev62ParseHHMM(v){const m=String(v||'').match(/^(\d{1,2}):(\d{2})$/);if(!m)return null;const h=Number(m[1]),mi=Number(m[2]);if(h<0||h>23||mi<0||mi>59)return null;return h*60+mi;}
+  function rev62TodayBase(){const d=new Date();d.setHours(0,0,0,0);return d;}
+  function rev62ShownDate(){return addDays(rev62TodayBase(),Number(state.timelineDayOffset||0));}
+  function rev62MinutesOfDate(d){return d.getHours()*60+d.getMinutes();}
+  function rev62VisibleEventsForDate(day){
+    const out=[];
+    visibleCalendars().forEach(({cal,idx:ci})=>{
+      const links=cal.links||[];
+      (cal.events||[]).forEach((e,ei)=>{
+        const l=links.find(x=>x.id===e.icsId); if(l&&l.visible===false)return;
+        const occ=eventOccurrenceForDate(e,day); if(!occ||occ.allDay)return;
+        const s=new Date(occ.start), en=occ.end?new Date(occ.end):new Date(s.getTime()+30*60000);
+        if(isNaN(s)||isNaN(en))return;
+        out.push({summary:occ.summary||'Termin',source:occ.icsName||occ.source||cal.name,start:rev62MinutesOfDate(s),end:Math.max(rev62MinutesOfDate(s)+15,rev62MinutesOfDate(en)),color:occ.icsColor||l?.color||state.colors.event,ref:`ics:${ci}:${ei}:${fmtDate(day)}`});
+      });
+      (cal.ownEvents||[]).forEach((e,ei)=>{
+        const l=links.find(x=>x.id===e.sourceId); if(!l||l.visible===false)return;
+        const occ=eventOccurrenceForDate(e,day); if(!occ||occ.allDay)return;
+        const s=new Date(occ.start), en=occ.end?new Date(occ.end):new Date(s.getTime()+30*60000);
+        if(isNaN(s)||isNaN(en))return;
+        out.push({summary:occ.summary||'Termin',source:occ.icsName||occ.source||cal.name,start:rev62MinutesOfDate(s),end:Math.max(rev62MinutesOfDate(s)+15,rev62MinutesOfDate(en)),color:occ.icsColor||l.color||state.colors.event,ref:`own:${ci}:${ei}:${fmtDate(day)}`});
+      });
+    });
+    return out.sort((a,b)=>a.start-b.start);
+  }
+  function rev62LayoutEvents(items){
+    const groups=[];
+    items.forEach(it=>{let g=groups.find(gr=>it.start<gr.end);if(!g){g={end:it.end,items:[]};groups.push(g);}g.items.push(it);g.end=Math.max(g.end,it.end);});
+    groups.forEach(g=>{const cols=[];g.items.forEach(it=>{let col=cols.findIndex(end=>end<=it.start);if(col<0){col=cols.length;cols.push(it.end);}else cols[col]=it.end;it.col=col;it.cols=cols.length;});g.items.forEach(it=>it.cols=Math.max(it.cols,cols.length));});
+    return items;
+  }
+  function rev62IsVacationDay(day){
+    try{
+      if(!state.vacationHighlight?.enabled)return false;
+      return visibleCalendars().some(({cal})=>{
+        const links=cal.links||[];
+        const all=[...(cal.events||[]),...(cal.ownEvents||[])];
+        return all.some(e=>{
+          const link=links.find(l=>l.id===e.icsId||l.id===e.sourceId); if(link&&link.visible===false)return false;
+          const occ=eventOccurrenceForDate(e,day); return occ&&occ.allDay&&String(occ.summary||'').trim().toLowerCase()==='urlaub';
+        });
+      });
+    }catch(e){return false;}
+  }
+  function rev62VacationStyle(){
+    const color=state.vacationHighlight?.color||'#f97316';
+    const opacity=Math.max(0.05,Math.min(0.55,Number(state.vacationHighlight?.opacity||0.18)));
+    return `background:linear-gradient(0deg, color-mix(in srgb, ${color} ${Math.round(opacity*100)}%, transparent), color-mix(in srgb, ${color} ${Math.round(opacity*100)}%, transparent)), var(--panel2);`;
+  }
+  window.renderSidebarTimelineRev050=function(){
+    rev62EnsureState();
+    const sidebar=document.querySelector('.sidebar'); if(!sidebar)return;
+    let box=document.querySelector('#sidebarDayTimelineRev049');
+    if(!box){box=document.createElement('section');box.id='sidebarDayTimelineRev049';box.className='sidebar-day-timeline';sidebar.appendChild(box);} 
+    const shown=rev62ShownDate();
+    const events=rev62LayoutEvents(rev62VisibleEventsForDate(shown));
+    const pxPerMin=0.55,totalH=1440*pxPerMin,step=30,lines=[];
+    for(let m=0;m<=1440;m+=step){const major=m%60===0;lines.push(`<div class="timeline-line ${major?'major':''}" style="top:${m*pxPerMin}px">${major?`<span class="timeline-line-label">${rev62HHMM(m)}</span>`:''}</div>`);}
+    let nowLine='';
+    const today=rev62TodayBase();
+    if(sameDay(shown,today)){const now=new Date();const nowMin=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;nowLine=`<div class="timeline-now-line" data-now-line-rev50 style="top:${nowMin*pxPerMin}px"><span class="timeline-now-label">${rev62HHMM(nowMin)}</span></div>`;}
+    const evHtml=events.map(it=>{const top=Math.max(0,it.start*pxPerMin),h=Math.max(18,(it.end-it.start)*pxPerMin),w=100/it.cols,left=it.col*w;const tiny=h<28;return `<div class="timeline-event-block ${tiny?'timeline-event-tiny':''}" data-event-ref="${escapeHtml(it.ref)}" style="top:${top}px;height:${h}px;left:calc(${left}% + 42px);width:calc(${w}% - 46px);border-left-color:${escapeHtml(it.color)};background:${escapeHtml(it.color)}cc"><b>${escapeHtml(shortText(it.summary,28))}</b><small>${escapeHtml(rev62HHMM(it.start)+'–'+rev62HHMM(it.end)+' · '+shortText(it.source,22))}</small></div>`;}).join('');
+    const start=rev62ParseHHMM(state.workStartTime),pause=Number(state.timelinePauseMinutes||0),endText=start===null?'—':rev62HHMM(start+8*60+pause);
+    const vacClass=rev62IsVacationDay(shown)?' vacation-active':'';
+    box.innerHTML=`<div class="sidebar-timeline-head"><div><div class="sidebar-timeline-title">Zeitstrahl</div><div class="sidebar-timeline-date">${escapeHtml(typeof dateDERev046==='function'?dateDERev046(shown):deDate(shown))}</div></div><div class="timeline-day-nav"><button class="btn small ui-icon-btn" id="timelinePrevDay52" title="Vorheriger Tag">‹</button><button class="btn small" id="timelineToday52" title="Heute anzeigen">Heute</button><button class="btn small ui-icon-btn" id="timelineNextDay52" title="Nächster Tag">›</button></div></div><div class="timeline-field-stack-rev62"><label>Start Arbeitstag</label><input id="timelineWorkStartRev62" type="time" value="${escapeHtml(state.workStartTime||'08:00')}" title="Arbeitsbeginn"><label>Pausenzeit in Minuten</label><input id="timelinePauseRev62" type="number" min="0" step="5" value="${escapeHtml(state.timelinePauseMinutes||0)}" title="Pausenzeit in Minuten"></div><div class="timeline-pause-note">Schrittweite: Halbstundentakt fest eingestellt.</div><div class="timeline-eod">Feierabend Zeit: <b>${escapeHtml(endText)}</b> 🍺</div><div class="timeline-canvas-wrap${vacClass}" ${vacClass?`style="${rev62VacationStyle()}"`:''}><div class="timeline-canvas" style="height:${totalH}px;min-height:${totalH}px">${lines.join('')}${nowLine}${evHtml||'<div class="timeline-empty">Keine sichtbaren Termine für diesen Tag.</div>'}</div></div>`;
+    box.querySelector('#timelinePrevDay52').onclick=async()=>{state.timelineDayOffset=Number(state.timelineDayOffset||0)-1;await rev62SaveAppState();renderSidebarTimelineRev050();};
+    box.querySelector('#timelineToday52').onclick=async()=>{state.timelineDayOffset=0;await rev62SaveAppState();renderSidebarTimelineRev050();};
+    box.querySelector('#timelineNextDay52').onclick=async()=>{state.timelineDayOffset=Number(state.timelineDayOffset||0)+1;await rev62SaveAppState();renderSidebarTimelineRev050();};
+    const work=box.querySelector('#timelineWorkStartRev62');
+    const pauseInput=box.querySelector('#timelinePauseRev62');
+    if(work){work.oninput=async()=>{state.workStartTime=work.value||'08:00';await rev62SaveAppState();};work.onchange=async()=>{state.workStartTime=work.value||'08:00';await rev62SaveAppState();renderSidebarTimelineRev050();};}
+    if(pauseInput){pauseInput.oninput=async()=>{state.timelinePauseMinutes=Math.max(0,Number(pauseInput.value||0));await rev62SaveAppState();};pauseInput.onchange=async()=>{state.timelinePauseMinutes=Math.max(0,Number(pauseInput.value||0));await rev62SaveAppState();renderSidebarTimelineRev050();};}
+    box.querySelectorAll('[data-event-ref]').forEach(el=>el.onclick=()=>openEventDetailModal(el.dataset.eventRef));
+  };
+  window.openTimelineSettingsRev52=function(){toast('Die Zeitstrahl-Einstellungen sind jetzt direkt im Zeitstrahl sichtbar.');};
+
+  function rev62DeleteButton(onDelete,title='Löschen'){
+    const actions=document.querySelector('.modal-actions'); if(!actions)return null;
+    actions.querySelectorAll('.rev62-delete-left,.rev61-trash-left,.rev58-own-trash,.rev57-trash-left,.own-delete-square56,#rev58DeleteOwnEvent,#deleteOwnFromEditRev51,#deleteOwnEvent').forEach(b=>b.remove());
+    const btn=document.createElement('button');
+    btn.type='button';btn.className='btn danger rev62-delete-left';btn.title=title;btn.innerHTML=iconTrash();
+    btn.onclick=async ev=>{ev.preventDefault();ev.stopPropagation();await onDelete();};
+    actions.prepend(btn);
+    setTimeout(()=>{const ref=actions.querySelector('#saveModal,#cancelModal');const h=Math.round(ref?.getBoundingClientRect?.().height||42);btn.style.width=h+'px';btn.style.height=h+'px';btn.style.minWidth=h+'px';},0);
+    return btn;
+  }
+  function rev62ModalIsCreate(){const title=(document.querySelector('#modalTitle')?.textContent||'').toLowerCase();return /hinzufügen|anlegen|erstellen/.test(title);}
+  function rev62RemoveDeleteIfForbidden(){
+    const title=(document.querySelector('#modalTitle')?.textContent||'').toLowerCase();
+    if(rev62ModalIsCreate()||/einstellung|synchronisierung|hinweise|legende|cloud|login|modus konfigurieren/.test(title)){
+      document.querySelectorAll('.modal-actions .rev62-delete-left,.modal-actions .rev61-trash-left,.modal-actions .rev58-own-trash,.modal-actions .rev57-trash-left,.modal-actions .own-delete-square56,.modal-actions #rev58DeleteOwnEvent,.modal-actions #deleteOwnFromEditRev51,.modal-actions #deleteOwnEvent,#modalContent #deleteOwnFromEditRev51,#modalContent #deleteOwnEvent').forEach(b=>b.remove());
+    }
+  }
+  const oldOpenEventDetail62=window.openEventDetailModal||openEventDetailModal;
+  window.openEventDetailModal=openEventDetailModal=function(ref){
+    const r=oldOpenEventDetail62.apply(this,arguments);
+    setTimeout(()=>{
+      const type=String(ref||'').split(':')[0];
+      const parts=String(ref||'').split(':');
+      if(type!=='own'||rev62ModalIsCreate())return rev62RemoveDeleteIfForbidden();
+      const cal=state.calendars?.[Number(parts[1])]; const idx=Number(parts[2]); const evt=cal?.ownEvents?.[idx]; if(!cal||!evt)return;
+      const original=document.querySelector('#modalContent #deleteOwnFromEditRev51,#modalContent #deleteOwnEvent'); if(original)original.style.display='none';
+      rev62DeleteButton(async()=>{
+        if(!confirm('Eigenen Termin / Serie löschen?'))return;
+        try{
+          if(typeof deleteOwnEventRev046==='function'&&evt.id)await deleteOwnEventRev046(evt.id);
+          cal.ownEvents.splice(idx,1);closeModal();render();toast('Eigener Termin gelöscht.');
+        }catch(error){toast(error.message||String(error));}
+      },'Eigenen Termin löschen');
+    },0);
+    return r;
+  };
+  const oldOpenTaskDetail62=window.openTaskDetailModal||openTaskDetailModal;
+  window.openTaskDetailModal=openTaskDetailModal=function(ref){
+    const r=oldOpenTaskDetail62.apply(this,arguments);
+    setTimeout(()=>{
+      if(rev62ModalIsCreate())return rev62RemoveDeleteIfForbidden();
+      const [type,id]=String(ref||'').split(':');
+      const arr=type==='long'?state.longterm:state.tasks; const label=type==='long'?'Langfristigen Task löschen':'Tagestask löschen';
+      if(!arr||!arr.find(x=>String(x.id)===String(id)))return;
+      rev62DeleteButton(async()=>{if(!confirm(label+'?'))return; if(type==='long')state.longterm=state.longterm.filter(x=>String(x.id)!==String(id)); else state.tasks=state.tasks.filter(x=>String(x.id)!==String(id)); await rev62SaveAppState();closeModal();render();toast(type==='long'?'Langfristiger Task gelöscht.':'Tagestask gelöscht.');},label);
+    },0);
+    return r;
+  };
+  if(typeof openProjectTaskDetailModalRev047==='function'){
+    const oldProjectTaskDetail62=openProjectTaskDetailModalRev047;
+    openProjectTaskDetailModalRev047=function(id){
+      const r=oldProjectTaskDetail62.apply(this,arguments);
+      setTimeout(()=>{
+        if(rev62ModalIsCreate())return rev62RemoveDeleteIfForbidden();
+        const t=(state.projectTasks||[]).find(x=>String(x.id)===String(id)); if(!t)return;
+        rev62DeleteButton(async()=>{if(!confirm('Projekt-Task löschen?'))return;try{if(typeof deleteProjectTaskRev047==='function')await deleteProjectTaskRev047(id);state.projectTasks=(state.projectTasks||[]).filter(x=>String(x.id)!==String(id));closeModal();render();toast('Projekt-Task gelöscht.');}catch(error){toast(error.message||String(error));}},'Projekt-Task löschen');
+      },0);
+      return r;
+    };
+    window.openProjectTaskDetailModalRev047=openProjectTaskDetailModalRev047;
+  }
+  const style=document.createElement('style');
+  style.textContent=`
+    .timeline-step-row,.timeline-settings-btn,#timelineSettingsRev50,#timelineStepSelectRev49{display:none!important;}
+    .timeline-field-stack-rev62{display:grid;grid-template-columns:1fr;gap:6px;margin:8px 0 6px 0;}
+    .timeline-field-stack-rev62 label{font-size:12px;color:var(--muted);font-weight:900;}
+    .timeline-field-stack-rev62 input{width:100%;height:40px;background:#050a16;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:9px;}
+    body.light .timeline-field-stack-rev62 input{background:#fff;border-color:#cbd6e7;color:#152033;}
+    .modal-actions{display:flex!important;align-items:center!important;gap:10px!important;}
+    .rev62-delete-left{margin-right:auto!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;border-radius:12px!important;}
+    .rev62-delete-left svg{width:22px!important;height:22px!important;stroke:currentColor!important;}
+    body.sharp-corners .rev62-delete-left{border-radius:0!important;}
+  `;
+  document.head.appendChild(style);
+  const oldRender62=window.render||render;
+  window.render=render=function(){const r=oldRender62();rev62EnsureState();renderSidebarTimelineRev050();setTimeout(rev62RemoveDeleteIfForbidden,0);return r;};
+  const observer=new MutationObserver(()=>{rev62RemoveDeleteIfForbidden();});
+  setTimeout(()=>{rev62EnsureState();renderSidebarTimelineRev050();const modal=document.querySelector('#modalBackdrop');if(modal)observer.observe(modal,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class']});},200);
+})();
+</script>
+
+
+<script>
+/* Rev 063: AppState-Protokoll vollständig für Anzeige-/Zeitstrahl-Einstellungen */
+(function(){
+  const REV63_DEFAULTS={
+    vacationHighlight:{enabled:false,color:'#f97316',opacity:0.18},
+    todayHighlight:{borderWidth:4,borderColor:'#0284c7',opacity:0.18},
+    outlineStyle:'current',
+    outlineCustomColor:'#64748b',
+    timelineStep:30,
+    timelinePauseMinutes:0,
+    workStartTime:'08:00',
+    timelineDayOffset:0
+  };
+  const isHex=v=>/^#[0-9a-f]{6}$/i.test(String(v||''));
+  const clamp=(v,min,max,fb)=>{v=Number(v);return Number.isFinite(v)?Math.max(min,Math.min(max,v)):fb;};
+  function normHHMM(v){return /^\d{2}:\d{2}$/.test(String(v||''))?String(v):REV63_DEFAULTS.workStartTime;}
+  function ensureRev63State(){
+    if(!window.state && typeof state==='undefined')return;
+    state.vacationHighlight=Object.assign({},REV63_DEFAULTS.vacationHighlight,state.vacationHighlight||{});
+    state.todayHighlight=Object.assign({},REV63_DEFAULTS.todayHighlight,state.todayHighlight||{});
+    state.vacationHighlight.color=isHex(state.vacationHighlight.color)?state.vacationHighlight.color:REV63_DEFAULTS.vacationHighlight.color;
+    state.vacationHighlight.opacity=clamp(state.vacationHighlight.opacity,0.05,0.55,REV63_DEFAULTS.vacationHighlight.opacity);
+    state.todayHighlight.borderColor=isHex(state.todayHighlight.borderColor)?state.todayHighlight.borderColor:REV63_DEFAULTS.todayHighlight.borderColor;
+    state.todayHighlight.borderWidth=clamp(state.todayHighlight.borderWidth,1,10,REV63_DEFAULTS.todayHighlight.borderWidth);
+    state.todayHighlight.opacity=clamp(state.todayHighlight.opacity,0,0.65,REV63_DEFAULTS.todayHighlight.opacity);
+    state.outlineStyle=['current','none','gray','black','custom'].includes(state.outlineStyle)?state.outlineStyle:REV63_DEFAULTS.outlineStyle;
+    state.outlineCustomColor=isHex(state.outlineCustomColor)?state.outlineCustomColor:REV63_DEFAULTS.outlineCustomColor;
+    state.timelineStep=30;
+    state.timelinePauseMinutes=Math.max(0,Number(state.timelinePauseMinutes||0));
+    state.workStartTime=normHHMM(state.workStartTime);
+    state.timelineDayOffset=Number(state.timelineDayOffset||0);
+    state.fetchMode='proxy';
+    state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;
+  }
+
+  const prevEnsure63=ensureSettings;
+  ensureSettings=function(){prevEnsure63();ensureRev63State();};
+
+  const oldUiStateOnly=uiStateOnly;
+  uiStateOnly=function(){
+    ensureRev63State();
+    const ui=oldUiStateOnly?oldUiStateOnly():{};
+    return Object.assign({},ui,{
+      // Rev063: alle reinen Nutzer-/Anzeigeeinstellungen gehören explizit in app_state.
+      vacationHighlight:JSON.parse(JSON.stringify(state.vacationHighlight)),
+      todayHighlight:JSON.parse(JSON.stringify(state.todayHighlight)),
+      outlineStyle:state.outlineStyle,
+      outlineCustomColor:state.outlineCustomColor,
+      timelineStep:30,
+      timelinePauseMinutes:state.timelinePauseMinutes,
+      workStartTime:state.workStartTime,
+      timelineDayOffset:state.timelineDayOffset
+    });
+  };
+
+  const oldApplyUiState=applyUiState;
+  applyUiState=function(ui){
+    if(oldApplyUiState)oldApplyUiState(ui);
+    if(ui){
+      if(ui.vacationHighlight!==undefined)state.vacationHighlight=Object.assign({},REV63_DEFAULTS.vacationHighlight,ui.vacationHighlight||{});
+      if(ui.todayHighlight!==undefined)state.todayHighlight=Object.assign({},REV63_DEFAULTS.todayHighlight,ui.todayHighlight||{});
+      if(ui.outlineStyle!==undefined)state.outlineStyle=ui.outlineStyle;
+      if(ui.outlineCustomColor!==undefined)state.outlineCustomColor=ui.outlineCustomColor;
+      if(ui.timelinePauseMinutes!==undefined)state.timelinePauseMinutes=Number(ui.timelinePauseMinutes||0);
+      if(ui.workStartTime!==undefined)state.workStartTime=ui.workStartTime;
+      if(ui.timelineDayOffset!==undefined)state.timelineDayOffset=Number(ui.timelineDayOffset||0);
+    }
+    ensureRev63State();
+  };
+
+  async function saveAppStateRev63(){
+    ensureRev63State();
+    try{localStorage.setItem(storeKey,JSON.stringify(uiStateOnly()));}catch(e){}
+    if(currentUser){
+      clearTimeout(cloudSaveTimer);
+      const payload={user_id:currentUser.id,state:uiStateOnly(),updated_at:new Date().toISOString()};
+      const {error}=await supabaseClient.from('app_state').upsert(payload,{onConflict:'user_id'});
+      if(error){toast('App-State konnte nicht gespeichert werden: '+error.message);return false;}
+      if(typeof setCloudStatus==='function')setCloudStatus('App-State gespeichert: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}),'ok');
+    }
+    return true;
+  }
+
+  // Globales Speichern wieder auf das UI-Protokoll legen, damit spätere Auto-Saves die neuen Felder nicht mehr aus app_state herauslöschen.
+  saveStateToCloud=async function(){
+    if(!currentUser)return setCloudStatus('Nicht angemeldet. Online-Speicherung nicht möglich.','bad');
+    const ok=await saveAppStateRev63();
+    if(ok && typeof scheduleRelationalSave==='function')scheduleRelationalSave();
+  };
+
+  const oldPersist63=persist;
+  persist=function(){
+    ensureRev63State();
+    if(currentUser){try{localStorage.setItem(storeKey,JSON.stringify(uiStateOnly()));}catch(e){}}
+    else{try{localStorage.removeItem(storeKey);}catch(e){}}
+    if(cloudReady && currentUser && !suppressCloudSave){
+      clearTimeout(cloudSaveTimer);
+      cloudSaveTimer=setTimeout(saveStateToCloud,900);
+    }
+  };
+
+  const oldLoad63=loadStateFromCloud;
+  loadStateFromCloud=async function(){
+    await oldLoad63();
+    ensureRev63State();
+    if(typeof applyAppearance==='function')applyAppearance();
+    if(typeof renderSidebarTimelineRev050==='function')renderSidebarTimelineRev050();
+  };
+
+  const oldReload63=window.reloadDatabaseDataRev044||reloadDatabaseDataRev044;
+  reloadDatabaseDataRev044=async function(){
+    if(!requireLogin())return;
+    // Schutz gegen Rücksetzen direkt nach Einstellungsänderung: aktuelle UI-Einstellungen zuerst in app_state schreiben, dann neu laden.
+    await saveAppStateRev63();
+    return oldReload63.apply(this,arguments);
+  };
+  window.reloadDatabaseDataRev044=reloadDatabaseDataRev044;
+
+  // Falls der Reload-Button vor diesem Patch bereits gebunden wurde, erneut binden.
+  setTimeout(()=>{
+    ensureRev63State();
+    const btn=document.querySelector('#reloadDbBtn');
+    if(btn)btn.onclick=reloadDatabaseDataRev044;
+    const settings=document.querySelector('#settingsBtn');
+    if(settings && typeof openSyncSettingsModal==='function')settings.onclick=openSyncSettingsModal;
+  },250);
+})();
+</script>
+
 </body></html>
