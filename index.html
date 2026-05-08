@@ -1301,6 +1301,52 @@ body.light .completed-collapse summary{color:#152033!important;}
 }
 body.light .own-event-edit-grid input,body.light .own-event-edit-grid textarea,body.light .own-event-edit-grid select{background:#f8fbff;border-color:#cbd6e7;color:#152033;}
 
+
+
+/* Rev 052: Settings-Reiter, Konturen, Zeitstrahl-Tag-Navigation, Urlaubsschimmer */
+:root{--outlineColorRev52:var(--line)}
+.sidebar,.board,.longterm,.calendar-pane,.day,.lane,.task-column-lane,.long-group,.project-overview-head,.project-overview-section,.month-cell,.sidebar-day-timeline{border-color:var(--outlineColorRev52)!important;}
+.settings-tabs-rev52{display:flex;gap:8px;margin-bottom:12px;border-bottom:1px solid var(--line);padding-bottom:8px;position:sticky;top:0;background:inherit;z-index:2}
+.settings-tab-rev52{background:#070d1a;border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-weight:900;color:var(--text)}
+.settings-tab-rev52.active{background:linear-gradient(135deg,var(--accent),var(--violet));color:#fff;border-color:transparent}
+body.light .settings-tab-rev52{background:#f8fbff;border-color:#cbd6e7;color:#152033}
+body.light .settings-tab-rev52.active{color:#fff}
+.settings-check-rev52{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;background:#070d1a;border:1px solid var(--line);border-radius:14px;padding:12px;color:var(--text)}
+.settings-check-rev52 small{display:block;color:var(--muted);font-size:12px;line-height:1.35;margin-top:4px}
+.settings-check-rev52 input{width:20px;height:20px;accent-color:var(--accent)}
+body.light .settings-check-rev52{background:#f8fbff;border-color:#cbd6e7;color:#152033}
+.timeline-day-nav{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+.timeline-day-nav .btn{height:34px!important;min-width:34px!important;padding:0 8px!important}
+.timeline-canvas-wrap.vacation-active{background-blend-mode:screen;border-color:#f97316!important}
+.vacation-day-rev52{position:relative;}
+.vacation-day-rev52 .day-head,.vacation-day-rev52 .day-body,.vacation-day-rev52 .month-day{position:relative;z-index:1}
+body.theme-blue,body.theme-red,body.theme-green{background:inherit!important;color:inherit!important}
+
+
+/* Rev 052 hotfix: alte Blau/Rot/Grün-Themes vollständig neutralisieren */
+body.theme-blue .sidebar,body.theme-blue .board,body.theme-blue .longterm,body.theme-blue .modal,
+body.theme-red .sidebar,body.theme-red .board,body.theme-red .longterm,body.theme-red .modal,
+body.theme-green .sidebar,body.theme-green .board,body.theme-green .longterm,body.theme-green .modal{background:rgba(255,255,255,.92)!important;border-color:var(--outlineColorRev52)!important;color:#152033!important}
+body:not(.light).theme-blue .sidebar,body:not(.light).theme-blue .board,body:not(.light).theme-blue .longterm,body:not(.light).theme-blue .modal,
+body:not(.light).theme-red .sidebar,body:not(.light).theme-red .board,body:not(.light).theme-red .longterm,body:not(.light).theme-red .modal,
+body:not(.light).theme-green .sidebar,body:not(.light).theme-green .board,body:not(.light).theme-green .longterm,body:not(.light).theme-green .modal{background:rgba(17,26,43,.88)!important;color:var(--text)!important}
+
+
+/* Rev 053 CSS: Konturfarbe und echte Settings-Reiter */
+:root{--frameBorderColor53:var(--outlineColorRev52,var(--line));}
+.sidebar,.board,.longterm,.calendar-pane,.day,.lane,.task-column-lane,.long-group,.project-overview-head,.project-overview-section,.month-cell,.sidebar-day-timeline,.add-calendar-box,.mode-config-section,.mode-config-group{border-color:var(--frameBorderColor53)!important;}
+.partition{border-top-color:color-mix(in srgb,var(--frameBorderColor53) 72%,transparent)!important;}
+.settings-layout-rev53{display:grid;grid-template-columns:190px minmax(0,1fr);gap:14px;align-items:start;}
+.settings-tabs-rev53{display:flex;flex-direction:column;gap:8px;position:sticky;top:0;}
+.settings-tab-rev53{width:100%;text-align:left;background:#070d1a;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:900;color:var(--text);}
+.settings-tab-rev53.active{background:linear-gradient(135deg,var(--accent),var(--violet));color:#fff;border-color:transparent;}
+.settings-tab-content-rev53{min-width:0;}
+.settings-check-rev53{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;background:#070d1a;border:1px solid var(--line);border-radius:14px;padding:12px;color:var(--text);}
+.settings-check-rev53 small{display:block;color:var(--muted);font-size:12px;line-height:1.35;margin-top:4px;}
+.settings-check-rev53 input{width:20px;height:20px;accent-color:var(--accent);}
+body.light .settings-tab-rev53,body.light .settings-check-rev53{background:#f8fbff;border-color:#cbd6e7;color:#152033;}
+body.light .settings-tab-rev53.active{color:#fff;}
+@media(max-width:760px){.settings-layout-rev53{grid-template-columns:1fr}.settings-tabs-rev53{position:relative;flex-direction:row;flex-wrap:wrap}.settings-tab-rev53{width:auto}}
 </style></head><body><div class="app"><div class="top"><div class="top-title"><h1>Kalenderübersicht</h1></div><div class="search-wrap top-search"><input class="search-input" id="globalSearch" placeholder="🔍 Suchen"><div class="search-results" id="searchResults"></div></div><div class="toolbar compact-toolbar"><button class="btn" id="prevBtn">← Tag zurück</button><button class="btn" id="todayBtn">Heute</button><button class="btn" id="nextBtn">Tag vor →</button><button class="btn primary icon-only-month" id="monthBtn" title="Monat aufklappen">📅</button><button class="btn icon-only-month" id="reloadDbBtn" title="Daten aus Datenbanken neu laden">↻</button></div></div><div class="layout"><aside class="sidebar"><button class="sidebar-toggle" id="sidebarToggleBtn" title="Seitenleiste einklappen">‹</button><div class="sidebar-collapse-all-row sidebar-collapse-all-top"><button class="btn small" id="collapseAllConfigBtn" type="button">▸ Alle einklappen</button></div><div class="config-block" data-config-block="view"><button class="config-toggle" type="button"><span>Ansicht konfigurieren</span><span class="config-chevron">▾</span></button><div class="config-content"><div class="field"><label>Tage sichtbar</label><select id="daysSelect"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option></select></div><div class="field"><label>Zeilen</label><select id="rowsSelect"><option value="1">1</option><option value="2">2</option></select></div><div class="field"><label>Startmodus</label><select id="startModeSelect"><option value="rolling">Fortlaufend</option><option value="week">Aktuelle Woche</option><option value="workweek">Arbeitswoche</option></select></div><div class="field mode-field"><label>Ansichtsmodus</label><div class="mode-row"><select id="viewModeSelect"></select><button class="btn small ui-icon-btn" id="modeConfigBtn" title="Modus konfigurieren" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 1 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.08A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.08A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.08A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.4 9c.2.36.5.67.9.86.32.15.68.22 1.1.22H21a2 2 0 1 1 0 4h-.08a1.7 1.7 0 0 0-1.52.92Z"/></svg></button></div></div></div></div><div class="config-block" data-config-block="cal"><button class="config-toggle" type="button"><span>Kalendergruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="calendarConfig"></div></div></div><div class="config-block" data-config-block="task"><button class="config-toggle" type="button"><span>Tagestask-Gruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="taskColumnConfig"></div></div></div><div class="config-block" data-config-block="long"><button class="config-toggle" type="button"><span>Langfristige Task-Gruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="longColumnConfig"></div></div></div><div class="config-block" data-config-block="opt"><button class="config-toggle" type="button"><span>Optionen</span><span class="config-chevron">▾</span></button><div class="config-content"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="settingsBtn" title="Allgemeine Einstellungen">Einstellungen</button><button class="btn" id="legendBtn" title="Legende und Farben anzeigen">Legende</button><button class="btn" id="cloudBtn" title="Login und Benutzerkonto">Login</button></div><div class="diag" id="diagBox">Diagnose: noch keine Synchronisierung durchgeführt.</div></div></div></aside><main class="board"><div class="timeline-controls"><div class="timeline-title-wrap"><b>Tagesplaner</b><div class="timeline-help">Aktueller Tag plus Folge- oder Vergangenheitsdaten. Erledigte Aufgaben bleiben nachvollziehbar sichtbar.</div></div><div id="rangeLabel" class="hint"></div></div><div id="timeline" class="timeline"></div><section class="longterm main-longterm"><div class="timeline-controls"><div><b>Langfristige Tasks</b><div class="hint">Ohne Datum. Wird bewusst getrennt von Tagestasks geführt.</div></div><button class="btn small" id="addLongBtn2">+ Hinzufügen</button></div><div id="longTermList" class="long-grid"></div></section></main></div></div><div class="modal-backdrop" id="modalBackdrop"><div class="modal"><h2 id="modalTitle"></h2><div id="modalContent" class="modal-grid"></div><div class="modal-actions"><button class="btn" id="cancelModal">Abbrechen</button><button class="btn primary" id="saveModal">Speichern</button></div></div></div><div class="toast" id="toast"></div>
 <script>
 const SUPABASE_URL='https://ihvhghzbhrujtkgkyhdi.supabase.co';
@@ -3396,6 +3442,7 @@ dayCard=function(date){
 /* Rev 049: Zeitstrahl unter Seitenleiste + Projektübersicht */
 (function(){
   function ensureRev049State(){
+    if(!['light','dark'].includes(state.theme))state.theme='light';
     state.timelineStep=Number(state.timelineStep||30);
     if(![15,30,60].includes(state.timelineStep))state.timelineStep=30;
     state.workStartTime=state.workStartTime||'';
@@ -3766,6 +3813,647 @@ dayCard=function(date){
       if(h<28)block.classList.add('timeline-event-tiny');
     });
   };
+})();
+
+
+
+/* Rev 052: Zeitstrahl-Tagwechsel, App-State-Zeitstrahlwerte, Settings-Reiter, Konturen, Urlaubstage, erledigte Task-Snapshots */
+(function(){
+  const REV52_PALETTE=['#7c5cff','#39bdf8','#22c55e','#ffb020','#ff5050','#ec4899','#14b8a6','#f97316','#a855f7','#64748b','#111827','#ffffff'];
+  const OUTLINE_OPTIONS={current:'Wie aktuell',black:'Schwarz',gray:'Grau'};
+  function todayBaseRev52(){const d=new Date();d.setHours(0,0,0,0);return d;}
+  function selectedTimelineDateRev52(){return addDays(todayBaseRev52(),Number(state.timelineDayOffset||0));}
+  function isSelectedTodayRev52(d){return sameDay(d,todayBaseRev52());}
+  function ensureRev52State(){
+    state.timelineStep=Number(state.timelineStep||30);
+    state.timelinePauseMinutes=Math.max(0,Number(state.timelinePauseMinutes||0));
+    state.workStartTime=state.workStartTime||'08:00';
+    state.timelineDayOffset=Number(state.timelineDayOffset||0);
+    state.outlineStyle=state.outlineStyle||'current';
+    state.vacationHighlight=Object.assign({enabled:false,color:'#f97316',opacity:0.18},state.vacationHighlight||{});
+    state.completedTaskArchive=state.completedTaskArchive||[];
+  }
+  const prevEnsureRev52=ensureSettings;
+  ensureSettings=function(){prevEnsureRev52();ensureRev52State();};
+  function outlineColorRev52(){
+    if(state.outlineStyle==='black')return '#000000';
+    if(state.outlineStyle==='gray')return '#7b8494';
+    return getComputedStyle(document.documentElement).getPropertyValue('--line').trim()||'#31405e';
+  }
+  const prevApplyAppearanceRev52=applyAppearance;
+  applyAppearance=function(){prevApplyAppearanceRev52();ensureRev52State();document.documentElement.style.setProperty('--outlineColorRev52',outlineColorRev52());};
+  function allVisibleEventsForDayRev52(d){
+    return visibleCalendars().flatMap(({cal:c,idx:ci})=>{
+      const ics=(c.events||[]).map((e,ei)=>{const occ=eventOccurrenceForDate(e,d);return occ?Object.assign(occ,{_type:'ics',_cal:ci,_idx:ei}):null;}).filter(e=>{if(!e)return false;const l=(c.links||[]).find(x=>x.id===e.icsId);return !l||l.visible!==false;});
+      const own=(c.ownEvents||[]).map((e,ei)=>{const occ=eventOccurrenceForDate(e,d);return occ?Object.assign(occ,{_type:'own',_cal:ci,_idx:ei}):null;}).filter(e=>{if(!e)return false;const l=(c.links||[]).find(x=>x.id===e.sourceId);return l&&l.visible!==false;});
+      return [...ics,...own];
+    });
+  }
+  function isVacationEventRev52(e){
+    return !!e && !!e.allDay && String(e.summary||'').trim().toLowerCase()==='urlaub';
+  }
+  function isVacationDayRev52(d){
+    ensureRev52State();
+    return !!state.vacationHighlight.enabled && allVisibleEventsForDayRev52(d).some(isVacationEventRev52);
+  }
+  function vacationStyleRev52(){
+    ensureRev52State();
+    const c=state.vacationHighlight.color||'#f97316';
+    const o=Math.max(0.05,Math.min(0.55,Number(state.vacationHighlight.opacity||0.18)));
+    return `background:linear-gradient(0deg, color-mix(in srgb, ${c} ${Math.round(o*100)}%, transparent), color-mix(in srgb, ${c} ${Math.round(o*100)}%, transparent))!important;box-shadow:inset 0 0 0 9999px color-mix(in srgb, ${c} ${Math.round(o*55)}%, transparent)!important;`;
+  }
+  function groupNameForTaskRev52(t,isLong=false){
+    const list=isLong?(state.longColumns||[]):(state.taskColumns||[]);
+    const id=t.columnId||(list[0]&&list[0].id);
+    return (list.find(c=>c.id===id)||{}).name||'Allgemein';
+  }
+  function upsertCompletedArchiveRev52(t,type){
+    ensureRev52State();
+    const isLong=type==='long';
+    const groupName=groupNameForTaskRev52(t,isLong);
+    const id=String(t.id);
+    const old=state.completedTaskArchive.find(x=>x.taskId===id&&x.type===type);
+    const snap={taskId:id,type,title:t.title||'',note:t.note||'',completedDate:t.completedDate||fmtDate(new Date()),groupId:t.columnId||'',groupName,archivedAt:new Date().toISOString()};
+    if(old)Object.assign(old,snap);else state.completedTaskArchive.push(snap);
+  }
+  function removeCompletedArchiveRev52(id,type){
+    ensureRev52State();
+    state.completedTaskArchive=state.completedTaskArchive.filter(x=>!(x.taskId===String(id)&&x.type===type));
+  }
+  function archiveForRev52(id,type){
+    ensureRev52State();
+    return state.completedTaskArchive.find(x=>x.taskId===String(id)&&x.type===type)||null;
+  }
+  window.markTaskDoneSnapshotRev52=function(t,type,done){
+    if(!t)return;
+    if(done){t.done=true;t.completedDate=t.completedDate||fmtDate(new Date());upsertCompletedArchiveRev52(t,type);}else{t.done=false;t.completedDate=null;removeCompletedArchiveRev52(t.id,type);}
+  };
+  const oldCompletedDoneListRev52=completedDoneList;
+  window.completedDoneList=function(tasks,longs){
+    const a=(tasks||[]).map(t=>{const ar=archiveForRev52(t.id,'task');const g=ar?.groupName||groupNameForTaskRev52(t,false);return `<div class="card task task-card-compact completed-task-card" data-task-ref="task:${escapeHtml(t.id)}"><div class="task-row"><input type="checkbox" checked data-toggle-task="${escapeHtml(t.id)}"><div><span class="completed-title" title="${escapeHtml(ar?.title||t.title)}">${escapeHtml(shortText(ar?.title||t.title,34))}</span><span class="completed-meta">Erledigt am ${escapeHtml(t.completedDate||ar?.completedDate||'')} · Gruppe damals: ${escapeHtml(g)}</span></div><button class="kebab" data-delete-task="${escapeHtml(t.id)}">×</button></div></div>`;}).join('');
+    const b=(longs||[]).map(t=>{const ar=archiveForRev52(t.id,'long');const g=ar?.groupName||groupNameForTaskRev52(t,true);return `<div class="card completed-long completed-task-card" data-task-ref="long:${escapeHtml(t.id)}"><div><span class="completed-title">${escapeHtml(shortText(ar?.title||t.title,34))}</span><span class="completed-meta">Langfristiger Task erledigt am ${escapeHtml(t.completedDate||ar?.completedDate||'')} · Gruppe damals: ${escapeHtml(g)}</span></div></div>`;}).join('');
+    return `<div class="completed-grid">${a}${b}</div>`;
+  };
+  const prevTaskCardHtmlRev52=taskCardHtml;
+  window.taskCardHtml=function(t,overdue=false,completedView=false){
+    if(completedView){const ar=archiveForRev52(t.id,'task');const g=ar?.groupName||groupNameForTaskRev52(t,false);return `<div class="card task task-card-compact completed-task-card" data-task-ref="task:${escapeHtml(t.id)}"><div class="task-row"><input type="checkbox" checked data-toggle-task="${escapeHtml(t.id)}"><div><span class="completed-title" title="${escapeHtml(ar?.title||t.title)}">${escapeHtml(shortText(ar?.title||t.title,34))}</span><span class="completed-meta">Erledigt am ${escapeHtml(t.completedDate||ar?.completedDate||'')} · Gruppe damals: ${escapeHtml(g)}</span></div><button class="kebab" data-delete-task="${escapeHtml(t.id)}">×</button></div></div>`;}
+    return prevTaskCardHtmlRev52(t,overdue,completedView);
+  };
+
+  function hhmm52(min){min=Math.max(0,Math.min(1439,Math.round(min)));return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0');}
+  function parseHHMM52(v){const m=String(v||'').match(/^(\d{1,2}):(\d{2})$/);if(!m)return null;return Number(m[1])*60+Number(m[2]);}
+  function eventRef52(e){return `${e._type}:${e._cal}:${e._idx}:${fmtDate(new Date(e.start))}`;}
+  function timelineEventsForDate52(date){
+    return allVisibleEventsForDayRev52(date).filter(e=>!e.allDay).map(e=>{const s=new Date(e.start),en=e.end?new Date(e.end):null;if(isNaN(s))return null;const start=s.getHours()*60+s.getMinutes();let end=en&&!isNaN(en)?en.getHours()*60+en.getMinutes():start+30;if(end<=start)end=start+30;return {summary:e.summary||'Ohne Titel',source:e.icsName||e.source||'Kalender',color:e.icsColor||state.colors.event,start,end,ref:eventRef52(e)};}).filter(Boolean).sort((a,b)=>a.start-b.start);
+  }
+  function layoutEvents52(items){
+    const groups=[];
+    items.forEach(it=>{let g=groups.find(gr=>it.start<gr.end);if(!g){g={end:it.end,items:[]};groups.push(g);}g.items.push(it);g.end=Math.max(g.end,it.end);});
+    groups.forEach(g=>{const cols=[];g.items.forEach(it=>{let col=cols.findIndex(end=>end<=it.start);if(col<0){col=cols.length;cols.push(it.end);}else cols[col]=it.end;it.col=col;it.cols=cols.length;});g.items.forEach(it=>it.cols=Math.max(it.cols,cols.length));});
+    return items;
+  }
+  window.renderSidebarTimelineRev050=function(){
+    ensureRev52State();
+    const sidebar=document.querySelector('.sidebar'); if(!sidebar)return;
+    let box=document.querySelector('#sidebarDayTimelineRev049');
+    if(!box){box=document.createElement('section');box.id='sidebarDayTimelineRev049';box.className='sidebar-day-timeline';sidebar.appendChild(box);} 
+    const shown=selectedTimelineDateRev52();
+    const events=layoutEvents52(timelineEventsForDate52(shown));
+    const pxPerMin=0.55,totalH=1440*pxPerMin,step=Number(state.timelineStep||30),lines=[];
+    for(let m=0;m<=1440;m+=step){const major=m%60===0;lines.push(`<div class="timeline-line ${major?'major':''}" style="top:${m*pxPerMin}px">${major?`<span class="timeline-line-label">${hhmm52(m)}</span>`:''}</div>`);}
+    let nowLine='';
+    if(isSelectedTodayRev52(shown)){const now=new Date();const nowMin=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;nowLine=`<div class="timeline-now-line" data-now-line-rev50 style="top:${nowMin*pxPerMin}px"><span class="timeline-now-label">${hhmm52(nowMin)}</span></div>`;}
+    const evHtml=events.map(it=>{const top=Math.max(0,it.start*pxPerMin),h=Math.max(18,(it.end-it.start)*pxPerMin),w=100/it.cols,left=it.col*w;const tiny=h<28;return `<div class="timeline-event-block ${tiny?'timeline-event-tiny':''}" data-event-ref="${escapeHtml(it.ref)}" style="top:${top}px;height:${h}px;left:calc(${left}% + 42px);width:calc(${w}% - 46px);border-left-color:${escapeHtml(it.color)};background:${escapeHtml(it.color)}cc"><b>${escapeHtml(shortText(it.summary,28))}</b><small>${escapeHtml(hhmm52(it.start)+'–'+hhmm52(it.end)+' · '+shortText(it.source,22))}</small></div>`;}).join('');
+    const start=parseHHMM52(state.workStartTime),pause=Number(state.timelinePauseMinutes||0),endText=start===null?'—':hhmm52(start+8*60+pause),pauseText=pause?`Pause: ${pause} Min. · zählt nicht als Arbeitszeit.`:'Keine Pause hinterlegt.';
+    const vacClass=isVacationDayRev52(shown)?' vacation-active':'';
+    box.innerHTML=`<div class="sidebar-timeline-head"><div><div class="sidebar-timeline-title">Zeitstrahl</div><div class="sidebar-timeline-date">${escapeHtml(dateDERev046(shown))}</div></div><div class="timeline-day-nav"><button class="btn small ui-icon-btn" id="timelinePrevDay52" title="Vorheriger Tag">‹</button><button class="btn small" id="timelineToday52" title="Heute anzeigen">Heute</button><button class="btn small ui-icon-btn" id="timelineNextDay52" title="Nächster Tag">›</button></div></div><div class="timeline-work-row"><input id="timelineWorkStartRev50" type="time" value="${escapeHtml(state.workStartTime||'')}" title="Arbeitsbeginn"><button class="btn small ui-icon-btn timeline-settings-btn" id="timelineSettingsRev50" title="Zeitstrahl einstellen">${iconSettings()}</button></div><div class="timeline-pause-note">${escapeHtml(pauseText)}</div><div class="timeline-eod">Feierabend Zeit: <b>${escapeHtml(endText)}</b> 🍺</div><div class="timeline-canvas-wrap${vacClass}" ${vacClass?`style="${vacationStyleRev52()}"`:''}><div class="timeline-canvas" style="height:${totalH}px;min-height:${totalH}px">${lines.join('')}${nowLine}${evHtml||'<div class="timeline-empty">Keine sichtbaren Termine für diesen Tag.</div>'}</div></div>`;
+    box.querySelector('#timelinePrevDay52').onclick=()=>{state.timelineDayOffset=Number(state.timelineDayOffset||0)-1;persist();renderSidebarTimelineRev050();};
+    box.querySelector('#timelineToday52').onclick=()=>{state.timelineDayOffset=0;persist();renderSidebarTimelineRev050();};
+    box.querySelector('#timelineNextDay52').onclick=()=>{state.timelineDayOffset=Number(state.timelineDayOffset||0)+1;persist();renderSidebarTimelineRev050();};
+    const input=box.querySelector('#timelineWorkStartRev50'); if(input)input.onchange=()=>{state.workStartTime=input.value;persist();renderSidebarTimelineRev050();};
+    const gear=box.querySelector('#timelineSettingsRev50'); if(gear)gear.onclick=openTimelineSettingsRev52;
+    box.querySelectorAll('[data-event-ref]').forEach(el=>el.onclick=()=>openEventDetailModal(el.dataset.eventRef));
+  };
+  function openTimelineSettingsRev52(){
+    ensureRev52State();
+    openModal('Zeitstrahl einstellen',`<div class="edit-grid"><label>Schrittweite</label><select id="timelineStepModalRev52"><option value="60">Stundentakt</option><option value="30">Halbstundentakt</option><option value="15">Viertelstundentakt</option></select><label>Pausenzeit in Minuten</label><input id="timelinePauseModalRev52" type="number" min="0" step="5" value="${escapeHtml(state.timelinePauseMinutes)}"><div class="hint">Diese Werte werden als aktueller Stand im App-State gespeichert und bei Änderung überschrieben, nicht historisiert.</div></div>`,()=>{state.timelineStep=Number(document.querySelector('#timelineStepModalRev52')?.value||30);state.timelinePauseMinutes=Math.max(0,Number(document.querySelector('#timelinePauseModalRev52')?.value||0));persist();renderSidebarTimelineRev050();});
+    const sel=document.querySelector('#timelineStepModalRev52'); if(sel)sel.value=String(state.timelineStep||30);
+  }
+
+  const oldOpenSettingsRev52=openSyncSettingsModal;
+  window.openSyncSettingsModal=function(){
+    ensureRev52State();
+    $('#modalTitle').textContent='Einstellungen';
+    $('#modalContent').innerHTML=`<div class="settings-tabs-rev52"><button class="settings-tab-rev52 active" data-settings-tab="display">Anzeige</button><button class="settings-tab-rev52" data-settings-tab="sync">Synchronisierung</button><button class="settings-tab-rev52" data-settings-tab="special">Sonderlogik</button></div><div id="settingsTabContentRev52"></div>`;
+    $('#modalBackdrop').style.display='flex';$('#saveModal').style.display='';
+    let active='display';
+    function renderTab(){
+      const root=$('#settingsTabContentRev52');
+      if(active==='display')root.innerHTML=`<div class="settings-grid"><div class="field"><label>Erscheinung</label><select id="mTheme"><option value="light">Hell</option><option value="dark">Dunkel</option></select></div><div class="field"><label>Kanten</label><select id="mCornerStyle"><option value="rounded">Abgerundet</option><option value="sharp">Eckig / 90°</option></select></div><div class="field"><label>Konturen</label><select id="mOutlineStyle"><option value="current">Wie aktuell</option><option value="gray">Grau</option><option value="black">Schwarz</option></select></div><div class="hint">Konturen betreffen die größeren Rahmen: Projekte, langfristige Task-Gruppen, Tagesrahmen, Kalender-/Task-Container.</div></div>`;
+      if(active==='sync')root.innerHTML=`<div class="settings-grid"><button class="btn primary" id="mSyncNow" type="button">Alle ICS-Links aktualisieren</button><div class="field"><label>Intervall</label><select id="mSyncInterval"><option value="0">Aus / manuell</option><option value="5">Alle 5 Min.</option><option value="15">Alle 15 Min.</option><option value="30">Alle 30 Min.</option><option value="60">Alle 60 Min.</option></select></div><div class="field"><label>Proxy-URL</label><input id="mProxyUrl" class="readonly-input" value="${escapeHtml(currentUser?(state.proxyUrl||DEFAULT_PROXY_URL):'')}" readonly disabled></div><div class="dev-note">Nur während der Entwicklung sichtbar. Der Proxy wird automatisch verwendet.</div></div>`;
+      if(active==='special')root.innerHTML=`<div class="settings-grid"><label class="settings-check-rev52"><span><b>Urlaubstage anders anzeigen</b><small>Wenn ein sichtbarer ICS- oder eigener Kalender einen Termin enthält, der exakt „Urlaub“ heißt und ganztägig ist, wird der ganze Tag farblich hinterlegt.</small></span><input id="mVacationEnabled" type="checkbox"></label><div class="field"><label>Urlaubsfarbe</label><input id="mVacationColor" type="color" value="${escapeHtml(state.vacationHighlight.color||'#f97316')}"></div><div class="hint">Die Logik greift nur bei ganztägigen Terminen mit exakt dem Titel „Urlaub“. Andere Begriffe wie „Urlaub Mallorca“ werden bewusst nicht automatisch erkannt.</div></div>`;
+      const mt=$('#mTheme'); if(mt)mt.value=state.theme||'light';
+      const mc=$('#mCornerStyle'); if(mc)mc.value=state.cornerStyle||'rounded';
+      const mo=$('#mOutlineStyle'); if(mo)mo.value=state.outlineStyle||'current';
+      const mi=$('#mSyncInterval'); if(mi)mi.value=String(state.syncInterval??15);
+      const ms=$('#mSyncNow'); if(ms)ms.onclick=async()=>{saveSettingsFromModal();setupAutoSync();applyAppearance();await syncAllICS();};
+      const ve=$('#mVacationEnabled'); if(ve)ve.checked=!!state.vacationHighlight.enabled;
+    }
+    function saveSettingsFromModal(){
+      const mt=$('#mTheme'); if(mt)state.theme=mt.value;
+      const mc=$('#mCornerStyle'); if(mc)state.cornerStyle=mc.value;
+      const mo=$('#mOutlineStyle'); if(mo)state.outlineStyle=mo.value;
+      const mi=$('#mSyncInterval'); if(mi)state.syncInterval=Number(mi.value);
+      const ve=$('#mVacationEnabled'); if(ve)state.vacationHighlight.enabled=ve.checked;
+      const vc=$('#mVacationColor'); if(vc)state.vacationHighlight.color=vc.value;
+      state.fetchMode='proxy';state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;persist();applyAppearance();
+    }
+    $$('.settings-tab-rev52').forEach(btn=>btn.onclick=()=>{saveSettingsFromModal();active=btn.dataset.settingsTab;$$('.settings-tab-rev52').forEach(b=>b.classList.toggle('active',b===btn));renderTab();});
+    renderTab();
+    $('#saveModal').onclick=()=>{saveSettingsFromModal();setupAutoSync();closeModal();render();};
+  };
+  const oldRenderMonthViewRev52=renderMonthView;
+  window.renderMonthView=function(){
+    oldRenderMonthViewRev52();
+    if(!state.vacationHighlight?.enabled)return;
+    document.querySelectorAll('[data-month-date]').forEach(cell=>{const d=new Date(cell.dataset.monthDate+'T00:00:00');if(isVacationDayRev52(d)){cell.classList.add('vacation-day-rev52');cell.setAttribute('style',(cell.getAttribute('style')||'')+vacationStyleRev52());}});
+  };
+  const prevDayCardRev52=dayCard;
+  window.dayCard=function(date){
+    const node=prevDayCardRev52(date);
+    if(isVacationDayRev52(date)){node.classList.add('vacation-day-rev52');node.setAttribute('style',(node.getAttribute('style')||'')+vacationStyleRev52());}
+    node.querySelectorAll('[data-toggle-task]').forEach(c=>{const old=c.onchange;c.onchange=(ev)=>{ev.stopPropagation();const t=state.tasks.find(x=>x.id===c.dataset.toggleTask);if(t)markTaskDoneSnapshotRev52(t,'task',c.checked);if(old)old(ev);};});
+    node.querySelectorAll('[data-toggle-long]').forEach(c=>{const old=c.onchange;c.onchange=(ev)=>{ev.stopPropagation();const t=state.longterm.find(x=>x.id===c.dataset.toggleLong);if(t)markTaskDoneSnapshotRev52(t,'long',c.checked);if(old)old(ev);};});
+    return node;
+  };
+  setTimeout(()=>{ensureRev52State();applyAppearance();renderSidebarTimelineRev050();},250);
+})();
+
+
+
+/* Rev 053: Settings-Modal wirklich an Optionen > Einstellungen anbinden, Konturfarbe + Urlaubs-Lowlight in Allgemein */
+(function(){
+  function ensureRev53State(){
+    state.outlineStyle=state.outlineStyle||'current';
+    state.vacationHighlight=Object.assign({enabled:false,color:'#f97316',opacity:0.18},state.vacationHighlight||{});
+  }
+  function outlineColor53(){
+    ensureRev53State();
+    if(state.outlineStyle==='black')return '#000000';
+    if(state.outlineStyle==='gray')return '#7b8494';
+    return getComputedStyle(document.documentElement).getPropertyValue('--line').trim()||'#31405e';
+  }
+  const prevApplyAppearance53=applyAppearance;
+  applyAppearance=function(){
+    prevApplyAppearance53();
+    ensureRev53State();
+    document.documentElement.style.setProperty('--outlineColorRev52',outlineColor53());
+    document.documentElement.style.setProperty('--frameBorderColor53',outlineColor53());
+  };
+  function saveSettings53(){
+    const theme=document.querySelector('#mTheme53'); if(theme)state.theme=theme.value;
+    const corners=document.querySelector('#mCornerStyle53'); if(corners)state.cornerStyle=corners.value;
+    const outline=document.querySelector('#mOutlineStyle53'); if(outline)state.outlineStyle=outline.value;
+    const vacation=document.querySelector('#mVacationEnabled53'); if(vacation)state.vacationHighlight.enabled=vacation.checked;
+    const vacationColor=document.querySelector('#mVacationColor53'); if(vacationColor)state.vacationHighlight.color=vacationColor.value;
+    const interval=document.querySelector('#mSyncInterval53'); if(interval)state.syncInterval=Number(interval.value);
+    state.fetchMode='proxy';
+    state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;
+    persist();
+    applyAppearance();
+  }
+  function tabButton53(id,label,active){return `<button class="settings-tab-rev53 ${active?'active':''}" data-settings-tab53="${id}" type="button">${label}</button>`;}
+  function renderSettingsTab53(active){
+    const root=document.querySelector('#settingsTabContentRev53'); if(!root)return;
+    ensureRev53State();
+    if(active==='general'){
+      root.innerHTML=`<div class="settings-grid">
+        <div class="field"><label>Erscheinung</label><select id="mTheme53"><option value="light">Hell</option><option value="dark">Dunkel</option></select></div>
+        <div class="field"><label>Kanten</label><select id="mCornerStyle53"><option value="rounded">Abgerundet</option><option value="sharp">Eckig / 90°</option></select></div>
+        <div class="field"><label>Konturfarbe</label><select id="mOutlineStyle53"><option value="current">Wie aktuell</option><option value="gray">Grau</option><option value="black">Schwarz</option></select></div>
+        <div class="hint">Die Konturfarbe betrifft die größeren Rahmen der Oberfläche: Tagesrahmen, Kalendergruppen, Projekt-/Langfristgruppen, Monatszellen und Container. Einzelne Task-Karten bleiben unverändert.</div>
+        <label class="settings-check-rev53"><span><b>Urlaubstage anders anzeigen</b><small>Aktiviert ein farbiges Lowlight für ganze Tage. Die Erkennung greift nur, wenn ein sichtbarer ICS-Kalender oder eigener Kalender einen ganztägigen Termin mit exakt dem Titel „Urlaub“ enthält.</small></span><input id="mVacationEnabled53" type="checkbox"></label>
+        <div class="field"><label>Urlaubsfarbe</label><input id="mVacationColor53" type="color" value="${escapeHtml(state.vacationHighlight.color||'#f97316')}"></div>
+      </div>`;
+      document.querySelector('#mTheme53').value=state.theme||'light';
+      document.querySelector('#mCornerStyle53').value=state.cornerStyle||'rounded';
+      document.querySelector('#mOutlineStyle53').value=state.outlineStyle||'current';
+      document.querySelector('#mVacationEnabled53').checked=!!state.vacationHighlight.enabled;
+      ['#mTheme53','#mCornerStyle53','#mOutlineStyle53','#mVacationEnabled53','#mVacationColor53'].forEach(sel=>{const el=document.querySelector(sel);if(el)el.onchange=()=>{saveSettings53();render();};});
+    }
+    if(active==='sync'){
+      root.innerHTML=`<div class="settings-grid">
+        <button class="btn primary" id="mSyncNow53" type="button">Alle ICS-Links aktualisieren</button>
+        <div class="field"><label>Intervall</label><select id="mSyncInterval53"><option value="0">Aus / manuell</option><option value="5">Alle 5 Min.</option><option value="15">Alle 15 Min.</option><option value="30">Alle 30 Min.</option><option value="60">Alle 60 Min.</option></select></div>
+        <div class="field"><label>Proxy-URL</label><input class="readonly-input" value="${escapeHtml(currentUser?(state.proxyUrl||DEFAULT_PROXY_URL):'')}" readonly disabled></div>
+        <div class="dev-note">Der Proxy wird automatisch verwendet. Die Adresse ist nur zur Kontrolle sichtbar und hier nicht bearbeitbar.</div>
+      </div>`;
+      document.querySelector('#mSyncInterval53').value=String(state.syncInterval??15);
+      document.querySelector('#mSyncInterval53').onchange=()=>{saveSettings53();setupAutoSync();};
+      document.querySelector('#mSyncNow53').onclick=async()=>{saveSettings53();setupAutoSync();applyAppearance();await syncAllICS();};
+    }
+    if(active==='info'){
+      root.innerHTML=`<div class="settings-grid"><div class="security-note"><b>Urlaubslogik</b><br>Ein Tag wird nur dann farbig hinterlegt, wenn ein sichtbarer Termin exakt „Urlaub“ heißt und ganztägig ist. Das verhindert Fehlmarkierungen bei normalen Terminen wie „Urlaub planen“ oder „Urlaub beantragen“.</div><div class="security-note"><b>Speicherlogik</b><br>Konturfarbe, Urlaubs-Lowlight, Urlaubsfarbe und Synchronisationsintervall werden als aktuelle UI-/Anzeigeeinstellung im App-State gespeichert und bei Änderung überschrieben.</div></div>`;
+    }
+  }
+  function openSettingsRev53(){
+    ensureRev53State();
+    document.querySelector('#modalTitle').textContent='Allgemeine Einstellungen';
+    document.querySelector('#modalContent').innerHTML=`<div class="settings-layout-rev53"><div class="settings-tabs-rev53">${tabButton53('general','Allgemein',true)}${tabButton53('sync','Synchronisierung',false)}${tabButton53('info','Hinweise',false)}</div><div id="settingsTabContentRev53" class="settings-tab-content-rev53"></div></div>`;
+    document.querySelector('#modalBackdrop').style.display='flex';
+    document.querySelector('#saveModal').style.display='';
+    let active='general';
+    renderSettingsTab53(active);
+    document.querySelectorAll('[data-settings-tab53]').forEach(btn=>btn.onclick=()=>{saveSettings53();active=btn.dataset.settingsTab53;document.querySelectorAll('[data-settings-tab53]').forEach(b=>b.classList.toggle('active',b===btn));renderSettingsTab53(active);});
+    document.querySelector('#saveModal').onclick=()=>{saveSettings53();setupAutoSync();closeModal();render();};
+  }
+  window.openSettingsRev53=openSettingsRev53;
+  window.openSyncSettingsModal=openSettingsRev53;
+  function bindSettingsButton53(){
+    const btn=document.querySelector('#settingsBtn');
+    if(btn)btn.onclick=openSettingsRev53;
+  }
+  document.addEventListener('DOMContentLoaded',bindSettingsButton53);
+  setTimeout(bindSettingsButton53,0);
+  setTimeout(bindSettingsButton53,400);
+  setTimeout(()=>{ensureRev53State();applyAppearance();},200);
+})();
+
+
+/* Rev 054: completed_tasks als echte Verlaufstabelle + kontrolliertes Wiederöffnen */
+(function(){
+  const COMPLETED_TABLE_REV54='completed_tasks';
+
+  function ensureRev54State(){
+    state.completedTasksTable=Array.isArray(state.completedTasksTable)?state.completedTasksTable:[];
+  }
+  function groupSnapshotRev54(t,type){
+    if(type==='long'){
+      const g=(state.longColumns||[]).find(x=>x.id===(t.columnId||t.longTaskGroupId));
+      return {id:t.columnId||t.longTaskGroupId||'',name:g?.name||t.originalGroupName||'Unbekannte Gruppe',color:g?.color||t.originalGroupColor||state.colors?.long||defaultColors.long};
+    }
+    const g=(state.taskColumns||[]).find(x=>x.id===(t.columnId||t.taskGroupId));
+    return {id:t.columnId||t.taskGroupId||'',name:g?.name||t.originalGroupName||'Unbekannte Gruppe',color:g?.color||t.originalGroupColor||state.colors?.task||defaultColors.task};
+  }
+  function completedFromRowRev54(r){
+    return {
+      completedId:r.id,
+      originalTaskId:r.original_task_id,
+      type:r.task_type||'daily',
+      title:r.title||'Ohne Titel',
+      note:r.note||'',
+      originalDate:r.original_date||null,
+      completedDate:r.completed_date||fmtDate(new Date()),
+      originalGroupId:r.original_group_id||'',
+      originalGroupName:r.original_group_name||'Unbekannte Gruppe',
+      originalGroupColor:r.original_group_color||null,
+      createdAt:r.created_at||null
+    };
+  }
+  function completedToInsertRev54(t,type){
+    const g=groupSnapshotRev54(t,type);
+    return {
+      user_id:currentUser.id,
+      original_task_id:isUuid(t.id)?t.id:null,
+      task_type:type==='long'?'long':'daily',
+      title:t.title||'Ohne Titel',
+      note:t.note||null,
+      original_date:type==='long'?null:(t.date||fmtDate(new Date())),
+      completed_date:fmtDate(new Date()),
+      original_group_id:String(g.id||''),
+      original_group_name:g.name||'Unbekannte Gruppe',
+      original_group_color:g.color||null
+    };
+  }
+  async function loadCompletedTasksRev54(){
+    ensureRev54State();
+    if(!currentUser)return;
+    const {data,error}=await supabaseClient.from(COMPLETED_TABLE_REV54).select('*').eq('user_id',currentUser.id).order('completed_date',{ascending:false}).order('created_at',{ascending:false});
+    if(error){
+      console.error('completed_tasks laden fehlgeschlagen',error);
+      const msg=(error.message||'').toLowerCase().includes('does not exist')?'Tabelle completed_tasks fehlt in Supabase. SQL-Skript ausführen.':('completed_tasks konnte nicht geladen werden: '+error.message);
+      toast(msg);
+      state.completedTasksTable=[];
+      return;
+    }
+    state.completedTasksTable=(data||[]).map(completedFromRowRev54);
+  }
+  async function completeTaskToTableRev54(t,type){
+    if(!currentUser||!t)return;
+    ensureRev54State();
+    const row=completedToInsertRev54(t,type);
+    const {data,error}=await supabaseClient.from(COMPLETED_TABLE_REV54).insert(row).select('*').single();
+    if(error){
+      console.error('completed_tasks INSERT fehlgeschlagen',error);
+      toast('Erledigter Task konnte nicht in completed_tasks gespeichert werden: '+error.message);
+      return;
+    }
+    const completed=completedFromRowRev54(data);
+    state.completedTasksTable.unshift(completed);
+    if(type==='long'){
+      state.longterm=state.longterm.filter(x=>x.id!==t.id);
+      await dbDeleteRowRev041('long_tasks',t.id);
+    }else{
+      state.tasks=state.tasks.filter(x=>x.id!==t.id);
+      await dbDeleteRowRev041('tasks',t.id);
+    }
+    render();
+  }
+  function originalGroupExistsRev54(c){
+    if(c.type==='long')return !!(state.longColumns||[]).find(g=>g.id===c.originalGroupId);
+    return !!(state.taskColumns||[]).find(g=>g.id===c.originalGroupId);
+  }
+  async function reopenCompletedTaskRev54(completedId,checkbox){
+    ensureRev54State();
+    const c=state.completedTasksTable.find(x=>x.completedId===completedId);
+    if(!c)return;
+    if(!originalGroupExistsRev54(c)){
+      if(checkbox)checkbox.checked=true;
+      toast('Diese Gruppe existiert nicht mehr. Der Task kann nicht wieder geöffnet werden. Details bleiben weiterhin einsehbar.');
+      return;
+    }
+    const restoredId=isUuid(c.originalTaskId)?c.originalTaskId:crypto.randomUUID();
+    if(c.type==='long'){
+      const task={id:restoredId,title:c.title,note:c.note||'',done:false,completedDate:null,columnId:c.originalGroupId,createdDate:fmtDate(new Date())};
+      state.longterm.push(task);
+      const row={id:task.id,user_id:currentUser.id,long_task_group_id:task.columnId,title:task.title,note:task.note||null,done:false,completed_date:null,position:(state.longterm||[]).length};
+      const {error}=await supabaseClient.from('long_tasks').upsert(row,{onConflict:'id'});
+      if(error){if(checkbox)checkbox.checked=true;toast('Wiederöffnen fehlgeschlagen: '+error.message);state.longterm=state.longterm.filter(x=>x.id!==task.id);return;}
+    }else{
+      const task={id:restoredId,title:c.title,note:c.note||'',date:c.originalDate||fmtDate(new Date()),done:false,completedDate:null,columnId:c.originalGroupId};
+      state.tasks.push(task);
+      const row={id:task.id,user_id:currentUser.id,task_group_id:task.columnId,title:task.title,note:task.note||null,task_date:task.date,done:false,completed_date:null,position:(state.tasks||[]).length};
+      const {error}=await supabaseClient.from('tasks').upsert(row,{onConflict:'id'});
+      if(error){if(checkbox)checkbox.checked=true;toast('Wiederöffnen fehlgeschlagen: '+error.message);state.tasks=state.tasks.filter(x=>x.id!==task.id);return;}
+    }
+    const {error:delError}=await supabaseClient.from(COMPLETED_TABLE_REV54).delete().eq('user_id',currentUser.id).eq('id',completedId);
+    if(delError){toast('Aktiver Task wurde wiederhergestellt, aber completed_tasks konnte nicht bereinigt werden: '+delError.message);}
+    state.completedTasksTable=state.completedTasksTable.filter(x=>x.completedId!==completedId);
+    render();
+  }
+  function completedCardRev54(c){
+    const col=c.originalGroupColor||state.colors?.task||defaultColors.task;
+    const kind=c.type==='long'?'Langfristig':'Tagestask';
+    const originalDate=c.originalDate?` · Ursprünglich: ${escapeHtml(c.originalDate)}`:'';
+    const groupMissing=!originalGroupExistsRev54(c);
+    return `<div class="card task task-card-compact completed-task-card completed-table-card-rev54" data-completed-ref="${escapeHtml(c.completedId)}" style="border-left-color:${escapeHtml(col)}!important"><div class="task-row"><input type="checkbox" checked data-toggle-completed-rev54="${escapeHtml(c.completedId)}" title="Wieder öffnen"><div><span class="completed-title" title="${escapeHtml(c.title)}">${escapeHtml(shortText(c.title,34))}</span><span class="completed-meta">${escapeHtml(kind)} · Erledigt am ${escapeHtml(c.completedDate||'')} · Gruppe damals: ${escapeHtml(c.originalGroupName||'—')}${originalDate}${groupMissing?' · Gruppe gelöscht':''}</span></div><button class="kebab" data-completed-detail-rev54="${escapeHtml(c.completedId)}" title="Details">⋯</button></div></div>`;
+  }
+  function completedForDayRev54(iso){
+    ensureRev54State();
+    return (state.completedTasksTable||[]).filter(c=>c.completedDate===iso);
+  }
+  function completedTableHtmlRev54(iso){
+    const list=completedForDayRev54(iso);
+    if(!list.length)return '';
+    return `<div class="completed-grid completed-table-grid-rev54">${list.map(completedCardRev54).join('')}</div>`;
+  }
+  function openCompletedDetailRev54(id){
+    ensureRev54State();
+    const c=state.completedTasksTable.find(x=>x.completedId===id);
+    if(!c)return;
+    const exists=originalGroupExistsRev54(c);
+    $('#modalTitle').textContent='Erledigter Task · Details';
+    $('#modalContent').innerHTML=`<div class="event-detail-grid"><b>Titel</b><div>${escapeHtml(c.title||'—')}</div><b>Typ</b><div>${escapeHtml(c.type==='long'?'Langfristiger Task':'Tagestask')}</div><b>Erledigt am</b><div>${escapeHtml(c.completedDate||'—')}</div><b>Ursprüngliches Datum</b><div>${escapeHtml(c.originalDate||'—')}</div><b>Damals in Gruppe</b><div>${escapeHtml(c.originalGroupName||'—')}</div><b>Gruppenstatus</b><div>${exists?'Gruppe existiert noch. Wiederöffnen ist möglich.':'Diese Gruppe existiert nicht mehr. Wiederöffnen ist gesperrt.'}</div><b>Notiz</b><div>${c.note?`<div class="detail-long expanded">${escapeHtml(c.note)}</div>`:'—'}</div></div>`;
+    $('#modalBackdrop').style.display='flex';
+    $('#saveModal').style.display='none';
+  }
+
+  const oldLoadRelationalRev54=loadRelationalData;
+  loadRelationalData=async function(){
+    await oldLoadRelationalRev54();
+    await loadCompletedTasksRev54();
+  };
+
+  const oldSaveSnapshotRev54=saveRelationalSnapshot;
+  saveRelationalSnapshot=async function(){
+    // completed_tasks wird absichtlich nicht per Snapshot überschrieben.
+    // Erledigungen werden nur durch explite Aktionen INSERT/DELETE bewegt.
+    await oldSaveSnapshotRev54();
+  };
+
+  const prevDayCardRev54=dayCard;
+  dayCard=function(date){
+    const node=prevDayCardRev54(date);
+    const iso=fmtDate(date);
+    const completedHtml=completedTableHtmlRev54(iso);
+    if(completedHtml){
+      const body=node.querySelector('.day-body');
+      const details=node.querySelector('.completed-collapse .completed-collapse-body');
+      if(details){details.insertAdjacentHTML('afterbegin',completedHtml);}
+      else if(body){
+        const today=new Date();today.setHours(0,0,0,0);
+        body.insertAdjacentHTML('beforeend',`<div class="partition"><details class="completed-collapse" open><summary>${sameDay(date,today)?'4':'3'}. An diesem Tag erledigte Tasks</summary><div class="completed-collapse-body">${completedHtml}</div></details></div>`);
+      }
+    }
+    node.querySelectorAll('[data-toggle-task]').forEach(c=>{
+      const old=c.onchange;
+      c.onchange=async(ev)=>{
+        ev.stopPropagation();
+        if(!requireLogin()){c.checked=!c.checked;return;}
+        const t=state.tasks.find(x=>x.id===c.dataset.toggleTask);
+        if(t&&c.checked){await completeTaskToTableRev54(t,'daily');return;}
+        if(old)old(ev);
+      };
+    });
+    node.querySelectorAll('[data-toggle-long]').forEach(c=>{
+      const old=c.onchange;
+      c.onchange=async(ev)=>{
+        ev.stopPropagation();
+        if(!requireLogin()){c.checked=!c.checked;return;}
+        const t=state.longterm.find(x=>x.id===c.dataset.toggleLong);
+        if(t&&c.checked){await completeTaskToTableRev54(t,'long');return;}
+        if(old)old(ev);
+      };
+    });
+    node.querySelectorAll('[data-toggle-completed-rev54]').forEach(c=>{
+      c.onclick=ev=>ev.stopPropagation();
+      c.onchange=async(ev)=>{ev.stopPropagation(); if(!c.checked)await reopenCompletedTaskRev54(c.dataset.toggleCompletedRev54,c);};
+    });
+    node.querySelectorAll('[data-completed-detail-rev54]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();openCompletedDetailRev54(b.dataset.completedDetailRev54);});
+    node.querySelectorAll('[data-completed-ref]').forEach(card=>card.onclick=()=>openCompletedDetailRev54(card.dataset.completedRef));
+    return node;
+  };
+
+  const oldRenderLongRev54=renderLong;
+  renderLong=function(){
+    oldRenderLongRev54();
+    document.querySelectorAll('#longTermList [data-toggle-long]').forEach(c=>{
+      const old=c.onchange;
+      c.onchange=async(ev)=>{
+        ev.stopPropagation();
+        if(!requireLogin()){c.checked=!c.checked;return;}
+        const t=state.longterm.find(x=>x.id===c.dataset.toggleLong);
+        if(t&&c.checked){await completeTaskToTableRev54(t,'long');return;}
+        if(old)old(ev);
+      };
+    });
+  };
+
+  // Detailfenster: completed-Archiv aus App-State bleibt lesbar, neue Tabelle ist führend.
+  window.loadCompletedTasksRev54=loadCompletedTasksRev54;
+  window.reopenCompletedTaskRev54=reopenCompletedTaskRev54;
+  window.completeTaskToTableRev54=completeTaskToTableRev54;
+  ensureRev54State();
+})();
+
+
+
+/* Rev 055: UUID-Reparatur für Gruppen, korrektes Wiederöffnen erledigter Tasks, Long-Task-Zielgruppe fix, alte AppState-Erledigt-Snapshots deaktiviert */
+(function(){
+  const COMPLETED_TABLE_REV55='completed_tasks';
+
+  // Die alte Rev52-AppState-Archivfunktion wird ab jetzt bewusst stillgelegt.
+  // completed_tasks ist die führende Historientabelle.
+  window.markTaskDoneSnapshotRev52=function(){ return; };
+  function clearLegacyCompletedArchiveRev55(){
+    if(state && Array.isArray(state.completedTaskArchive) && state.completedTaskArchive.length){
+      state.completedTaskArchive=[];
+    }
+  }
+
+  function rev55GroupList(kind){ return kind==='long' ? (state.longColumns||[]) : (state.taskColumns||[]); }
+  function rev55Table(kind){ return kind==='long' ? 'long_task_groups' : 'task_groups'; }
+  function rev55TaskTable(kind){ return kind==='long' ? 'long_tasks' : 'tasks'; }
+  function rev55GroupFk(kind){ return kind==='long' ? 'long_task_group_id' : 'task_group_id'; }
+  function rev55DefaultColor(kind){ return kind==='long' ? (state.colors?.long||defaultColors.long) : (state.colors?.task||defaultColors.task); }
+  function rev55FindGroup(kind, groupId, groupName){
+    const list=rev55GroupList(kind);
+    return list.find(g=>String(g.id)===String(groupId||'')) || (groupName ? list.find(g=>String(g.name||'')===String(groupName||'')) : null);
+  }
+
+  async function ensureGroupUuidRev55(kind, groupId, groupName='', groupColor=null){
+    if(!currentUser)return null;
+    ensureSettings(); if(kind==='long')ensureRev033State();
+    const list=rev55GroupList(kind);
+    let g=rev55FindGroup(kind, groupId, groupName);
+    if(!g)return null;
+    if(isUuid(g.id))return g.id;
+
+    const oldId=String(g.id||'');
+    const newId=crypto.randomUUID();
+    g.id=newId;
+    g.color=g.color||groupColor||rev55DefaultColor(kind);
+
+    if(kind==='long'){
+      (state.longterm||[]).forEach(t=>{ if(String(t.columnId||'')===oldId)t.columnId=newId; });
+    }else{
+      (state.tasks||[]).forEach(t=>{ if(String(t.columnId||'')===oldId)t.columnId=newId; });
+    }
+
+    // Bereits geladene completed_tasks auf die reparierte UUID umbiegen, damit Wiederöffnen künftig stabil bleibt.
+    (state.completedTasksTable||[]).forEach(c=>{
+      const sameId=String(c.originalGroupId||'')===oldId;
+      const sameName=groupName && String(c.originalGroupName||'')===String(groupName||'');
+      const sameKind=(kind==='long'&&c.type==='long')||(kind!=='long'&&c.type!=='long');
+      if(sameKind&&(sameId||sameName))c.originalGroupId=newId;
+    });
+
+    const row={id:newId,user_id:currentUser.id,name:g.name||groupName||'Allgemein',color:g.color||rev55DefaultColor(kind),visible:g.visible!==false,position:Math.max(0,list.indexOf(g))};
+    const {error}=await supabaseClient.from(rev55Table(kind)).upsert(row,{onConflict:'id'});
+    if(error)throw error;
+
+    // Falls Archivzeilen noch die alte Pseudo-ID gespeichert haben, reparieren wir sie ebenfalls.
+    await supabaseClient.from(COMPLETED_TABLE_REV55)
+      .update({original_group_id:newId})
+      .eq('user_id',currentUser.id)
+      .eq('original_group_id',oldId);
+
+    return newId;
+  }
+
+  async function resolveExistingGroupForRestoreRev55(c){
+    const kind=c.type==='long'?'long':'task';
+    const g=rev55FindGroup(kind,c.originalGroupId,c.originalGroupName);
+    if(!g)return null;
+    return await ensureGroupUuidRev55(kind,g.id,c.originalGroupName,c.originalGroupColor);
+  }
+
+  // Insert-Funktionen überschreiben: ausgewählte Gruppe bleibt erhalten, auch wenn sie aus alten AppState-IDs stammt.
+  insertTaskRev043=async function(task){
+    if(!currentUser)throw new Error('Nicht angemeldet');
+    const gid=await ensureGroupUuidRev55('task',task.columnId,'',null);
+    if(!gid)throw new Error('Die ausgewählte Tagestask-Gruppe existiert nicht mehr.');
+    const row={user_id:currentUser.id,task_group_id:gid,title:task.title||'Ohne Titel',note:task.note||null,task_date:task.date||fmtDate(new Date()),done:!!task.done,completed_date:task.completedDate||null,position:state.tasks?.length||0};
+    const {data,error}=await supabaseClient.from('tasks').insert(row).select('*').single();
+    if(error)throw error;
+    return {id:data.id,title:data.title,note:data.note||'',date:data.task_date,done:!!data.done,completedDate:data.completed_date||null,columnId:data.task_group_id};
+  };
+
+  insertLongTaskRev043=async function(task){
+    if(!currentUser)throw new Error('Nicht angemeldet');
+    const gid=await ensureGroupUuidRev55('long',task.columnId,'',null);
+    if(!gid)throw new Error('Die ausgewählte langfristige Task-Gruppe existiert nicht mehr.');
+    const row={user_id:currentUser.id,long_task_group_id:gid,title:task.title||'Ohne Titel',note:task.note||null,done:!!task.done,completed_date:task.completedDate||null,position:state.longterm?.length||0};
+    const {data,error}=await supabaseClient.from('long_tasks').insert(row).select('*').single();
+    if(error)throw error;
+    return {id:data.id,title:data.title,note:data.note||'',done:!!data.done,completedDate:data.completed_date||null,columnId:data.long_task_group_id,createdDate:data.created_at?fmtDate(new Date(data.created_at)):fmtDate(new Date())};
+  };
+
+  async function reopenCompletedTaskRev55(completedId,checkbox){
+    const c=(state.completedTasksTable||[]).find(x=>x.completedId===completedId);
+    if(!c)return;
+    try{
+      const kind=c.type==='long'?'long':'task';
+      const groupUuid=await resolveExistingGroupForRestoreRev55(c);
+      if(!groupUuid){
+        if(checkbox)checkbox.checked=true;
+        toast('Diese Gruppe existiert nicht mehr. Der Task kann nicht wieder geöffnet werden. Details bleiben weiterhin einsehbar.');
+        return;
+      }
+      const restoredId=isUuid(c.originalTaskId)?c.originalTaskId:crypto.randomUUID();
+      if(kind==='long'){
+        const task={id:restoredId,title:c.title,note:c.note||'',done:false,completedDate:null,columnId:groupUuid,createdDate:fmtDate(new Date())};
+        const row={id:task.id,user_id:currentUser.id,long_task_group_id:groupUuid,title:task.title,note:task.note||null,done:false,completed_date:null,position:(state.longterm||[]).length};
+        const {error}=await supabaseClient.from('long_tasks').upsert(row,{onConflict:'id'});
+        if(error)throw error;
+        state.longterm.push(task);
+      }else{
+        const task={id:restoredId,title:c.title,note:c.note||'',date:c.originalDate||fmtDate(new Date()),done:false,completedDate:null,columnId:groupUuid};
+        const row={id:task.id,user_id:currentUser.id,task_group_id:groupUuid,title:task.title,note:task.note||null,task_date:task.date,done:false,completed_date:null,position:(state.tasks||[]).length};
+        const {error}=await supabaseClient.from('tasks').upsert(row,{onConflict:'id'});
+        if(error)throw error;
+        state.tasks.push(task);
+      }
+      const {error:delError}=await supabaseClient.from(COMPLETED_TABLE_REV55).delete().eq('user_id',currentUser.id).eq('id',completedId);
+      if(delError)throw delError;
+      state.completedTasksTable=(state.completedTasksTable||[]).filter(x=>x.completedId!==completedId);
+      render();
+      toast('Task wieder geöffnet.');
+    }catch(error){
+      if(checkbox)checkbox.checked=true;
+      toast('Wieder öffnen fehlgeschlagen: '+(error.message||error));
+    }
+  }
+
+  // completed_tasks-Checkboxen nach Rev54 erneut binden, damit die reparierte Wiederöffnen-Logik greift.
+  const oldDayCardRev55=dayCard;
+  dayCard=function(date){
+    const node=oldDayCardRev55(date);
+    clearLegacyCompletedArchiveRev55();
+    node.querySelectorAll('[data-toggle-completed-rev54]').forEach(c=>{
+      c.onclick=ev=>ev.stopPropagation();
+      c.onchange=async(ev)=>{ev.stopPropagation(); if(!c.checked)await reopenCompletedTaskRev55(c.dataset.toggleCompletedRev54,c);};
+    });
+    return node;
+  };
+
+  // Long-Task-Modal explizit neu binden, damit die gewählte Gruppe nicht auf die erste Gruppe zurückfällt.
+  openLongModal=function(){
+    if(!requireLogin())return;ensureRev033State();
+    openModal('Langfristigen Task hinzufügen',`<input id="mTitle" placeholder="Langfristiger Task"><select id="mLongColumn">${state.longColumns.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join('')}</select><textarea id="mNote" rows="3" placeholder="Notiz"></textarea>`,async()=>{
+      const title=$('#mTitle').value.trim();
+      if(!title)return toast('Aufgabe ohne Titel wurde nicht gespeichert.');
+      try{
+        const selectedGroup=$('#mLongColumn').value;
+        const saved=await insertLongTaskRev043({title,done:false,note:$('#mNote').value.trim(),columnId:selectedGroup});
+        state.longterm.push(saved);render();toast('Langfristiger Task gespeichert.');
+      }catch(error){toast('Langfristiger Task konnte nicht gespeichert werden: '+(error.message||error));}
+    });
+  };
+
+  window.reopenCompletedTaskRev54=reopenCompletedTaskRev55;
+  window.reopenCompletedTaskRev55=reopenCompletedTaskRev55;
+  window.ensureGroupUuidRev55=ensureGroupUuidRev55;
 })();
 
 </script></body></html>
