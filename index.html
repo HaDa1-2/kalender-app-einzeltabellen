@@ -1347,6 +1347,30 @@ body:not(.light).theme-green .sidebar,body:not(.light).theme-green .board,body:n
 body.light .settings-tab-rev53,body.light .settings-check-rev53{background:#f8fbff;border-color:#cbd6e7;color:#152033;}
 body.light .settings-tab-rev53.active{color:#fff;}
 @media(max-width:760px){.settings-layout-rev53{grid-template-columns:1fr}.settings-tabs-rev53{position:relative;flex-direction:row;flex-wrap:wrap}.settings-tab-rev53{width:auto}}
+
+
+/* Rev 056 CSS */
+.settings-tab-rev56{color:#111827!important;background:#f3f4f6!important;border:1px solid #cbd6e7!important;font-weight:900!important}
+.settings-tab-rev56.active{color:#111827!important;background:#d1d5db!important;border-color:#9ca3af!important}
+body:not(.light) .settings-tab-rev56,body:not(.light) .settings-tab-rev56.active{color:#111827!important}
+.rev56-color-row{display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:8px;align-items:center;width:100%}
+.rev56-color-row select{min-width:0;width:100%}
+.rev56-bucket-dot{width:15px;height:15px;border-radius:4px;border:1px solid rgba(0,0,0,.32);display:inline-block;margin-right:2px;vertical-align:-2px}
+.rev56-palette{grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:8px;border:1px solid var(--line);border-radius:14px;padding:10px;background:#070d1a;margin:-2px 0 8px 0}
+body.light .rev56-palette{background:#f8fbff;border-color:#cbd6e7}
+.rev56-inline-color{height:34px;border:1px solid var(--line);border-radius:10px;background:transparent;padding:2px;min-width:34px}
+#legendBtn{display:none!important}
+.sidebar,.board,.longterm,.calendar-pane,.day,.lane,.task-column-lane,.long-group,.project-overview-head,.project-overview-section,.month-cell,.sidebar-day-timeline,.add-calendar-box,.mode-config-section,.mode-config-group,.project-day-lane,.project-task-item{border-color:var(--frameBorderColor53)!important}
+.day.today{border-width:var(--todayBorderWidth56)!important;border-color:var(--todayBorderColor56)!important;background:linear-gradient(0deg,color-mix(in srgb,var(--todayBorderColor56) var(--todayFillOpacityPercent56),transparent),color-mix(in srgb,var(--todayBorderColor56) var(--todayFillOpacityPercent56),transparent)),#0b1221!important;box-shadow:0 0 0 calc(var(--todayBorderWidth56) / 2) color-mix(in srgb,var(--todayBorderColor56) 45%,transparent),0 14px 42px color-mix(in srgb,var(--todayBorderColor56) 22%,transparent)!important}
+body.light .day.today{background:linear-gradient(0deg,color-mix(in srgb,var(--todayBorderColor56) var(--todayFillOpacityPercent56),transparent),color-mix(in srgb,var(--todayBorderColor56) var(--todayFillOpacityPercent56),transparent)),#f8fbff!important}
+.month-cell.today{border-width:var(--todayBorderWidth56)!important;border-color:var(--todayBorderColor56)!important;background:linear-gradient(0deg,color-mix(in srgb,var(--todayBorderColor56) var(--todayFillOpacityPercent56),transparent),color-mix(in srgb,var(--todayBorderColor56) var(--todayFillOpacityPercent56),transparent))!important;box-shadow:0 0 0 calc(var(--todayBorderWidth56) / 2) color-mix(in srgb,var(--todayBorderColor56) 45%,transparent),0 14px 42px color-mix(in srgb,var(--todayBorderColor56) 22%,transparent)!important}
+.task-clickable56{cursor:pointer!important}
+.task-clickable56:hover b,.task-clickable56:hover .long-title,.task-clickable56:hover .completed-title,.task-clickable56:hover .project-card-title{text-decoration:underline!important}
+.card.task,.long-card,.project-task-item,.completed-table-card-rev54{cursor:pointer!important}
+.own-delete-square56{margin-right:auto!important;width:42px!important;height:42px!important;min-width:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;border-radius:12px!important}
+.own-delete-square56 svg{width:22px;height:22px;stroke:currentColor}
+body.sharp-corners .own-delete-square56{border-radius:0!important}
+.completed-delete56{cursor:pointer!important}
 </style></head><body><div class="app"><div class="top"><div class="top-title"><h1>Kalenderübersicht</h1></div><div class="search-wrap top-search"><input class="search-input" id="globalSearch" placeholder="🔍 Suchen"><div class="search-results" id="searchResults"></div></div><div class="toolbar compact-toolbar"><button class="btn" id="prevBtn">← Tag zurück</button><button class="btn" id="todayBtn">Heute</button><button class="btn" id="nextBtn">Tag vor →</button><button class="btn primary icon-only-month" id="monthBtn" title="Monat aufklappen">📅</button><button class="btn icon-only-month" id="reloadDbBtn" title="Daten aus Datenbanken neu laden">↻</button></div></div><div class="layout"><aside class="sidebar"><button class="sidebar-toggle" id="sidebarToggleBtn" title="Seitenleiste einklappen">‹</button><div class="sidebar-collapse-all-row sidebar-collapse-all-top"><button class="btn small" id="collapseAllConfigBtn" type="button">▸ Alle einklappen</button></div><div class="config-block" data-config-block="view"><button class="config-toggle" type="button"><span>Ansicht konfigurieren</span><span class="config-chevron">▾</span></button><div class="config-content"><div class="field"><label>Tage sichtbar</label><select id="daysSelect"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option></select></div><div class="field"><label>Zeilen</label><select id="rowsSelect"><option value="1">1</option><option value="2">2</option></select></div><div class="field"><label>Startmodus</label><select id="startModeSelect"><option value="rolling">Fortlaufend</option><option value="week">Aktuelle Woche</option><option value="workweek">Arbeitswoche</option></select></div><div class="field mode-field"><label>Ansichtsmodus</label><div class="mode-row"><select id="viewModeSelect"></select><button class="btn small ui-icon-btn" id="modeConfigBtn" title="Modus konfigurieren" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 1 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.08A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.08A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.08A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.4 9c.2.36.5.67.9.86.32.15.68.22 1.1.22H21a2 2 0 1 1 0 4h-.08a1.7 1.7 0 0 0-1.52.92Z"/></svg></button></div></div></div></div><div class="config-block" data-config-block="cal"><button class="config-toggle" type="button"><span>Kalendergruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="calendarConfig"></div></div></div><div class="config-block" data-config-block="task"><button class="config-toggle" type="button"><span>Tagestask-Gruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="taskColumnConfig"></div></div></div><div class="config-block" data-config-block="long"><button class="config-toggle" type="button"><span>Langfristige Task-Gruppen</span><span class="config-chevron">▾</span></button><div class="config-content"><div id="longColumnConfig"></div></div></div><div class="config-block" data-config-block="opt"><button class="config-toggle" type="button"><span>Optionen</span><span class="config-chevron">▾</span></button><div class="config-content"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="settingsBtn" title="Allgemeine Einstellungen">Einstellungen</button><button class="btn" id="legendBtn" title="Legende und Farben anzeigen">Legende</button><button class="btn" id="cloudBtn" title="Login und Benutzerkonto">Login</button></div><div class="diag" id="diagBox">Diagnose: noch keine Synchronisierung durchgeführt.</div></div></div></aside><main class="board"><div class="timeline-controls"><div class="timeline-title-wrap"><b>Tagesplaner</b><div class="timeline-help">Aktueller Tag plus Folge- oder Vergangenheitsdaten. Erledigte Aufgaben bleiben nachvollziehbar sichtbar.</div></div><div id="rangeLabel" class="hint"></div></div><div id="timeline" class="timeline"></div><section class="longterm main-longterm"><div class="timeline-controls"><div><b>Langfristige Tasks</b><div class="hint">Ohne Datum. Wird bewusst getrennt von Tagestasks geführt.</div></div><button class="btn small" id="addLongBtn2">+ Hinzufügen</button></div><div id="longTermList" class="long-grid"></div></section></main></div></div><div class="modal-backdrop" id="modalBackdrop"><div class="modal"><h2 id="modalTitle"></h2><div id="modalContent" class="modal-grid"></div><div class="modal-actions"><button class="btn" id="cancelModal">Abbrechen</button><button class="btn primary" id="saveModal">Speichern</button></div></div></div><div class="toast" id="toast"></div>
 <script>
 const SUPABASE_URL='https://ihvhghzbhrujtkgkyhdi.supabase.co';
@@ -4456,4 +4480,854 @@ dayCard=function(date){
   window.ensureGroupUuidRev55=ensureGroupUuidRev55;
 })();
 
-</script></body></html>
+
+
+/* Rev 056: Settings-Bereinigung, App-State-Farben, Serverzeit, Completed-Tasks für alle Tasktypen, UI-Politur */
+(function(){
+  const COMPLETED_TABLE_REV56='completed_tasks';
+  const NATIVE_DATE_REV56=window.Date;
+  const OUTLINE_PALETTE_REV56=['#64748b','#000000','#ffffff','#7c5cff','#39bdf8','#22c55e','#ffb020','#ff5050','#ec4899','#14b8a6','#f97316','#a855f7'];
+
+  function ensureRev56State(){
+    state.outlineStyle=state.outlineStyle||'current';
+    state.outlineCustomColor=state.outlineCustomColor||'#64748b';
+    state.vacationHighlight=Object.assign({enabled:false,color:'#f97316',opacity:0.18},state.vacationHighlight||{});
+    state.todayHighlight=Object.assign({borderWidth:4,borderColor:'#0284c7',opacity:0.18},state.todayHighlight||{});
+    state.timelineStep=Number(state.timelineStep||30);
+    state.timelinePauseMinutes=Math.max(0,Number(state.timelinePauseMinutes||0));
+    state.workStartTime=state.workStartTime||'08:00';
+  }
+  function rev56SafeColor(v,fallback){return /^#[0-9a-f]{6}$/i.test(String(v||''))?String(v):fallback;}
+  function outlineColor56(){
+    ensureRev56State();
+    if(state.outlineStyle==='none')return 'transparent';
+    if(state.outlineStyle==='black')return '#000000';
+    if(state.outlineStyle==='gray')return '#7b8494';
+    if(state.outlineStyle==='custom')return rev56SafeColor(state.outlineCustomColor,'#64748b');
+    return getComputedStyle(document.documentElement).getPropertyValue('--line').trim()||'#31405e';
+  }
+  const prevApplyAppearance56=applyAppearance;
+  applyAppearance=function(){
+    prevApplyAppearance56();
+    ensureRev56State();
+    const outline=outlineColor56();
+    document.documentElement.style.setProperty('--outlineColorRev52',outline);
+    document.documentElement.style.setProperty('--frameBorderColor53',outline);
+    document.documentElement.style.setProperty('--todayBorderWidth56',Math.max(1,Math.min(10,Number(state.todayHighlight.borderWidth||4)))+'px');
+    document.documentElement.style.setProperty('--todayBorderColor56',rev56SafeColor(state.todayHighlight.borderColor,'#0284c7'));
+    document.documentElement.style.setProperty('--todayFillOpacity56',String(Math.max(0,Math.min(0.65,Number(state.todayHighlight.opacity||0.18)))));
+    document.documentElement.style.setProperty('--todayFillOpacityPercent56',(Math.round(Math.max(0,Math.min(0.65,Number(state.todayHighlight.opacity||0.18)))*100))+'%');
+  };
+
+  // Best-Effort-Web-/Serverzeit: nutzt den Date-Header des Supabase-Projekts. Fallback bleibt Geräteeinstellung.
+  async function syncServerTimeRev56(){
+    try{
+      const res=await fetch(SUPABASE_URL,{method:'HEAD',cache:'no-store'});
+      const hdr=res.headers.get('date');
+      if(!hdr)return;
+      const server=NATIVE_DATE_REV56.parse(hdr);
+      if(!Number.isFinite(server))return;
+      const diff=server-NATIVE_DATE_REV56.now();
+      if(Math.abs(diff)<12*60*60*1000){
+        state.serverTimeOffsetMs=diff;
+        state.serverTimeCheckedAt=new NATIVE_DATE_REV56().toISOString();
+        persist();
+      }
+    }catch(e){console.warn('Serverzeit konnte nicht geladen werden',e);}
+  }
+  // Date patch bewusst erst nach erfolgreicher Plausibilität. Parsing mit Argumenten bleibt nativ.
+  if(!window.__rev56DatePatched){
+    window.__rev56DatePatched=true;
+    const Native=NATIVE_DATE_REV56;
+    class ServerAwareDate extends Native{
+      constructor(...args){args.length?super(...args):super(Native.now()+Number(state?.serverTimeOffsetMs||0));}
+      static now(){return Native.now()+Number(state?.serverTimeOffsetMs||0);}
+      static parse(v){return Native.parse(v);}
+      static UTC(...args){return Native.UTC(...args);}
+    }
+    window.Date=ServerAwareDate;
+  }
+
+  function colorButtonHtml56(id,color,title='Farbe wählen'){
+    return `<button class="btn small ui-icon-btn color-bucket-btn rev56-color-btn" id="${id}" type="button" title="${escapeHtml(title)}"><span class="rev56-bucket-dot" style="background:${escapeHtml(color)}"></span>🪣</button>`;
+  }
+  function paletteHtml56(targetId,current){
+    const cur=rev56SafeColor(current,'#64748b');
+    return `<div class="rev56-palette" id="${targetId}" style="display:none">${OUTLINE_PALETTE_REV56.map(c=>`<button type="button" class="color-choice ${c.toLowerCase()===cur.toLowerCase()?'active':''}" data-rev56-color="${c}" style="background:${c}" title="${c}"></button>`).join('')}<input type="color" class="rev56-inline-color" value="${escapeHtml(cur)}"></div>`;
+  }
+  function bindPalette56(paletteId,onPick){
+    const pal=document.querySelector('#'+paletteId); if(!pal)return;
+    pal.querySelectorAll('[data-rev56-color]').forEach(b=>b.onclick=()=>{onPick(b.dataset.rev56Color);});
+    const inp=pal.querySelector('.rev56-inline-color'); if(inp)inp.oninput=()=>onPick(inp.value);
+  }
+  function saveSettings56(){
+    const theme=document.querySelector('#mTheme56'); if(theme)state.theme=theme.value;
+    const corners=document.querySelector('#mCornerStyle56'); if(corners)state.cornerStyle=corners.value;
+    const outline=document.querySelector('#mOutlineStyle56'); if(outline)state.outlineStyle=outline.value;
+    const interval=document.querySelector('#mSyncInterval56'); if(interval)state.syncInterval=Number(interval.value);
+    const vac=document.querySelector('#mVacationEnabled56'); if(vac)state.vacationHighlight.enabled=vac.checked;
+    const vacOpacity=document.querySelector('#mVacationOpacity56'); if(vacOpacity)state.vacationHighlight.opacity=Number(vacOpacity.value);
+    const todayWidth=document.querySelector('#mTodayBorderWidth56'); if(todayWidth)state.todayHighlight.borderWidth=Number(todayWidth.value);
+    const todayOpacity=document.querySelector('#mTodayOpacity56'); if(todayOpacity)state.todayHighlight.opacity=Number(todayOpacity.value);
+    state.fetchMode='proxy';state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;
+    persist();applyAppearance();setupAutoSync();
+  }
+  function renderSettingsGeneral56(){
+    const root=document.querySelector('#settingsTabContentRev56'); if(!root)return; ensureRev56State();
+    root.innerHTML=`<div class="settings-grid">
+      <div class="field"><label>Erscheinung</label><select id="mTheme56"><option value="light">Hell</option><option value="dark">Dunkel</option></select></div>
+      <div class="field"><label>Kanten</label><select id="mCornerStyle56"><option value="rounded">Abgerundet</option><option value="sharp">Eckig / 90°</option></select></div>
+      <div class="field"><label><b>Konturfarbe</b></label><div class="rev56-color-row"><select id="mOutlineStyle56"><option value="current">Wie aktuell</option><option value="none">Keine</option><option value="gray">Grau</option><option value="black">Schwarz</option><option value="custom">Farbpalette</option></select>${colorButtonHtml56('mOutlineColorBtn56',outlineColor56(),'Konturfarbe wählen')}</div></div>
+      ${paletteHtml56('mOutlinePalette56',state.outlineCustomColor||'#64748b')}
+      <div class="hint">Die Konturfarbe gilt für größere Rahmen: Kalendergruppen, Tagesrahmen, Tagesplaner-Spalten, Projekt-Tasks, Projektbereiche, langfristige Gruppen, Monatszellen und Container. Einzelne Task-Karten bleiben als Inhaltskarten separat.</div>
+      <label class="settings-check-rev53"><span><b>Urlaubstage anders anzeigen</b><small>Wenn ein sichtbarer ICS- oder eigener Kalender einen ganztägigen Termin mit exakt dem Titel „Urlaub“ enthält, wird der ganze Tag farblich als Lowlight hinterlegt.</small></span><input id="mVacationEnabled56" type="checkbox"></label>
+      <div class="field"><label><b>Urlaubsfarbe</b></label><div class="rev56-color-row">${colorButtonHtml56('mVacationColorBtn56',state.vacationHighlight.color||'#f97316','Urlaubsfarbe wählen')}<span class="hint">Farbe des Urlaubs-Lowlights</span></div></div>
+      ${paletteHtml56('mVacationPalette56',state.vacationHighlight.color||'#f97316')}
+      <div class="field"><label>Urlaubs-Deckkraft</label><input id="mVacationOpacity56" type="range" min="0.05" max="0.55" step="0.01" value="${escapeHtml(state.vacationHighlight.opacity||0.18)}"></div>
+      <div class="section-title">Aktueller Tag</div>
+      <div class="field"><label>Linienstärke</label><input id="mTodayBorderWidth56" type="range" min="1" max="10" step="1" value="${escapeHtml(state.todayHighlight.borderWidth||4)}"></div>
+      <div class="field"><label><b>Linienfarbe</b></label><div class="rev56-color-row">${colorButtonHtml56('mTodayBorderColorBtn56',state.todayHighlight.borderColor||'#0284c7','Linienfarbe aktueller Tag wählen')}<span class="hint">Kontur des aktuellen Tages</span></div></div>
+      ${paletteHtml56('mTodayBorderPalette56',state.todayHighlight.borderColor||'#0284c7')}
+      <div class="field"><label>Flächen-Deckkraft</label><input id="mTodayOpacity56" type="range" min="0" max="0.65" step="0.01" value="${escapeHtml(state.todayHighlight.opacity||0.18)}"></div>
+    </div>`;
+    document.querySelector('#mTheme56').value=state.theme||'light';
+    document.querySelector('#mCornerStyle56').value=state.cornerStyle||'rounded';
+    document.querySelector('#mOutlineStyle56').value=state.outlineStyle||'current';
+    document.querySelector('#mVacationEnabled56').checked=!!state.vacationHighlight.enabled;
+    ['#mTheme56','#mCornerStyle56','#mOutlineStyle56','#mVacationEnabled56','#mVacationOpacity56','#mTodayBorderWidth56','#mTodayOpacity56'].forEach(sel=>{const el=document.querySelector(sel);if(el)el.onchange=()=>{saveSettings56();render();};});
+    const outlineBtn=document.querySelector('#mOutlineColorBtn56'); if(outlineBtn)outlineBtn.onclick=()=>{const p=document.querySelector('#mOutlinePalette56');if(p)p.style.display=p.style.display==='none'?'grid':'none';};
+    const vacBtn=document.querySelector('#mVacationColorBtn56'); if(vacBtn)vacBtn.onclick=()=>{const p=document.querySelector('#mVacationPalette56');if(p)p.style.display=p.style.display==='none'?'grid':'none';};
+    const todayBtn=document.querySelector('#mTodayBorderColorBtn56'); if(todayBtn)todayBtn.onclick=()=>{const p=document.querySelector('#mTodayBorderPalette56');if(p)p.style.display=p.style.display==='none'?'grid':'none';};
+    bindPalette56('mOutlinePalette56',c=>{state.outlineStyle='custom';state.outlineCustomColor=c;saveSettings56();renderSettingsGeneral56();render();});
+    bindPalette56('mVacationPalette56',c=>{state.vacationHighlight.color=c;saveSettings56();renderSettingsGeneral56();render();});
+    bindPalette56('mTodayBorderPalette56',c=>{state.todayHighlight.borderColor=c;saveSettings56();renderSettingsGeneral56();render();});
+  }
+  function renderSettingsSync56(){
+    const root=document.querySelector('#settingsTabContentRev56'); if(!root)return;
+    root.innerHTML=`<div class="settings-grid"><div class="field"><label>Intervall</label><select id="mSyncInterval56"><option value="0">Aus / manuell</option><option value="5">Alle 5 Min.</option><option value="15">Alle 15 Min.</option><option value="30">Alle 30 Min.</option><option value="60">Alle 60 Min.</option></select></div><div class="hint">Manuelles Aktualisieren läuft weiterhin über den grünen Reload-Button oben rechts. Proxy-URL und separater ICS-Button werden hier nicht mehr angezeigt.</div></div>`;
+    document.querySelector('#mSyncInterval56').value=String(state.syncInterval??15);
+    document.querySelector('#mSyncInterval56').onchange=()=>saveSettings56();
+  }
+  function renderSettingsInfo56(){
+    const root=document.querySelector('#settingsTabContentRev56'); if(!root)return;
+    const checked=state.serverTimeCheckedAt?new NATIVE_DATE_REV56(state.serverTimeCheckedAt).toLocaleString('de-DE'):'noch nicht geprüft';
+    root.innerHTML=`<div class="settings-grid"><div class="security-note"><b>Serverzeit</b><br>Die App versucht beim Laden, die Zeit über den Server-Header des Supabase-Projekts abzugleichen. Falls das wegen Browser-/CORS-Headern nicht möglich ist, bleibt die Geräteeinstellung als Fallback aktiv.<br><br>Letzte Prüfung: ${escapeHtml(checked)}</div><div class="security-note"><b>completed_tasks</b><br>Erledigte Tages-, Langfrist- und Projekt-Tasks werden in der gemeinsamen Tabelle <code>completed_tasks</code> historisiert. Wiederöffnen ist nur möglich, wenn die ursprüngliche Gruppe beziehungsweise das ursprüngliche Projekt noch existiert.</div></div>`;
+  }
+  function openSettingsRev56(){
+    ensureRev56State();
+    document.querySelector('#modalTitle').textContent='Allgemeine Einstellungen';
+    document.querySelector('#modalContent').innerHTML=`<div class="settings-layout-rev53 settings-layout-rev56"><div class="settings-tabs-rev53 settings-tabs-rev56"><button class="settings-tab-rev53 settings-tab-rev56 active" data-tab56="general" type="button">Allgemein</button><button class="settings-tab-rev53 settings-tab-rev56" data-tab56="sync" type="button">Synchronisierung</button><button class="settings-tab-rev53 settings-tab-rev56" data-tab56="info" type="button">Hinweise</button></div><div id="settingsTabContentRev56" class="settings-tab-content-rev53"></div></div>`;
+    document.querySelector('#modalBackdrop').style.display='flex';
+    document.querySelector('#saveModal').style.display='';
+    let active='general';
+    const renderActive=()=>{if(active==='general')renderSettingsGeneral56();if(active==='sync')renderSettingsSync56();if(active==='info')renderSettingsInfo56();};
+    renderActive();
+    document.querySelectorAll('[data-tab56]').forEach(btn=>btn.onclick=()=>{saveSettings56();active=btn.dataset.tab56;document.querySelectorAll('[data-tab56]').forEach(b=>b.classList.toggle('active',b===btn));renderActive();});
+    document.querySelector('#saveModal').onclick=()=>{saveSettings56();closeModal();render();};
+  }
+
+  function bindOptions56(){
+    const settings=document.querySelector('#settingsBtn'); if(settings)settings.onclick=openSettingsRev56;
+    const legend=document.querySelector('#legendBtn'); if(legend)legend.remove();
+    const cloud=document.querySelector('#cloudBtn'); if(cloud)cloud.textContent='Login';
+    const opt=document.querySelector('[data-config-block="opt"] .config-content > div'); if(opt)opt.style.gridTemplateColumns='1fr 1fr';
+  }
+
+  // Ganztägige eigene Termine: Endzeit 23:59 desselben Tags darf die Anzeige nicht verhindern.
+  const oldRecurrenceMatches56=recurrenceMatches;
+  recurrenceMatches=function(e,date){
+    if(e&&e.allDay&&!e.rrule&&((e.recurrence||'none')==='none')){
+      const sd=new Date(e.start),td=new Date(date); if(isNaN(sd)||isNaN(td))return false;
+      sd.setHours(0,0,0,0);td.setHours(0,0,0,0);
+      if(e.end){const ed=new Date(e.end); if(!isNaN(ed)){ed.setHours(0,0,0,0); if(ed<=sd)return sameDay(td,sd); return td>=sd&&td<=ed;}}
+      return sameDay(td,sd);
+    }
+    return oldRecurrenceMatches56(e,date);
+  };
+
+  function completedTypeLabel56(c){return c.type==='long'?'Langfristig':(c.type==='project'?'Projekt-Task':'Tagestask');}
+  function projectByCompleted56(c){return (state.projects||[]).find(p=>String(p.id)===String(c.originalGroupId));}
+  function originalGroupExists56(c){
+    if(c.type==='long')return !!(state.longColumns||[]).find(g=>String(g.id)===String(c.originalGroupId));
+    if(c.type==='project')return !!projectByCompleted56(c);
+    return !!(state.taskColumns||[]).find(g=>String(g.id)===String(c.originalGroupId));
+  }
+  function completedCard56(c){
+    const color=c.originalGroupColor||state.colors?.task||defaultColors.task;
+    const missing=!originalGroupExists56(c);
+    const originalDate=c.originalDate?` · Ursprünglich: ${escapeHtml(c.originalDate)}`:'';
+    return `<div class="card task task-card-compact completed-task-card completed-table-card-rev54" data-completed-ref="${escapeHtml(c.completedId)}" style="border-left-color:${escapeHtml(color)}!important"><div class="task-row"><input type="checkbox" checked data-toggle-completed-rev54="${escapeHtml(c.completedId)}" title="Wieder öffnen"><div><span class="completed-title" title="${escapeHtml(c.title)}">${escapeHtml(shortText(c.title,34))}</span><span class="completed-meta">${escapeHtml(completedTypeLabel56(c))} · Erledigt am ${escapeHtml(c.completedDate||'')} · Gruppe damals: ${escapeHtml(c.originalGroupName||'—')}${originalDate}${missing?' · Gruppe gelöscht':''}</span></div><button class="kebab completed-delete56" data-delete-completed56="${escapeHtml(c.completedId)}" title="Erledigten Eintrag löschen">×</button></div></div>`;
+  }
+  function completedHtmlForDay56(iso){
+    const list=(state.completedTasksTable||[]).filter(c=>c.completedDate===iso);
+    return list.length?`<div class="completed-grid completed-table-grid-rev54">${list.map(completedCard56).join('')}</div>`:'';
+  }
+  function groupSnapshotForComplete56(t,type){
+    if(type==='long'){
+      const g=(state.longColumns||[]).find(x=>String(x.id)===String(t.columnId));
+      return {id:t.columnId||'',name:g?.name||'Unbekannte Gruppe',color:g?.color||state.colors?.long||defaultColors.long};
+    }
+    if(type==='project'){
+      const p=(state.projects||[]).find(x=>String(x.id)===String(t.projectId));
+      return {id:t.projectId||'',name:p?.name||'Unbekanntes Projekt',color:p?.color||'#7c5cff'};
+    }
+    const g=(state.taskColumns||[]).find(x=>String(x.id)===String(t.columnId));
+    return {id:t.columnId||'',name:g?.name||'Unbekannte Gruppe',color:g?.color||state.colors?.task||defaultColors.task};
+  }
+  async function completeAnyTask56(t,type){
+    if(!currentUser||!t)return;
+    const g=groupSnapshotForComplete56(t,type);
+    const row={user_id:currentUser.id,original_task_id:isUuid(t.id)?t.id:null,task_type:type,title:t.title||'Ohne Titel',note:t.note||null,original_date:type==='long'?null:(t.date||t.dueDate||fmtDate(new Date())),completed_date:fmtDate(new Date()),original_group_id:String(g.id||''),original_group_name:g.name,original_group_color:g.color||null};
+    const {data,error}=await supabaseClient.from(COMPLETED_TABLE_REV56).insert(row).select('*').single();
+    if(error){toast('Erledigter Task konnte nicht gespeichert werden: '+error.message);throw error;}
+    const completed={completedId:data.id,originalTaskId:data.original_task_id,type:data.task_type,title:data.title,note:data.note||'',originalDate:data.original_date||null,completedDate:data.completed_date||fmtDate(new Date()),originalGroupId:data.original_group_id||'',originalGroupName:data.original_group_name||'Unbekannte Gruppe',originalGroupColor:data.original_group_color||null,createdAt:data.created_at||null};
+    state.completedTasksTable=state.completedTasksTable||[];state.completedTasksTable.unshift(completed);
+    if(type==='long'){state.longterm=(state.longterm||[]).filter(x=>x.id!==t.id);await dbDeleteRowRev041('long_tasks',t.id);} 
+    else if(type==='project'){state.projectTasks=(state.projectTasks||[]).filter(x=>x.id!==t.id);await deleteProjectTaskRev047(t.id);} 
+    else {state.tasks=(state.tasks||[]).filter(x=>x.id!==t.id);await dbDeleteRowRev041('tasks',t.id);} 
+    render();
+  }
+  async function deleteCompleted56(id){
+    if(!requireLogin())return;
+    if(!confirm('Erledigten Eintrag endgültig löschen?'))return;
+    const {error}=await supabaseClient.from(COMPLETED_TABLE_REV56).delete().eq('user_id',currentUser.id).eq('id',id);
+    if(error){toast('Löschen fehlgeschlagen: '+error.message);return;}
+    state.completedTasksTable=(state.completedTasksTable||[]).filter(x=>x.completedId!==id);
+    render();toast('Erledigter Eintrag gelöscht.');
+  }
+  async function reopenCompleted56(id,checkbox){
+    const c=(state.completedTasksTable||[]).find(x=>x.completedId===id); if(!c)return;
+    try{
+      if(!originalGroupExists56(c)){if(checkbox)checkbox.checked=true;toast('Diese Gruppe existiert nicht mehr. Der Task kann nicht wieder geöffnet werden. Details bleiben weiterhin einsehbar.');return;}
+      const restoredId=isUuid(c.originalTaskId)?c.originalTaskId:crypto.randomUUID();
+      if(c.type==='project'){
+        const p=projectByCompleted56(c); if(!p)throw new Error('Projekt existiert nicht mehr.');
+        const row={id:restoredId,user_id:currentUser.id,project_id:p.id,title:c.title||'Ohne Titel',note:c.note||null,due_date:c.originalDate||null,done:false,completed_date:null,sort_order:(state.projectTasks||[]).length};
+        const {data,error}=await supabaseClient.from('project_tasks').upsert(row,{onConflict:'id'}).select('*').single(); if(error)throw error;
+        state.projectTasks.push({id:data.id,projectId:data.project_id,title:data.title,note:data.note||'',dueDate:data.due_date||'',done:false,completedDate:null,sortOrder:data.sort_order||0,createdAt:data.created_at,updatedAt:data.updated_at});
+      }else if(c.type==='long'){
+        await window.reopenCompletedTaskRev55(id,checkbox);return;
+      }else{
+        await window.reopenCompletedTaskRev55(id,checkbox);return;
+      }
+      const {error:delError}=await supabaseClient.from(COMPLETED_TABLE_REV56).delete().eq('user_id',currentUser.id).eq('id',id); if(delError)throw delError;
+      state.completedTasksTable=(state.completedTasksTable||[]).filter(x=>x.completedId!==id);
+      render();toast('Task wieder geöffnet.');
+    }catch(error){if(checkbox)checkbox.checked=true;toast('Wieder öffnen fehlgeschlagen: '+(error.message||error));}
+  }
+  function openCompletedDetail56(id){
+    const c=(state.completedTasksTable||[]).find(x=>x.completedId===id);
+    if(!c)return;
+    const exists=originalGroupExists56(c);
+    $('#modalTitle').textContent='Erledigter Task · Details';
+    $('#modalContent').innerHTML=`<div class="event-detail-grid"><b>Titel</b><div>${escapeHtml(c.title||'—')}</div><b>Typ</b><div>${escapeHtml(completedTypeLabel56(c))}</div><b>Erledigt am</b><div>${escapeHtml(c.completedDate||'—')}</div><b>Ursprüngliches Datum</b><div>${escapeHtml(c.originalDate||'—')}</div><b>Damals in Gruppe/Projekt</b><div>${escapeHtml(c.originalGroupName||'—')}</div><b>Status</b><div>${exists?'Originalgruppe existiert noch. Wiederöffnen ist möglich.':'Originalgruppe existiert nicht mehr. Wiederöffnen ist gesperrt, Löschen ist weiterhin möglich.'}</div><b>Notiz</b><div>${c.note?`<div class="detail-long expanded">${escapeHtml(c.note)}</div>`:'—'}</div></div>`;
+    $('#modalBackdrop').style.display='flex';
+    $('#saveModal').style.display='none';
+  }
+
+  function bindCompletedAndProject56(scope=document){
+    scope.querySelectorAll('[data-toggle-completed-rev54]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=async ev=>{ev.stopPropagation();if(!c.checked)await reopenCompleted56(c.dataset.toggleCompletedRev54,c);};});
+    scope.querySelectorAll('[data-delete-completed56]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();deleteCompleted56(b.dataset.deleteCompleted56);});
+    scope.querySelectorAll('[data-completed-ref]').forEach(card=>card.onclick=ev=>{if(ev.target.closest('input,button'))return;openCompletedDetail56(card.dataset.completedRef);});
+    scope.querySelectorAll('[data-toggle-project-task]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=async ev=>{ev.stopPropagation();if(!requireLogin()){c.checked=!c.checked;return;}const t=(state.projectTasks||[]).find(x=>x.id===c.dataset.toggleProjectTask);if(t&&c.checked){try{await completeAnyTask56(t,'project');}catch(e){c.checked=false;}return;} if(t){try{await updateProjectTaskRev047(t.id,{done:false,completedDate:null});t.done=false;t.completedDate=null;render();}catch(error){toast(error.message||String(error));}}};});
+  }
+
+  const oldDayCard56=dayCard;
+  dayCard=function(date){
+    const node=oldDayCard56(date);
+    const iso=fmtDate(date);
+    // alte App-State-/aktive erledigte Projektcards entfernen; completed_tasks ist führend.
+    node.querySelectorAll('.project-task-item.done').forEach(el=>el.remove());
+    node.querySelectorAll('.completed-table-grid-rev54').forEach(el=>el.remove());
+    const html=completedHtmlForDay56(iso);
+    if(html){
+      const body=node.querySelector('.day-body');
+      const partTitles=Array.from(node.querySelectorAll('.part-title'));
+      let target=partTitles.find(x=>x.textContent.includes('An diesem Tag erledigte Tasks'))?.closest('.partition');
+      if(!target&&body){
+        const today=new Date();today.setHours(0,0,0,0);
+        body.insertAdjacentHTML('beforeend',`<div class="partition"><div class="part-head"><div class="part-title">${sameDay(date,today)?'5':'4'}. An diesem Tag erledigte Tasks</div></div></div>`);
+        target=body.lastElementChild;
+      }
+      if(target)target.insertAdjacentHTML('beforeend',html);
+    }
+    node.querySelectorAll('[data-toggle-task]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=async ev=>{ev.stopPropagation();if(!requireLogin()){c.checked=!c.checked;return;}const t=(state.tasks||[]).find(x=>x.id===c.dataset.toggleTask);if(t&&c.checked){try{await completeAnyTask56(t,'daily');}catch(e){c.checked=false;}}};});
+    node.querySelectorAll('[data-toggle-long]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=async ev=>{ev.stopPropagation();if(!requireLogin()){c.checked=!c.checked;return;}const t=(state.longterm||[]).find(x=>x.id===c.dataset.toggleLong);if(t&&c.checked){try{await completeAnyTask56(t,'long');}catch(e){c.checked=false;}}};});
+    bindCompletedAndProject56(node);
+    return node;
+  };
+  const oldRenderLong56=renderLong;
+  renderLong=function(){oldRenderLong56();document.querySelectorAll('#longTermList [data-toggle-long]').forEach(c=>{c.onclick=ev=>ev.stopPropagation();c.onchange=async ev=>{ev.stopPropagation();if(!requireLogin()){c.checked=!c.checked;return;}const t=(state.longterm||[]).find(x=>x.id===c.dataset.toggleLong);if(t&&c.checked){try{await completeAnyTask56(t,'long');}catch(e){c.checked=false;}}};});};
+  const oldRenderProjects56=typeof renderProjectsRev047==='function'?renderProjectsRev047:null;
+  if(oldRenderProjects56){renderProjectsRev047=function(){oldRenderProjects56();bindCompletedAndProject56(document.querySelector('#projectsSectionRev047')||document);};}
+
+  // Zeitstrahlwerte sofort überschreiben.
+  const oldRenderSidebarTimeline56=renderSidebarTimelineRev050;
+  renderSidebarTimelineRev050=function(){
+    oldRenderSidebarTimeline56();
+    const input=document.querySelector('#timelineWorkStartRev50');
+    if(input){const save=()=>{state.workStartTime=input.value||'08:00';persist();};input.oninput=save;input.onchange=()=>{save();renderSidebarTimelineRev050();};}
+  };
+  const oldOpenTimelineSettings56=typeof openTimelineSettingsRev52==='function'?openTimelineSettingsRev52:null;
+  if(oldOpenTimelineSettings56){openTimelineSettingsRev52=function(){oldOpenTimelineSettings56();setTimeout(()=>{const step=document.querySelector('#timelineStepModalRev52');const pause=document.querySelector('#timelinePauseModalRev52');if(step)step.onchange=()=>{state.timelineStep=Number(step.value||30);persist();};if(pause)pause.oninput=()=>{state.timelinePauseMinutes=Math.max(0,Number(pause.value||0));persist();};},0);};}
+
+  // Eigener Termin: Löschbutton links in Modal-Aktionsleiste als quadratischer Mülleimer.
+  function moveOwnDeleteButton56(){
+    const del=document.querySelector('#deleteOwnFromEditRev51'); const actions=document.querySelector('.modal-actions');
+    if(del&&actions&&!del.classList.contains('own-delete-square56')){
+      del.className='btn danger own-delete-square56';del.innerHTML=iconTrash();del.title='Eigenen Termin löschen';
+      actions.insertBefore(del,actions.firstChild);
+    }
+  }
+  new MutationObserver(moveOwnDeleteButton56).observe(document.body,{childList:true,subtree:true});
+
+  // Klick-Cursor und Unterstreichung für alle Task-/Projektkarten.
+  function decorateClickableTasks56(){
+    document.querySelectorAll('[data-task-ref],[data-project-task-ref],[data-completed-ref]').forEach(el=>el.classList.add('task-clickable56'));
+  }
+  const oldRender56=render;
+  render=function(){oldRender56();bindOptions56();decorateClickableTasks56();renderSidebarTimelineRev050();};
+
+  window.openSyncSettingsModal=openSettingsRev56;
+  window.openSettingsRev56=openSettingsRev56;
+  window.completeAnyTaskRev56=completeAnyTask56;
+  window.reopenCompletedRev56=reopenCompleted56;
+  window.deleteCompletedRev56=deleteCompleted56;
+  window.openCompletedDetailRev56=openCompletedDetail56;
+
+  setTimeout(()=>{ensureRev56State();bindOptions56();applyAppearance();decorateClickableTasks56();syncServerTimeRev56().then(()=>{applyAppearance();render();});},300);
+})();
+
+
+
+/* Rev 057: Persistenz-/UI-Korrekturen nach Test */
+(function(){
+  function safeColor57(v,fallback){return /^#[0-9a-f]{6}$/i.test(String(v||''))?String(v):fallback;}
+  function ensureRev57State(){
+    if(typeof ensureRev56State==='function') ensureRev56State();
+    state.timelineStep=Number(state.timelineStep||30);
+    if(![15,30,60].includes(state.timelineStep)) state.timelineStep=30;
+    state.timelinePauseMinutes=Math.max(0,Number(state.timelinePauseMinutes||0));
+    state.workStartTime=state.workStartTime||'08:00';
+    state.vacationHighlight=Object.assign({enabled:false,color:'#f97316',opacity:0.18},state.vacationHighlight||{});
+    state.todayHighlight=Object.assign({borderWidth:4,borderColor:'#0284c7',opacity:0.18},state.todayHighlight||{});
+    state.outlineStyle=state.outlineStyle||'current';
+    state.outlineCustomColor=state.outlineCustomColor||'#64748b';
+  }
+  function saveUiState57(){
+    ensureRev57State();
+    persist();
+    if(typeof saveStateToCloud==='function' && currentUser){
+      clearTimeout(window.__rev57CloudSaveTimer);
+      window.__rev57CloudSaveTimer=setTimeout(()=>saveStateToCloud(),250);
+    }
+  }
+
+  const style=document.createElement('style');
+  style.textContent=`
+    /* Projekt-Task-Karte wieder normal; nur Projekt-/Taskgruppen-Lanes nutzen globale Kontur */
+    .project-task-item{border-color:#23324d!important;background:#060b16!important;cursor:pointer!important;}
+    body.light .project-task-item{border-color:#cbd6e7!important;background:#f8fbff!important;}
+    .project-task-item:hover b,.task-clickable56:hover b,.task-clickable56:hover .completed-title{text-decoration:underline!important;}
+    .project-task-item,.task-clickable56,.completed-table-card-rev54{cursor:pointer!important;}
+    .project-day-lane,.task-column-lane,.lane,.long-group{border-color:var(--frameBorderColor53)!important;}
+
+    /* Settings sauberer */
+    .settings-tab-rev56{color:#111827!important;background:#f8fafc!important;border:1px solid #cbd5e1!important;}
+    .settings-tab-rev56.active{background:#d1d5db!important;color:#111827!important;font-weight:1000!important;}
+    .rev57-vacation-card,.rev57-today-card,.rev57-outline-card{border:1px solid #cbd5e1;border-radius:14px;padding:12px;background:#f8fafc;display:grid;gap:10px;}
+    .rev57-card-title{font-weight:1000;color:#111827;display:flex;align-items:center;gap:8px;}
+    .rev57-card-title small{font-weight:600;color:#475569;line-height:1.35;display:block;margin-top:3px;}
+    .rev57-row{display:grid;grid-template-columns:minmax(145px,210px) minmax(0,1fr);gap:10px;align-items:center;}
+    .rev57-row label{font-weight:800;color:#111827;font-size:13px;}
+    .rev57-row input,.rev57-row select{min-width:0;}
+    .rev57-color-button{height:40px!important;min-width:46px!important;border-radius:12px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;}
+    .rev57-color-dot{width:18px;height:18px;border-radius:6px;border:1px solid rgba(0,0,0,.25);display:inline-block;}
+    .rev57-color-palette{display:none;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:8px;margin-top:8px;}
+    .rev57-color-palette.open{display:grid;}
+    .rev57-color-palette input[type="color"]{height:34px;padding:2px;border-radius:9px;}
+    .rev57-trash-left{margin-right:auto!important;width:42px!important;min-width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+    .rev57-trash-left svg{width:21px;height:21px;}
+    #modalContent .own-delete-square56{display:none!important;}
+    .settings-layout-rev56 .own-delete-square56{display:none!important;}
+    @media(max-width:700px){.rev57-row{grid-template-columns:1fr;gap:5px;}}
+  `;
+  document.head.appendChild(style);
+
+  function palette57(id,current,onPick){
+    const colors=['#64748b','#000000','#ffffff','#0284c7','#7c5cff','#22c55e','#ffb020','#f97316','#ff5050','#ec4899','#14b8a6','#a855f7'];
+    return `<div class="rev57-color-palette" id="${id}">${colors.map(c=>`<button type="button" class="color-choice" data-color57="${c}" style="background:${c}" title="${c}"></button>`).join('')}<input type="color" value="${escapeHtml(safeColor57(current,'#64748b'))}" data-color57-input="1"></div>`;
+  }
+  function bindPalette57(id,onPick){
+    const pal=document.querySelector('#'+id); if(!pal)return;
+    pal.querySelectorAll('[data-color57]').forEach(b=>b.onclick=()=>onPick(b.dataset.color57));
+    const input=pal.querySelector('[data-color57-input]'); if(input)input.oninput=()=>onPick(input.value);
+  }
+  function colorBtn57(id,color,label){
+    return `<button type="button" class="btn small rev57-color-button" id="${id}" title="${escapeHtml(label)}"><span class="rev57-color-dot" style="background:${escapeHtml(color)}"></span>🪣</button>`;
+  }
+  function saveSettingsFromDom57(){
+    ensureRev57State();
+    const q=s=>document.querySelector(s);
+    if(q('#mTheme57')) state.theme=q('#mTheme57').value;
+    if(q('#mCornerStyle57')) state.cornerStyle=q('#mCornerStyle57').value;
+    if(q('#mOutlineStyle57')) state.outlineStyle=q('#mOutlineStyle57').value;
+    if(q('#mVacationEnabled57')) state.vacationHighlight.enabled=q('#mVacationEnabled57').checked;
+    if(q('#mVacationOpacity57')) state.vacationHighlight.opacity=Number(q('#mVacationOpacity57').value);
+    if(q('#mTodayBorderWidth57')) state.todayHighlight.borderWidth=Number(q('#mTodayBorderWidth57').value);
+    if(q('#mTodayOpacity57')) state.todayHighlight.opacity=Number(q('#mTodayOpacity57').value);
+    if(q('#mSyncInterval57')){ state.syncInterval=Number(q('#mSyncInterval57').value); if(typeof setupAutoSync==='function') setupAutoSync(); }
+    saveUiState57();
+    if(typeof applyAppearance==='function') applyAppearance();
+  }
+  function renderSettingsGeneral57(){
+    ensureRev57State();
+    const root=document.querySelector('#settingsTabContentRev56'); if(!root)return;
+    root.innerHTML=`<div class="settings-grid">
+      <div class="rev57-outline-card">
+        <div class="rev57-card-title">Darstellung</div>
+        <div class="rev57-row"><label>Erscheinung</label><select id="mTheme57"><option value="light">Hell</option><option value="dark">Dunkel</option></select></div>
+        <div class="rev57-row"><label>Kanten</label><select id="mCornerStyle57"><option value="rounded">Abgerundet</option><option value="sharp">Eckig / 90°</option></select></div>
+        <div class="rev57-row"><label>Konturfarbe</label><div style="display:flex;gap:8px;align-items:center"><select id="mOutlineStyle57"><option value="current">Wie aktuell</option><option value="none">Keine</option><option value="gray">Grau</option><option value="black">Schwarz</option><option value="custom">Farbpalette</option></select>${colorBtn57('mOutlineColorBtn57',state.outlineStyle==='custom'?state.outlineCustomColor:(typeof outlineColor56==='function'?outlineColor56():'#64748b'),'Konturfarbe wählen')}</div></div>
+        ${palette57('mOutlinePalette57',state.outlineCustomColor,()=>{})}
+        <div class="hint">Die Konturfarbe gilt für große Rahmen und gestrichelte Gruppenlinien. Einzelne Task-Karten behalten ihre normale Kartenoptik.</div>
+      </div>
+      <div class="rev57-vacation-card">
+        <label class="settings-check-rev53"><span class="rev57-card-title">Urlaubstage anders anzeigen<small>Wenn ein sichtbarer ICS- oder eigener Kalender einen ganztägigen Termin mit exakt dem Titel „Urlaub“ enthält, wird der gesamte Tag farblich hinterlegt.</small></span><input id="mVacationEnabled57" type="checkbox"></label>
+        <div class="rev57-row"><label>Urlaubsfarbe</label><div>${colorBtn57('mVacationColorBtn57',state.vacationHighlight.color,'Urlaubsfarbe wählen')}</div></div>
+        ${palette57('mVacationPalette57',state.vacationHighlight.color,()=>{})}
+        <div class="rev57-row"><label>Deckkraft</label><input id="mVacationOpacity57" type="range" min="0.05" max="0.55" step="0.01" value="${escapeHtml(state.vacationHighlight.opacity)}"></div>
+      </div>
+      <div class="rev57-today-card">
+        <div class="rev57-card-title">Aktueller Tag<small>Hier stellst du ein, wie stark der heutige Tag optisch hervorgehoben wird.</small></div>
+        <div class="rev57-row"><label>Linienstärke</label><input id="mTodayBorderWidth57" type="range" min="1" max="10" step="1" value="${escapeHtml(state.todayHighlight.borderWidth)}"></div>
+        <div class="rev57-row"><label>Linienfarbe</label><div>${colorBtn57('mTodayBorderColorBtn57',state.todayHighlight.borderColor,'Linienfarbe aktueller Tag wählen')}</div></div>
+        ${palette57('mTodayBorderPalette57',state.todayHighlight.borderColor,()=>{})}
+        <div class="rev57-row"><label>Flächen-Deckkraft</label><input id="mTodayOpacity57" type="range" min="0" max="0.65" step="0.01" value="${escapeHtml(state.todayHighlight.opacity)}"></div>
+      </div>
+    </div>`;
+    document.querySelector('#mTheme57').value=state.theme||'light';
+    document.querySelector('#mCornerStyle57').value=state.cornerStyle||'rounded';
+    document.querySelector('#mOutlineStyle57').value=state.outlineStyle||'current';
+    document.querySelector('#mVacationEnabled57').checked=!!state.vacationHighlight.enabled;
+    ['#mTheme57','#mCornerStyle57','#mOutlineStyle57','#mVacationEnabled57','#mVacationOpacity57','#mTodayBorderWidth57','#mTodayOpacity57'].forEach(s=>{const el=document.querySelector(s);if(el){el.oninput=saveSettingsFromDom57;el.onchange=saveSettingsFromDom57;}});
+    const toggle=(btnId,palId)=>{const b=document.querySelector('#'+btnId);const p=document.querySelector('#'+palId);if(b&&p)b.onclick=()=>p.classList.toggle('open');};
+    toggle('mOutlineColorBtn57','mOutlinePalette57'); toggle('mVacationColorBtn57','mVacationPalette57'); toggle('mTodayBorderColorBtn57','mTodayBorderPalette57');
+    bindPalette57('mOutlinePalette57',c=>{state.outlineStyle='custom';state.outlineCustomColor=c;saveUiState57();renderSettingsGeneral57();render();});
+    bindPalette57('mVacationPalette57',c=>{state.vacationHighlight.color=c;saveUiState57();renderSettingsGeneral57();render();});
+    bindPalette57('mTodayBorderPalette57',c=>{state.todayHighlight.borderColor=c;saveUiState57();renderSettingsGeneral57();render();});
+  }
+  function renderSettingsSync57(){
+    const root=document.querySelector('#settingsTabContentRev56'); if(!root)return;
+    root.innerHTML=`<div class="settings-grid"><div class="rev57-outline-card"><div class="rev57-card-title">Synchronisierung</div><div class="rev57-row"><label>Intervall</label><select id="mSyncInterval57"><option value="0">Aus / manuell</option><option value="5">Alle 5 Min.</option><option value="15">Alle 15 Min.</option><option value="30">Alle 30 Min.</option><option value="60">Alle 60 Min.</option></select></div><div class="hint">Manuelles Neuladen erfolgt über den grünen Reload-Button oben. Proxy-URL und separater ICS-Button bleiben ausgeblendet.</div></div></div>`;
+    document.querySelector('#mSyncInterval57').value=String(state.syncInterval??15);
+    document.querySelector('#mSyncInterval57').onchange=saveSettingsFromDom57;
+  }
+  function openSettingsRev57(){
+    ensureRev57State();
+    document.querySelector('#modalTitle').textContent='Allgemeine Einstellungen';
+    document.querySelector('#modalContent').innerHTML=`<div class="settings-layout-rev53 settings-layout-rev56"><div class="settings-tabs-rev53 settings-tabs-rev56"><button class="settings-tab-rev53 settings-tab-rev56 active" data-tab57="general" type="button">Allgemein</button><button class="settings-tab-rev53 settings-tab-rev56" data-tab57="sync" type="button">Synchronisierung</button><button class="settings-tab-rev53 settings-tab-rev56" data-tab57="info" type="button">Hinweise</button></div><div id="settingsTabContentRev56" class="settings-tab-content-rev53"></div></div>`;
+    document.querySelector('#modalBackdrop').style.display='flex';
+    document.querySelector('#saveModal').style.display='';
+    let active='general';
+    const renderActive=()=>{if(active==='general')renderSettingsGeneral57();else if(active==='sync')renderSettingsSync57();else if(typeof renderSettingsInfo56==='function')renderSettingsInfo56();};
+    renderActive();
+    document.querySelectorAll('[data-tab57]').forEach(btn=>btn.onclick=()=>{saveSettingsFromDom57();active=btn.dataset.tab57;document.querySelectorAll('[data-tab57]').forEach(b=>b.classList.toggle('active',b===btn));renderActive();});
+    document.querySelector('#saveModal').onclick=()=>{saveSettingsFromDom57();closeModal();render();};
+    cleanupTrashButtons57();
+  }
+
+  function cleanupTrashButtons57(){
+    const isOwn=/Eigenen Termin bearbeiten|Termin hinzufügen/.test(document.querySelector('#modalTitle')?.textContent||'') && !!document.querySelector('#deleteOwnFromEditRev51');
+    const actions=document.querySelector('.modal-actions');
+    const ownButtons=Array.from(document.querySelectorAll('.own-delete-square56,.rev57-trash-left,#deleteOwnFromEditRev51'));
+    if(!isOwn){ownButtons.forEach(b=>{ if(b.closest('.modal-actions')) b.remove(); }); return; }
+    const del=document.querySelector('#deleteOwnFromEditRev51');
+    if(del&&actions){
+      Array.from(actions.querySelectorAll('.own-delete-square56,.rev57-trash-left')).forEach((b,i)=>{if(b!==del)b.remove();});
+      del.className='btn danger rev57-trash-left'; del.innerHTML=iconTrash(); del.title='Eigenen Termin löschen';
+      if(actions.firstElementChild!==del) actions.insertBefore(del,actions.firstChild);
+    }
+  }
+  new MutationObserver(cleanupTrashButtons57).observe(document.body,{childList:true,subtree:true});
+
+  function bindTimelinePersistence57(){
+    ensureRev57State();
+    const input=document.querySelector('#timelineWorkStartRev50,#timelineWorkStartRev49');
+    if(input){
+      input.value=state.workStartTime||input.value||'08:00';
+      const save=()=>{state.workStartTime=input.value||'08:00';saveUiState57();};
+      input.oninput=save;
+      input.onchange=()=>{save(); if(typeof renderSidebarTimelineRev050==='function')renderSidebarTimelineRev050();};
+    }
+    const step=document.querySelector('#timelineStepModalRev52,#timelineStepModalRev50');
+    const pause=document.querySelector('#timelinePauseModalRev52,#timelinePauseModalRev50');
+    if(step){step.value=String(state.timelineStep||30); step.oninput=step.onchange=()=>{state.timelineStep=Number(step.value||30);saveUiState57();};}
+    if(pause){pause.value=String(state.timelinePauseMinutes||0); pause.oninput=pause.onchange=()=>{state.timelinePauseMinutes=Math.max(0,Number(pause.value||0));saveUiState57();};}
+  }
+  const oldRenderSidebarTimeline57=typeof renderSidebarTimelineRev050==='function'?renderSidebarTimelineRev050:null;
+  if(oldRenderSidebarTimeline57){
+    renderSidebarTimelineRev050=function(){oldRenderSidebarTimeline57();bindTimelinePersistence57();};
+  }
+  const oldOpenTimelineSettings57=typeof openTimelineSettingsRev52==='function'?openTimelineSettingsRev52:null;
+  if(oldOpenTimelineSettings57){
+    openTimelineSettingsRev52=function(){oldOpenTimelineSettings57();setTimeout(bindTimelinePersistence57,0);};
+  }
+
+  const oldEnsureSettings57=ensureSettings;
+  ensureSettings=function(){oldEnsureSettings57();ensureRev57State();};
+  const oldRender57=render;
+  render=function(){oldRender57();const s=document.querySelector('#settingsBtn');if(s)s.onclick=openSettingsRev57;cleanupTrashButtons57();bindTimelinePersistence57();};
+  window.openSettingsRev56=openSettingsRev57;
+  window.openSyncSettingsModal=openSettingsRev57;
+
+  setTimeout(()=>{ensureRev57State();const s=document.querySelector('#settingsBtn');if(s)s.onclick=openSettingsRev57;cleanupTrashButtons57();bindTimelinePersistence57();saveUiState57();},250);
+})();
+</script>
+<script>
+/* Rev 058: Stabiler Editor für eigene Termine ohne Rev057-MutationObserver-Schleife */
+(function(){
+  function rev58IsUuid(v){return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(v||''));}
+  function rev58DateInput(v){const d=new Date(v); if(isNaN(d))return fmtDate(new Date()); return fmtDate(d);}
+  function rev58TimeInput(v,fallback='09:00'){const d=new Date(v); if(isNaN(d))return fallback; return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+  function rev58ParseLocal(date,time,allDay,end){
+    if(allDay)return new Date(date+(end?'T23:59:00':'T00:00:00'));
+    return new Date(date+'T'+(time||'00:00')+':00');
+  }
+  async function rev58UpdateOwnEvent(evt){
+    if(!currentUser || !rev58IsUuid(evt.id)){ persist(); return; }
+    const row={
+      calendar_source_id:evt.sourceId,
+      title:evt.summary||'Ohne Titel',
+      location:evt.location||null,
+      description:evt.description||null,
+      start_time:evt.start,
+      end_time:evt.end||null,
+      all_day:!!evt.allDay,
+      recurrence:evt.recurrence||'none',
+      travel_time:evt.travelTime||null,
+      status:evt.status||'active',
+      updated_at:new Date().toISOString()
+    };
+    const {error}=await supabaseClient.from('own_events').update(row).eq('user_id',currentUser.id).eq('id',evt.id);
+    if(error)throw error;
+  }
+  function rev58OpenOwnEventEditor(calIdx,evtIdx){
+    if(!requireLogin())return;
+    const cal=state.calendars[Number(calIdx)];
+    const evt=(cal?.ownEvents||[])[Number(evtIdx)];
+    if(!cal||!evt)return toast('Eigener Termin lokal nicht gefunden.');
+    const ownSources=(cal.links||[]).filter(l=>l.type==='own');
+    const dateVal=rev58DateInput(evt.start);
+    const startVal=rev58TimeInput(evt.start,'09:00');
+    const endVal=rev58TimeInput(evt.end,'10:00');
+    const modalTitle=document.querySelector('#modalTitle');
+    const modalContent=document.querySelector('#modalContent');
+    const modalBackdrop=document.querySelector('#modalBackdrop');
+    const actions=document.querySelector('.modal-actions');
+    const save=document.querySelector('#saveModal');
+    const cancel=document.querySelector('#cancelModal');
+    if(!modalTitle||!modalContent||!modalBackdrop||!actions||!save)return;
+    modalTitle.textContent='Eigenen Termin bearbeiten';
+    modalContent.innerHTML=`<div class="own-event-edit-grid rev58-own-editor">
+      <label>Titel</label><input id="rev58OwnTitle" value="${escapeHtml(evt.summary||'')}">
+      <label>Eigener Kalender</label><select id="rev58OwnSource">${ownSources.map(l=>`<option value="${escapeHtml(l.id)}" ${evt.sourceId===l.id?'selected':''}>${escapeHtml(l.name)}</option>`).join('')}</select>
+      <label>Ort</label><input id="rev58OwnLocation" value="${escapeHtml(evt.location||'')}">
+      <label>Datum</label><input id="rev58OwnDate" type="date" value="${escapeHtml(dateVal)}">
+      <label>Wiederholung</label><select id="rev58OwnRecurrence"><option value="none">Keine Wiederholung</option><option value="weekly">Wöchentlich</option><option value="monthly">Monatlich</option><option value="yearly">Jährlich</option></select>
+      <label>Ganztägig</label><select id="rev58OwnAllDay"><option value="false">Nein</option><option value="true">Ja</option></select>
+      <label>Startzeit</label><input id="rev58OwnStart" type="time" value="${escapeHtml(startVal)}">
+      <label>Endzeit</label><input id="rev58OwnEnd" type="time" value="${escapeHtml(endVal)}">
+      <label>Wegzeit</label><input id="rev58OwnTravel" value="${escapeHtml(evt.travelTime||'')}" placeholder="z. B. 20 Min.">
+      <label>Details / Notizen</label><textarea id="rev58OwnDescription" rows="5">${escapeHtml(evt.description||'')}</textarea>
+    </div>`;
+    document.querySelector('#rev58OwnRecurrence').value=evt.recurrence||'none';
+    document.querySelector('#rev58OwnAllDay').value=evt.allDay?'true':'false';
+    actions.querySelectorAll('#rev58DeleteOwnEvent,.own-delete-square56,.rev57-trash-left,#deleteOwnFromEditRev51').forEach(x=>x.remove());
+    const del=document.createElement('button');
+    del.id='rev58DeleteOwnEvent';
+    del.type='button';
+    del.className='btn danger rev58-own-trash';
+    del.title='Eigenen Termin löschen';
+    del.innerHTML=(typeof iconTrash==='function')?iconTrash():'🗑';
+    actions.insertBefore(del, actions.firstChild);
+    modalBackdrop.style.display='flex';
+    save.style.display='';
+    del.onclick=async()=>{
+      if(!confirm('Eigenen Termin / Serie löschen?'))return;
+      try{
+        if(typeof deleteOwnEventRev046==='function' && rev58IsUuid(evt.id)) await deleteOwnEventRev046(evt.id);
+        cal.ownEvents.splice(Number(evtIdx),1);
+        closeModal(); render(); toast('Eigener Termin gelöscht.');
+      }catch(error){toast(error.message||String(error));closeModal();await loadStateFromCloud();}
+    };
+    save.onclick=async()=>{
+      const title=document.querySelector('#rev58OwnTitle').value.trim();
+      if(!title)return toast('Termin ohne Titel wird nicht gespeichert.');
+      const sourceId=document.querySelector('#rev58OwnSource').value;
+      const src=ownSources.find(l=>l.id===sourceId)||ownSources[0];
+      const date=document.querySelector('#rev58OwnDate').value||dateVal;
+      const allDay=document.querySelector('#rev58OwnAllDay').value==='true';
+      evt.sourceId=sourceId;
+      evt.summary=title;
+      evt.location=document.querySelector('#rev58OwnLocation').value.trim();
+      evt.recurrence=document.querySelector('#rev58OwnRecurrence').value||'none';
+      evt.allDay=allDay;
+      evt.start=rev58ParseLocal(date,document.querySelector('#rev58OwnStart').value,allDay,false).toISOString();
+      evt.end=rev58ParseLocal(date,document.querySelector('#rev58OwnEnd').value,allDay,true).toISOString();
+      evt.travelTime=document.querySelector('#rev58OwnTravel').value.trim();
+      evt.description=document.querySelector('#rev58OwnDescription').value.trim();
+      evt.source=src?.name||cal.name;
+      evt.icsName=src?.name||cal.name;
+      evt.icsColor=src?.color||state.colors.event;
+      evt.status=evt.status||'active';
+      try{await rev58UpdateOwnEvent(evt); closeModal(); render(); toast('Eigener Termin aktualisiert.');}
+      catch(error){toast('Eigener Termin konnte nicht aktualisiert werden: '+(error.message||String(error)));closeModal();await loadStateFromCloud();}
+    };
+    modalContent.onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA'){e.preventDefault();save.click();}else if(e.key==='Enter'&&e.ctrlKey){e.preventDefault();save.click();}};
+  }
+  const prevOpenEventDetailRev58=window.openEventDetailModal || openEventDetailModal;
+  window.openEventDetailModal=openEventDetailModal=function(ref){
+    const [type,calIdx,evtIdx]=String(ref||'').split(':');
+    if(type==='own')return rev58OpenOwnEventEditor(calIdx,evtIdx);
+    return prevOpenEventDetailRev58(ref);
+  };
+  const style=document.createElement('style');
+  style.textContent=`.rev58-own-trash{width:42px!important;min-width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}.rev58-own-trash svg{width:21px;height:21px}`;
+  document.head.appendChild(style);
+})();
+</script>
+
+<script>
+/* Rev 059: Projekt-Task-Seitenfarbe + Papierkorb nur im eigenen Termin-Editor */
+(function(){
+  function rev59ProjectColorForTask(id){
+    try{
+      const t=(state.projectTasks||[]).find(x=>String(x.id)===String(id));
+      const p=t&&(state.projects||[]).find(x=>String(x.id)===String(t.projectId));
+      return (p&&p.color)||'#7c5cff';
+    }catch(e){return '#7c5cff';}
+  }
+  function rev59DecorateProjectTaskColors(scope=document){
+    scope.querySelectorAll('.project-task-item[data-project-task-ref]').forEach(el=>{
+      const color=rev59ProjectColorForTask(el.dataset.projectTaskRef);
+      el.style.setProperty('border-left-color',color,'important');
+      el.style.setProperty('border-left-width','4px','important');
+      el.style.setProperty('border-left-style','solid','important');
+      // normale Kartenoptik behalten: nur linke Farbleiste projektabhängig.
+      if(document.body.classList.contains('light')){
+        el.style.setProperty('background','#f8fbff','important');
+        el.style.setProperty('border-top-color','#cbd6e7','important');
+        el.style.setProperty('border-right-color','#cbd6e7','important');
+        el.style.setProperty('border-bottom-color','#cbd6e7','important');
+      }else{
+        el.style.setProperty('background','#060b16','important');
+        el.style.setProperty('border-top-color','#23324d','important');
+        el.style.setProperty('border-right-color','#23324d','important');
+        el.style.setProperty('border-bottom-color','#23324d','important');
+      }
+    });
+  }
+  function rev59CleanupForeignTrash(){
+    const title=(document.querySelector('#modalTitle')?.textContent||'').trim();
+    const isOwnTitle=/^Eigenen Termin bearbeiten/.test(title);
+    const isSettings=/Einstellungen|Allgemeine Einstellungen|Synchronisierung|Hinweise/.test(title) || !!document.querySelector('.settings-layout-rev56,.settings-layout-rev53');
+    const actions=document.querySelector('.modal-actions');
+    if(!actions)return;
+    if(isSettings || !isOwnTitle){
+      actions.querySelectorAll('#rev58DeleteOwnEvent,.rev58-own-trash,.own-delete-square56,.rev57-trash-left,#deleteOwnFromEditRev51').forEach(b=>b.remove());
+    }
+  }
+
+  const style=document.createElement('style');
+  style.textContent=`
+    /* Rev059: bestehendes Rev057-border-color überschreiben, aber Projekt-Farbleiste behalten */
+    .project-task-item[data-project-task-ref]{cursor:pointer!important;}
+    .project-task-item[data-project-task-ref]:hover b{text-decoration:underline!important;}
+    .settings-layout-rev56 ~ .own-delete-square56,
+    .settings-layout-rev53 ~ .own-delete-square56{display:none!important;}
+  `;
+  document.head.appendChild(style);
+
+  const prevRender=window.render || render;
+  window.render=render=function(){
+    prevRender();
+    rev59DecorateProjectTaskColors(document);
+    rev59CleanupForeignTrash();
+  };
+
+  const prevOpenSettings=window.openSettingsRev56 || window.openSyncSettingsModal;
+  function wrapSettingsOpen(fn){
+    return function(){
+      const r=fn&&fn.apply(this,arguments);
+      setTimeout(rev59CleanupForeignTrash,0);
+      setTimeout(rev59CleanupForeignTrash,60);
+      return r;
+    };
+  }
+  if(prevOpenSettings){
+    window.openSettingsRev56=wrapSettingsOpen(prevOpenSettings);
+    window.openSyncSettingsModal=window.openSettingsRev56;
+  }
+  setTimeout(()=>{
+    const s=document.querySelector('#settingsBtn');
+    if(s&&window.openSettingsRev56)s.onclick=window.openSettingsRev56;
+    rev59DecorateProjectTaskColors(document);
+    rev59CleanupForeignTrash();
+  },250);
+})();
+</script>
+
+
+<script>
+/* Rev 060: Persistenz der allgemeinen Einstellungen explizit über Speichern + Zeitstrahlwerte zuverlässig im App-State */
+(function(){
+  function isHex60(v){return /^#[0-9a-f]{6}$/i.test(String(v||''));}
+  function ensureRev60State(){
+    state.vacationHighlight=Object.assign({enabled:false,color:'#f97316',opacity:0.18},state.vacationHighlight||{});
+    state.todayHighlight=Object.assign({borderWidth:4,borderColor:'#0284c7',opacity:0.18},state.todayHighlight||{});
+    state.outlineStyle=state.outlineStyle||'current';
+    state.outlineCustomColor=isHex60(state.outlineCustomColor)?state.outlineCustomColor:'#64748b';
+    state.timelineStep=Number(state.timelineStep||30);
+    if(![15,30,60].includes(state.timelineStep))state.timelineStep=30;
+    state.timelinePauseMinutes=Math.max(0,Number(state.timelinePauseMinutes||0));
+    state.workStartTime=state.workStartTime||'08:00';
+  }
+  async function forceSaveAppState60(){
+    ensureRev60State();
+    try{persist();}catch(e){console.warn(e);}
+    if(currentUser && typeof saveStateToCloud==='function'){
+      clearTimeout(cloudSaveTimer);
+      await saveStateToCloud();
+    }
+  }
+  function readSettingsDom60(){
+    ensureRev60State();
+    const q=s=>document.querySelector(s);
+    const theme=q('#mTheme60,#mTheme57,#mTheme56'); if(theme)state.theme=theme.value;
+    const corners=q('#mCornerStyle60,#mCornerStyle57,#mCornerStyle56'); if(corners)state.cornerStyle=corners.value;
+    const outline=q('#mOutlineStyle60,#mOutlineStyle57,#mOutlineStyle56'); if(outline)state.outlineStyle=outline.value;
+    const vacEnabled=q('#mVacationEnabled60,#mVacationEnabled57,#mVacationEnabled56,#mVacationEnabled53'); if(vacEnabled)state.vacationHighlight.enabled=!!vacEnabled.checked;
+    const vacOpacity=q('#mVacationOpacity60,#mVacationOpacity57,#mVacationOpacity56'); if(vacOpacity)state.vacationHighlight.opacity=Number(vacOpacity.value);
+    const todayWidth=q('#mTodayBorderWidth60,#mTodayBorderWidth57,#mTodayBorderWidth56'); if(todayWidth)state.todayHighlight.borderWidth=Number(todayWidth.value);
+    const todayOpacity=q('#mTodayOpacity60,#mTodayOpacity57,#mTodayOpacity56'); if(todayOpacity)state.todayHighlight.opacity=Number(todayOpacity.value);
+    const sync=q('#mSyncInterval60,#mSyncInterval57,#mSyncInterval56'); if(sync)state.syncInterval=Number(sync.value);
+    const work=q('#timelineWorkStartRev50,#timelineWorkStartRev49,#timelineWorkStartRev60'); if(work)state.workStartTime=work.value||'08:00';
+    const step=q('#timelineStepModalRev52,#timelineStepModalRev50,#timelineStepModalRev60'); if(step)state.timelineStep=Number(step.value||30);
+    const pause=q('#timelinePauseModalRev52,#timelinePauseModalRev50,#timelinePauseModalRev60'); if(pause)state.timelinePauseMinutes=Math.max(0,Number(pause.value||0));
+    state.fetchMode='proxy';
+    state.proxyUrl=state.proxyUrl||DEFAULT_PROXY_URL;
+  }
+  function bindTimeline60(){
+    ensureRev60State();
+    const input=document.querySelector('#timelineWorkStartRev50,#timelineWorkStartRev49');
+    if(input){
+      input.value=state.workStartTime||'08:00';
+      input.oninput=async()=>{state.workStartTime=input.value||'08:00';await forceSaveAppState60();};
+      input.onchange=async()=>{state.workStartTime=input.value||'08:00';await forceSaveAppState60();if(typeof renderSidebarTimelineRev050==='function')renderSidebarTimelineRev050();};
+    }
+    const step=document.querySelector('#timelineStepModalRev52,#timelineStepModalRev50');
+    const pause=document.querySelector('#timelinePauseModalRev52,#timelinePauseModalRev50');
+    if(step){step.value=String(state.timelineStep||30);step.onchange=async()=>{state.timelineStep=Number(step.value||30);await forceSaveAppState60();};}
+    if(pause){pause.value=String(state.timelinePauseMinutes||0);pause.oninput=pause.onchange=async()=>{state.timelinePauseMinutes=Math.max(0,Number(pause.value||0));await forceSaveAppState60();};}
+  }
+  const oldRender60=window.render||render;
+  window.render=render=function(){oldRender60();bindTimeline60();};
+  const oldSidebar60=typeof renderSidebarTimelineRev050==='function'?renderSidebarTimelineRev050:null;
+  if(oldSidebar60){renderSidebarTimelineRev050=function(){oldSidebar60();bindTimeline60();};}
+  const oldOpenTimeline60=typeof openTimelineSettingsRev52==='function'?openTimelineSettingsRev52:null;
+  if(oldOpenTimeline60){openTimelineSettingsRev52=function(){oldOpenTimeline60();setTimeout(bindTimeline60,0);};}
+
+  const colors60=['#64748b','#000000','#ffffff','#0284c7','#7c5cff','#22c55e','#ffb020','#f97316','#ff5050','#ec4899','#14b8a6','#a855f7'];
+  function colorBtn60(id,color,label){return `<button type="button" class="btn small rev60-color-button" id="${id}" title="${escapeHtml(label)}"><span class="rev60-color-dot" style="background:${escapeHtml(color)}"></span>🪣</button>`;}
+  function palette60(id,current){const cur=isHex60(current)?current:'#64748b';return `<div class="rev60-palette" id="${id}">${colors60.map(c=>`<button type="button" class="color-choice" data-color60="${c}" style="background:${c}" title="${c}"></button>`).join('')}<input type="color" value="${escapeHtml(cur)}" data-color60-input="1"></div>`;}
+  function bindPalette60(id,onPick){
+    const pal=document.querySelector('#'+id);if(!pal)return;
+    pal.querySelectorAll('[data-color60]').forEach(b=>b.onclick=()=>onPick(b.dataset.color60));
+    const inp=pal.querySelector('[data-color60-input]');if(inp)inp.oninput=()=>onPick(inp.value);
+  }
+  function togglePalette60(btnId,palId){const b=document.querySelector('#'+btnId),p=document.querySelector('#'+palId);if(b&&p)b.onclick=()=>p.classList.toggle('open');}
+  function renderGeneral60(){
+    ensureRev60State();
+    const root=document.querySelector('#settingsTabContentRev60');if(!root)return;
+    root.innerHTML=`<div class="settings-grid">
+      <div class="rev60-card"><div class="rev60-card-title">Darstellung</div>
+        <div class="rev60-row"><label>Erscheinung</label><select id="mTheme60"><option value="light">Hell</option><option value="dark">Dunkel</option></select></div>
+        <div class="rev60-row"><label>Kanten</label><select id="mCornerStyle60"><option value="rounded">Abgerundet</option><option value="sharp">Eckig / 90°</option></select></div>
+        <div class="rev60-row"><label>Konturfarbe</label><div class="rev60-inline"><select id="mOutlineStyle60"><option value="current">Wie aktuell</option><option value="none">Keine</option><option value="gray">Grau</option><option value="black">Schwarz</option><option value="custom">Farbpalette</option></select>${colorBtn60('mOutlineColorBtn60',state.outlineCustomColor,'Konturfarbe wählen')}</div></div>
+        ${palette60('mOutlinePalette60',state.outlineCustomColor)}
+      </div>
+      <div class="rev60-card"><label class="rev60-check"><span><b>Urlaubstage anders anzeigen</b><small>Wenn ein sichtbarer ICS- oder eigener Kalender einen ganztägigen Termin mit exakt dem Titel „Urlaub“ enthält, wird der ganze Tag farblich hinterlegt.</small></span><input id="mVacationEnabled60" type="checkbox"></label>
+        <div class="rev60-row"><label>Urlaubsfarbe</label><div>${colorBtn60('mVacationColorBtn60',state.vacationHighlight.color,'Urlaubsfarbe wählen')}</div></div>
+        ${palette60('mVacationPalette60',state.vacationHighlight.color)}
+        <div class="rev60-row"><label>Deckkraft</label><input id="mVacationOpacity60" type="range" min="0.05" max="0.55" step="0.01" value="${escapeHtml(state.vacationHighlight.opacity)}"></div>
+      </div>
+      <div class="rev60-card"><div class="rev60-card-title">Aktueller Tag<small>Hier stellst du Konturfarbe, Linienstärke und Flächenintensität des heutigen Tages ein.</small></div>
+        <div class="rev60-row"><label>Linienstärke</label><input id="mTodayBorderWidth60" type="range" min="1" max="10" step="1" value="${escapeHtml(state.todayHighlight.borderWidth)}"></div>
+        <div class="rev60-row"><label>Linienfarbe</label><div>${colorBtn60('mTodayBorderColorBtn60',state.todayHighlight.borderColor,'Linienfarbe wählen')}</div></div>
+        ${palette60('mTodayBorderPalette60',state.todayHighlight.borderColor)}
+        <div class="rev60-row"><label>Flächen-Deckkraft</label><input id="mTodayOpacity60" type="range" min="0" max="0.65" step="0.01" value="${escapeHtml(state.todayHighlight.opacity)}"></div>
+      </div>
+      <div class="hint">Diese Werte werden erst beim Klick auf „Speichern“ verbindlich in den App-State übernommen und danach in Supabase gespeichert.</div>
+    </div>`;
+    document.querySelector('#mTheme60').value=state.theme||'light';
+    document.querySelector('#mCornerStyle60').value=state.cornerStyle||'rounded';
+    document.querySelector('#mOutlineStyle60').value=state.outlineStyle||'current';
+    document.querySelector('#mVacationEnabled60').checked=!!state.vacationHighlight.enabled;
+    togglePalette60('mOutlineColorBtn60','mOutlinePalette60');togglePalette60('mVacationColorBtn60','mVacationPalette60');togglePalette60('mTodayBorderColorBtn60','mTodayBorderPalette60');
+    bindPalette60('mOutlinePalette60',c=>{state.outlineStyle='custom';state.outlineCustomColor=c;renderGeneral60();});
+    bindPalette60('mVacationPalette60',c=>{state.vacationHighlight.color=c;renderGeneral60();});
+    bindPalette60('mTodayBorderPalette60',c=>{state.todayHighlight.borderColor=c;renderGeneral60();});
+  }
+  function renderSync60(){
+    const root=document.querySelector('#settingsTabContentRev60');if(!root)return;
+    root.innerHTML=`<div class="settings-grid"><div class="rev60-card"><div class="rev60-card-title">Synchronisierung</div><div class="rev60-row"><label>Intervall</label><select id="mSyncInterval60"><option value="0">Aus / manuell</option><option value="5">Alle 5 Min.</option><option value="15">Alle 15 Min.</option><option value="30">Alle 30 Min.</option><option value="60">Alle 60 Min.</option></select></div><div class="hint">Proxy-URL und separater ICS-Aktualisieren-Button bleiben ausgeblendet. Manuelles Neuladen läuft über den grünen Reload-Button oben.</div></div></div>`;
+    document.querySelector('#mSyncInterval60').value=String(state.syncInterval??15);
+  }
+  function renderInfo60(){
+    const root=document.querySelector('#settingsTabContentRev60');if(!root)return;
+    root.innerHTML=`<div class="settings-grid"><div class="security-note"><b>Speicherlogik</b><br>Beim Klick auf „Speichern“ werden die aktuellen Anzeigeparameter vollständig in <code>app_state</code> gespeichert. Zeitstrahlwerte werden zusätzlich direkt beim Ändern gespeichert.</div></div>`;
+  }
+  function openSettings60(){
+    ensureRev60State();
+    document.querySelector('#modalTitle').textContent='Allgemeine Einstellungen';
+    document.querySelector('#modalContent').innerHTML=`<div class="settings-layout-rev56 rev60-settings"><div class="settings-tabs-rev56"><button class="settings-tab-rev56 active" data-tab60="general" type="button">Allgemein</button><button class="settings-tab-rev56" data-tab60="sync" type="button">Synchronisierung</button><button class="settings-tab-rev56" data-tab60="info" type="button">Hinweise</button></div><div id="settingsTabContentRev60" class="settings-tab-content-rev53"></div></div>`;
+    document.querySelector('#modalBackdrop').style.display='flex';
+    const save=document.querySelector('#saveModal');save.style.display='';
+    let active='general';
+    const renderActive=()=>{if(active==='general')renderGeneral60();else if(active==='sync')renderSync60();else renderInfo60();};
+    renderActive();
+    document.querySelectorAll('[data-tab60]').forEach(btn=>btn.onclick=async()=>{readSettingsDom60();active=btn.dataset.tab60;document.querySelectorAll('[data-tab60]').forEach(b=>b.classList.toggle('active',b===btn));renderActive();});
+    save.onclick=async()=>{readSettingsDom60();await forceSaveAppState60();if(typeof setupAutoSync==='function')setupAutoSync();if(typeof applyAppearance==='function')applyAppearance();closeModal();render();toast('Einstellungen im App-State gespeichert.');};
+    document.querySelectorAll('.modal-actions #rev58DeleteOwnEvent,.modal-actions .rev58-own-trash,.modal-actions .rev57-trash-left,.modal-actions .own-delete-square56,.modal-actions #deleteOwnFromEditRev51').forEach(x=>x.remove());
+  }
+  const style=document.createElement('style');
+  style.textContent=`
+    .rev60-settings .settings-tab-rev56{color:#111827!important;background:#f8fafc!important;border:1px solid #cbd5e1!important;}
+    .rev60-settings .settings-tab-rev56.active{background:#d1d5db!important;color:#111827!important;font-weight:1000!important;}
+    .rev60-card{border:1px solid #cbd5e1;border-radius:14px;padding:12px;background:#f8fafc;display:grid;gap:10px;color:#111827;}
+    .rev60-card-title{font-weight:1000;color:#111827;display:block;}
+    .rev60-card-title small,.rev60-check small{display:block;color:#475569;font-weight:600;line-height:1.35;margin-top:3px;}
+    .rev60-row{display:grid;grid-template-columns:minmax(145px,210px) minmax(0,1fr);gap:10px;align-items:center;}
+    .rev60-row label{font-weight:800;color:#111827;font-size:13px;}
+    .rev60-row input,.rev60-row select{min-width:0;}
+    .rev60-inline{display:flex;gap:8px;align-items:center;}
+    .rev60-check{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;}
+    .rev60-check b{color:#111827;font-weight:1000;}
+    .rev60-color-button{height:40px!important;min-width:46px!important;border-radius:12px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;}
+    .rev60-color-dot{width:18px;height:18px;border-radius:6px;border:1px solid rgba(0,0,0,.25);display:inline-block;}
+    .rev60-palette{display:none;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:8px;margin-top:8px;}
+    .rev60-palette.open{display:grid;}
+    .rev60-palette input[type="color"]{height:34px;padding:2px;border-radius:9px;}
+    @media(max-width:700px){.rev60-row{grid-template-columns:1fr;gap:5px;}}
+  `;
+  document.head.appendChild(style);
+  const oldEnsure60=ensureSettings;
+  ensureSettings=function(){oldEnsure60();ensureRev60State();};
+  window.openSettingsRev56=openSettings60;
+  window.openSyncSettingsModal=openSettings60;
+  setTimeout(()=>{const s=document.querySelector('#settingsBtn');if(s)s.onclick=openSettings60;bindTimeline60();},200);
+})();
+</script>
+
+</body></html>
